@@ -1,0 +1,11 @@
+{
+    "@@locale": "ja",
+    "hello": "こんにちは",
+    "register": "登録",
+    "update": "更新",
+    "delete": "削除",
+    "productlist": "商品一覧",
+    "productdetails": "商品詳細",
+    "buy": "購入",
+    "events": "イベント"
+  }
