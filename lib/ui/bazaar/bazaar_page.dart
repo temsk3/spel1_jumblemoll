@@ -35,19 +35,22 @@ class BazaarListPage extends HookConsumerWidget {
                     ? const CustomDrawer()
                     : Container(),
                 Expanded(
-                  child: Center(
-                    child: RefreshIndicator(
-                      onRefresh: () async {
-                        // ref.refresh(bazzarViewModelProvider);
-                        viewModel.readBazaar();
-                      },
-                      child: ListView.builder(
-                        physics: const AlwaysScrollableScrollPhysics(),
-                        itemCount: data.length,
-                        itemBuilder: (_, index) {
-                          final bazaar = data[index];
-                          return EventCard(index: index, bazaar: bazaar);
+                  child: SizedBox(
+                    width: 400,
+                    child: Center(
+                      child: RefreshIndicator(
+                        onRefresh: () async {
+                          // ref.refresh(bazzarViewModelProvider);
+                          viewModel.readBazaar();
                         },
+                        child: ListView.builder(
+                          physics: const AlwaysScrollableScrollPhysics(),
+                          itemCount: data.length,
+                          itemBuilder: (_, index) {
+                            final bazaar = data[index];
+                            return EventCard(index: index, bazaar: bazaar);
+                          },
+                        ),
                       ),
                     ),
                   ),

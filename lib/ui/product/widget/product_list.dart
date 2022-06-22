@@ -25,11 +25,13 @@ class ProductCard extends HookConsumerWidget {
     final now = DateTime.now();
     final NumberFormat formatter = NumberFormat.simpleCurrency(
         locale: Localizations.localeOf(context).toString());
+    final isOpened = (now.compareTo(product.salesStart as DateTime) >= 0 &&
+        now.compareTo(product.salesEnd as DateTime) < 0);
+    print(isOpened);
     return Stack(
       children: [
         Card(
-          color: (now.compareTo(product.salesStart as DateTime) >= 0 &&
-                  now.compareTo(product.salesEnd as DateTime) < 0)
+          color: (product.stock == 0 || isOpened)
               ? null
               : Colors.black.withOpacity(0.3),
           // : theme.appColors.background,
@@ -108,16 +110,14 @@ class ProductCard extends HookConsumerWidget {
                     // .copyWith(color: theme.appColors.onPrimary),
                     ),
               )
-            : ((now.compareTo(product.salesStart as DateTime) >= 0 &&
-                        now.compareTo(product.salesEnd as DateTime) < 0) ==
-                    false)
-                ? Positioned(
+            : (isOpened)
+                ? const Positioned(child: Text(''))
+                : Positioned(
                     top: 4,
                     child: Text('Out of term', style: theme.textTheme.h60.bold()
                         // .copyWith(color: theme.appColors.onPrimary),
                         ),
-                  )
-                : const Positioned(child: Text('')),
+                  ),
       ],
     );
   }

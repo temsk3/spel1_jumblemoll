@@ -81,9 +81,15 @@ class ProductPage extends HookConsumerWidget {
                       ? const CustomDrawer()
                       : Container(),
                   Expanded(
-                    child: Center(
-                      child: child,
-                    ),
+                    child: MediaQuery.of(context).size.width > 768
+                        ? SizedBox(
+                            width: 400,
+                            child: Center(
+                              child: child,
+                            ))
+                        : Center(
+                            child: child,
+                          ),
                   ),
                 ],
               ),

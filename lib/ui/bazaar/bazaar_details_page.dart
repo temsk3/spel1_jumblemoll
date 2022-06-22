@@ -27,7 +27,7 @@ class BazaarDetailsPage extends HookConsumerWidget {
     final state = ref.watch(bazzarViewModelProvider);
     final viewModel = ref.watch(bazzarViewModelProvider.notifier);
     final asyncValue = ref.watch(productListStreamProvider);
-    const staff = true;
+    const supporter = true;
 
     return asyncValue.when(
       data: (value) {
@@ -45,7 +45,7 @@ class BazaarDetailsPage extends HookConsumerWidget {
             automaticallyImplyLeading: false,
             actions: [
               Visibility(
-                visible: staff,
+                visible: supporter,
                 child: IconButton(
                     onPressed: () async {
                       // appRoute.pop();
@@ -73,7 +73,7 @@ class BazaarDetailsPage extends HookConsumerWidget {
                     icon: const Icon(Icons.delete)),
               ),
               Visibility(
-                visible: staff,
+                visible: supporter,
                 child: IconButton(
                     onPressed: () async {
                       appRoute.push(BazaarEditRoute(index: index));
@@ -111,7 +111,6 @@ class BazaarDetailsPage extends HookConsumerWidget {
                   )
                 : null,
           ),
-          // drawer: const CustomDrawer(),
           body: SafeArea(
             child: SingleChildScrollView(
               child: Column(
@@ -121,7 +120,7 @@ class BazaarDetailsPage extends HookConsumerWidget {
                     padding: EdgeInsets.symmetric(vertical: 5.0),
                   ),
                   Visibility(
-                    visible: staff,
+                    visible: supporter,
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
@@ -191,99 +190,12 @@ class BazaarDetailsPage extends HookConsumerWidget {
                           index: index, product: product, bazaar: bazaar);
                     },
                   ),
-                  // Text(
-                  //   index.toString(),
-                  // ),
-                  // Text(
-                  //   bazaar.id.toString(),
-                  // ),
-                  // Text(
-                  //   bazaar.name.toString(),
-                  // ),
-                  // Text(
-                  //   bazaar.message.toString(),
-                  // ),
-                  // Text(
-                  //   bazaar.salesStart.toString(),
-                  // ),
-                  // Text(
-                  //   bazaar.salesEnd.toString(),
-                  // ),
-                  // Text(
-                  //   bazaar.eventFrom.toString(),
-                  // ),
-                  // Text(
-                  //   bazaar.eventTo.toString(),
-                  // ),
-                  // Text(
-                  //   bazaar.place.toString(),
-                  // ),
-                  // Text(
-                  //   bazaar.pictureName.toString(),
-                  // ),
-                  // Row(
-                  //   mainAxisAlignment: MainAxisAlignment.center,
-                  //   children: [
-                  //     // ElevatedButton(
-                  //     //   child: const Text('複写'),
-                  //     //   onPressed: () {
-                  //     //     appRoute.push(const BazaarAddRoute());
-                  //     //   },
-                  //     // ),
-                  //     // const Padding(
-                  //     //   padding: EdgeInsets.symmetric(horizontal: 5.0),
-                  //     // ),
-                  //     ElevatedButton(
-                  //       style: ElevatedButton.styleFrom(
-                  //         primary: theme.appColors.primary,
-                  //         onPrimary: theme.appColors.onPrimary,
-                  //       ),
-                  //       child: const Text('削除'),
-                  //       onPressed: () async {
-                  //         // appRoute.pop();
-                  //         var result = await customShowDialog(
-                  //           context,
-                  //           'delete',
-                  //           'Do you want to delete it?',
-                  //         );
-                  //         if (result) {
-                  //           ScaffoldMessenger.of(context).showSnackBar(
-                  //             SnackBar(
-                  //               backgroundColor: theme.appColors.error,
-                  //               content: const Text('Processing Data'),
-                  //             ),
-                  //           );
-                  //           viewModel.deleteBazaar(
-                  //             bazaarId: bazaar.id.toString(),
-                  //           );
-                  //           appRoute.popUntilRoot();
-                  //         } else {
-                  //           // appRoute
-                  //           //     .popAndPush(BazaarDetailsRouter(index: index));
-                  //         }
-                  //       },
-                  //     ),
-                  //     const Padding(
-                  //       padding: EdgeInsets.symmetric(horizontal: 5.0),
-                  //     ),
-                  //     ElevatedButton(
-                  //       style: ElevatedButton.styleFrom(
-                  //         primary: theme.appColors.primary,
-                  //         onPrimary: theme.appColors.onPrimary,
-                  //       ),
-                  //       child: const Text('更新'),
-                  //       onPressed: () async {
-                  //         appRoute.push(BazaarEditRoute(index: index));
-                  //       },
-                  //     ),
-                  //   ],
-                  // ),
                 ],
               ),
             ),
           ),
           floatingActionButton: Visibility(
-            visible: staff,
+            visible: supporter,
             child: FloatingActionButton(
               // backgroundColor: theme.appColors.primary,
               // foregroundColor: theme.appColors.onPrimary,

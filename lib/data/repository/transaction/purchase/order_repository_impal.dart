@@ -9,7 +9,7 @@ final orderRepositoryProvider =
     Provider<OrderRepository>((ref) => OrderRepositoryImpl(ref.read));
 
 final orderListStreamProvider = StreamProvider.autoDispose((ref) {
-  CollectionReference ref = FirebaseFirestore.instance.collection('order');
+  CollectionReference ref = FirebaseFirestore.instance.collection('orders');
   return ref.snapshots().map((snapshot) {
     return snapshot.docs.map((doc) {
       return Order.fromJson(doc.data() as Map<String, dynamic>)
@@ -23,7 +23,7 @@ class OrderRepositoryImpl implements OrderRepository {
   final Reader _reader;
 
   final _db = FirebaseFirestore.instance;
-  final _collectionPath = 'order';
+  final _collectionPath = 'orders';
 
   @override
   Future<Result<List<Order>>> readOrder() async {
@@ -44,8 +44,6 @@ class OrderRepositoryImpl implements OrderRepository {
   Future<Result<String>> createOrder({required Order order}) async {
     return Result.guardFuture(
       () async {
-        //商品の数量を更新
-
         // 購入商品の登録
         final docRef = await _db
             .collection(_collectionPath)

@@ -53,6 +53,10 @@ class ProductDetailsPage extends HookConsumerWidget {
     final update = useState<bool>(false);
     final add = useState<bool>(false);
 
+    final form = GlobalKey<FormState>();
+    DateTime now = DateTime.now();
+    bool isOpened = false;
+
     if (bazaarEvent == null) {
       order.value = true;
     } else {
@@ -69,6 +73,9 @@ class ProductDetailsPage extends HookConsumerWidget {
       product = Product.empty();
     } else {
       product = productItem;
+
+      isOpened = (now.compareTo(product.salesStart as DateTime) >= 0 &&
+          now.compareTo(product.salesEnd as DateTime) < 0);
     }
 
     String? organizer;
@@ -83,9 +90,8 @@ class ProductDetailsPage extends HookConsumerWidget {
     //
 
     const uid = 'test';
+    bool saporter = false;
     //
-    final form = GlobalKey<FormState>();
-    DateTime now = DateTime.now();
     final quantity = useState<int>(1);
 
     final code = useTextEditingController(text: product.code);
@@ -97,11 +103,11 @@ class ProductDetailsPage extends HookConsumerWidget {
     final expirationFrom = useTextEditingController(
         text: dateFormatter.format(product.expirationFrom != null
             ? product.expirationFrom as DateTime
-            : now));
+            : bazaar.eventFrom as DateTime));
     final expirationTo = useTextEditingController(
         text: dateFormatter.format(product.expirationTo != null
             ? product.expirationTo as DateTime
-            : now));
+            : bazaar.eventTo as DateTime));
     final oldPicture = useTextEditingController(text: product.picture1URL);
     //
     final ImagePicker picker = ImagePicker();
@@ -234,429 +240,428 @@ class ProductDetailsPage extends HookConsumerWidget {
             child: SingleChildScrollView(
               padding: const EdgeInsets.all(20.0),
               child: Center(
-                child: Form(
-                  key: form,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      InkWell(
-                        onTap: (edit.value)
-                            ? () async {
-                                form.currentState!.save();
-                                final XFile? image = await picker.pickImage(
-                                    source: ImageSource.gallery);
-                                uint8List.value = await image!.readAsBytes();
-                              }
-                            : (oldPicture != null || oldPicture != '')
-                                ? () {
-                                    showGeneralDialog(
-                                      transitionDuration:
-                                          const Duration(milliseconds: 1000),
-                                      barrierDismissible: true,
-                                      barrierLabel: '',
-                                      context: context,
-                                      pageBuilder:
-                                          (context, animation1, animation2) {
-                                        return DefaultTextStyle(
-                                          style: Theme.of(context)
-                                              .primaryTextTheme
-                                              .bodyText1!,
-                                          child: Center(
-                                            child: SizedBox(
-                                              height: 500,
-                                              width: 500,
-                                              child: SingleChildScrollView(
-                                                child: Stack(
-                                                  children: [
-                                                    InteractiveViewer(
-                                                      minScale: 0.1,
-                                                      maxScale: 5,
-                                                      child: Container(
-                                                        child: Image.network(
-                                                            oldPicture.text),
+                child: SizedBox(
+                  // width: 400,
+                  child: Form(
+                    key: form,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        InkWell(
+                          onTap: (edit.value)
+                              ? () async {
+                                  form.currentState!.save();
+                                  final XFile? image = await picker.pickImage(
+                                      source: ImageSource.gallery);
+                                  uint8List.value = await image!.readAsBytes();
+                                }
+                              : (oldPicture != null || oldPicture != '')
+                                  ? () {
+                                      showGeneralDialog(
+                                        transitionDuration:
+                                            const Duration(milliseconds: 1000),
+                                        barrierDismissible: true,
+                                        barrierLabel: '',
+                                        context: context,
+                                        pageBuilder:
+                                            (context, animation1, animation2) {
+                                          return DefaultTextStyle(
+                                            style: Theme.of(context)
+                                                .primaryTextTheme
+                                                .bodyText1!,
+                                            child: Center(
+                                              child: SizedBox(
+                                                height: 500,
+                                                width: 500,
+                                                child: SingleChildScrollView(
+                                                  child: Stack(
+                                                    children: [
+                                                      InteractiveViewer(
+                                                        minScale: 0.1,
+                                                        maxScale: 5,
+                                                        child: Container(
+                                                          child: Image.network(
+                                                              oldPicture.text),
+                                                        ),
                                                       ),
-                                                    ),
-                                                    SafeArea(
-                                                      child: IconButton(
-                                                        onPressed: () {
-                                                          Navigator.of(context)
-                                                              .pop();
-                                                        },
-                                                        icon: const Icon(
-                                                            Icons.close),
-                                                      ),
-                                                    )
-                                                  ],
+                                                      SafeArea(
+                                                        child: IconButton(
+                                                          onPressed: () {
+                                                            Navigator.of(
+                                                                    context)
+                                                                .pop();
+                                                          },
+                                                          icon: const Icon(
+                                                              Icons.close),
+                                                        ),
+                                                      )
+                                                    ],
+                                                  ),
                                                 ),
                                               ),
                                             ),
-                                          ),
-                                        );
-                                      },
-                                    );
-                                  }
-                                : null,
-                        child: PictureDetail(
-                          picture: uint8List.value,
-                          oldPicture: oldPicture.text,
-                        ),
-                      ),
-                      Row(
-                        children: [
-                          Flexible(
-                            child: TextFormField(
-                              enabled: edit.value,
-                              controller: code,
-                              // style:
-                              //     TextStyle(color: theme.appColors.onPrimary),
-                              decoration:
-                                  const InputDecoration(labelText: 'code'),
-                              // validator: (value) {
-                              // if (value == null || value.isEmpty) {
-                              //   return 'Please enter some text';
-                              // }
-                              // return null;
-                              // },
-                              onSaved: (value) {
-                                code.text = value.toString();
-                              },
-                              // onChanged: (value) {
-                              // _name.text = value.toString();
-                              // },
-                            ),
-                          ),
-                          const Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 8.0),
-                          ),
-                          Flexible(
-                            child: DropdownButtonFormField<String>(
-                              items: ['Foods', 'Goods', 'Others']
-                                  .map(
-                                    (item) => DropdownMenuItem<String>(
-                                      value: item,
-                                      child: Text(item),
-                                    ),
-                                  )
-                                  .toList(),
-                              value: genre.value,
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return 'Please select';
-                                }
-                                return null;
-                              },
-                              decoration:
-                                  const InputDecoration(labelText: 'genre'),
-                              onChanged: edit.value
-                                  ? (value) => {genre.value = value}
-                                  : null,
-                              onSaved: (value) => {genre.value = value},
-                            ),
-                          ),
-                        ],
-                      ),
-                      const Padding(
-                        padding: EdgeInsets.symmetric(vertical: 8.0),
-                      ),
-                      TextFormField(
-                        enabled: edit.value,
-                        controller: name,
-                        // style: TextStyle(color: theme.appColors.onPrimary),
-                        decoration: const InputDecoration(labelText: 'name'),
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Please enter some text';
-                          }
-                          return null;
-                        },
-                        onSaved: (value) {
-                          name.text = value.toString();
-                        },
-                        // onChanged: (value) {
-                        // _name.text = value.toString();
-                        // },
-                      ),
-                      const Padding(
-                        padding: EdgeInsets.symmetric(vertical: 8.0),
-                      ),
-                      TextFormField(
-                        enabled: edit.value,
-                        controller: desc,
-                        maxLines: 2,
-                        // style: TextStyle(color: theme.appColors.onPrimary),
-                        decoration: const InputDecoration(
-                          border: OutlineInputBorder(),
-                          labelText: 'desc',
-                        ),
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Please enter some text';
-                          }
-                          return null;
-                        },
-                        onSaved: (value) {
-                          desc.text = value.toString();
-                        },
-                      ),
-                      const Padding(
-                        padding: EdgeInsets.symmetric(vertical: 8.0),
-                      ),
-                      Row(
-                        children: [
-                          Flexible(
-                            child: TextFormField(
-                              enabled: edit.value,
-                              controller: stock,
-                              // style:
-                              // TextStyle(color: theme.appColors.onPrimary),
-                              decoration:
-                                  const InputDecoration(labelText: 'stock'),
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return 'Please enter some text';
-                                }
-                                return null;
-                              },
-                              onSaved: (value) {
-                                stock.text = value.toString();
-                              },
-                            ),
-                          ),
-                          const Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 8.0),
-                          ),
-                          Flexible(
-                            child: TextFormField(
-                              enabled: edit.value,
-                              controller: price,
-                              // style:
-                              //     TextStyle(color: theme.appColors.onPrimary),
-                              decoration:
-                                  const InputDecoration(labelText: 'price'),
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return 'Please enter some text';
-                                }
-                                return null;
-                              },
-                              onSaved: (value) {
-                                price.text = value.toString();
-                              },
-                            ),
-                          ),
-                        ],
-                      ),
-                      const Padding(
-                        padding: EdgeInsets.symmetric(vertical: 8.0),
-                      ),
-                      //
-                      Row(
-                        children: [
-                          (order.value || edit.value == false)
-                              ? const Text(
-                                  '有効期間',
-                                  // style: theme.textTheme.h30.copyWith(
-                                  //     color: theme.appColors.onPrimary),
-                                )
-                              : ElevatedButton(
-                                  style: ElevatedButton.styleFrom(
-                                      // primary: theme.appColors.primary,
-                                      // onPrimary: theme.appColors.onPrimary,
-                                      ),
-                                  child: const Text(
-                                    '有効期間',
-                                    // style: theme.textTheme.h30.copyWith(
-                                    //     color: theme.appColors.onPrimary),
-                                  ),
-                                  onPressed: () async {
-                                    final dateRange = await showDateRangePicker(
-                                      context: context,
-                                      initialDateRange: DateTimeRange(
-                                          start: DateTime.now(),
-                                          end: DateTime.now()),
-                                      firstDate: DateTime(
-                                          DateTime.now().year,
-                                          DateTime.now().month,
-                                          DateTime.now().day),
-                                      lastDate:
-                                          DateTime(DateTime.now().year + 3),
-                                      builder: isDarkMode(context)
-                                          ? null
-                                          : (context, child) {
-                                              return Theme(
-                                                data: theme.data.copyWith(
-                                                  colorScheme: theme
-                                                      .data.colorScheme
-                                                      .copyWith(
-                                                    surface:
-                                                        theme.appColors.primary,
-                                                  ),
-                                                ),
-                                                child: child as Widget,
-                                              );
-                                            },
-                                    );
-                                    if (dateRange != null) {
-                                      expirationFrom.text =
-                                          dateFormatter.format(dateRange.start);
-                                      expirationTo.text =
-                                          dateFormatter.format(dateRange.end);
+                                          );
+                                        },
+                                      );
                                     }
-                                  },
-                                ),
-                          const Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 8.0),
+                                  : null,
+                          child: PictureDetail(
+                            picture: uint8List.value,
+                            oldPicture: oldPicture.text,
                           ),
-                          Flexible(
-                            child: TextFormField(
-                              enabled: false,
-                              controller: expirationFrom,
-                              // style:
-                              //     TextStyle(color: theme.appColors.onPrimary),
-                              decoration: const InputDecoration(
-                                border: UnderlineInputBorder(),
-                                labelText: "From",
-                              ),
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return 'Please enter some text';
-                                }
-                                if (DateTime.parse(value).isAfter(
-                                    DateTime.parse(expirationTo.text))) {
-                                  return 'Please enter a date after the specified date';
-                                }
-                                return null;
-                              },
-                              onSaved: (value) {
-                                expirationFrom.text = value.toString();
-                              },
-                            ),
-                          ),
-                          const Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 4.0),
-                          ),
-                          Flexible(
-                            child: TextFormField(
-                              enabled: false,
-                              controller: expirationTo,
-                              // style:
-                              //     TextStyle(color: theme.appColors.onPrimary),
-                              decoration: const InputDecoration(
-                                border: UnderlineInputBorder(),
-                                labelText: "To",
-                              ),
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return 'Please enter some text';
-                                }
-                                return null;
-                              },
-                              onSaved: (value) {
-                                expirationTo.text = value.toString();
-                              },
-                            ),
-                          ),
-                        ],
-                      ),
-                      const Padding(
-                        padding: EdgeInsets.symmetric(vertical: 12.0),
-                      ),
-                      if (order.value)
+                        ),
                         Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Text('数量：', style: theme.textTheme.h30
-                                // .copyWith(color: theme.appColors.onPrimary),
-                                ),
-                            const Padding(
-                              padding: EdgeInsets.symmetric(horizontal: 4.0),
-                            ),
-                            DropdownButton<String>(
-                              items: List.generate(
-                                      int.parse(product.stock.toString()),
-                                      (index) => 1 + index)
-                                  .map(
-                                    (quantity) => DropdownMenuItem<String>(
-                                      value: quantity.toString(),
-                                      child: Text(quantity.toString()),
-                                    ),
-                                  )
-                                  .toList(),
-                              value: quantity.value.toString(),
-                              onChanged: (value) => {
-                                quantity.value = int.parse(value.toString())
-                              },
+                            Flexible(
+                              child: TextFormField(
+                                enabled: edit.value,
+                                controller: code,
+                                // style:
+                                //     TextStyle(color: theme.appColors.onPrimary),
+                                decoration:
+                                    const InputDecoration(labelText: 'code'),
+                                // validator: (value) {
+                                // if (value == null || value.isEmpty) {
+                                //   return 'Please enter some text';
+                                // }
+                                // return null;
+                                // },
+                                onSaved: (value) {
+                                  code.text = value.toString();
+                                },
+                                // onChanged: (value) {
+                                // _name.text = value.toString();
+                                // },
+                              ),
                             ),
                             const Padding(
                               padding: EdgeInsets.symmetric(horizontal: 8.0),
                             ),
-                            ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                  // primary: theme.appColors.primary,
-                                  // onPrimary: theme.appColors.onPrimary,
-                                  ),
-                              onPressed: (product.stock != 0 &&
-                                      (now.compareTo(product.salesStart
-                                                      as DateTime) >=
-                                                  0 &&
-                                              now.compareTo(product.salesEnd
-                                                      as DateTime) <
-                                                  0) ==
-                                          false)
-                                  ? () async {
-                                      // if(){};
-                                      final isConfirmed = await showConfirmDialog(
-                                          context,
-                                          '${product.name} を購入しますか？\n数量 ${quantity.value}');
-                                      // 購入処理
-                                      if (isConfirmed) {
-                                        try {
-                                          // await model.createCharge(product);
-                                          await viewModel.updateProduct(
-                                              updateProduct: product.copyWith(
-                                                  stock: (product.stock! -
-                                                      quantity.value)));
-                                          await ref
-                                              .watch(orderViewModelProvider
-                                                  .notifier)
-                                              .addOrder(
-                                                userId: uid,
-                                                userName: '',
-                                                organizer: product.organizer,
-                                                bazaarId: product.bazaarId,
-                                                bazaarName: product.bazaarName,
-                                                code: product.code,
-                                                name: product.name,
-                                                desc: product.desc,
-                                                price: product.price as int,
-                                                quantity: quantity.value,
-                                                numberOfUse: quantity.value,
-                                                picture1URL:
-                                                    product.picture1URL,
-                                                picture2URL:
-                                                    product.picture2URL,
-                                                picture3URL:
-                                                    product.picture3URL,
-                                                expirationFrom:
-                                                    product.expirationFrom,
-                                                expirationTo:
-                                                    product.expirationTo,
-                                              );
-                                          await showTextDialog(
-                                              context, '購入しました');
-                                          appRoute.pop();
-                                        } catch (e) {
-                                          await showTextDialog(
-                                              context, e.toString());
-                                        }
-                                      }
-                                    }
-                                  : null,
-                              child: const Text('購入する'),
+                            Flexible(
+                              child: DropdownButtonFormField<String>(
+                                items: ['Foods', 'Goods', 'Others']
+                                    .map(
+                                      (item) => DropdownMenuItem<String>(
+                                        value: item,
+                                        child: Text(item),
+                                      ),
+                                    )
+                                    .toList(),
+                                value: genre.value,
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return 'Please select';
+                                  }
+                                  return null;
+                                },
+                                decoration:
+                                    const InputDecoration(labelText: 'genre'),
+                                onChanged: edit.value
+                                    ? (value) => {genre.value = value}
+                                    : null,
+                                onSaved: (value) => {genre.value = value},
+                              ),
                             ),
                           ],
                         ),
-                    ],
+                        const Padding(
+                          padding: EdgeInsets.symmetric(vertical: 8.0),
+                        ),
+                        TextFormField(
+                          enabled: edit.value,
+                          controller: name,
+                          // style: TextStyle(color: theme.appColors.onPrimary),
+                          decoration: const InputDecoration(labelText: 'name'),
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please enter some text';
+                            }
+                            return null;
+                          },
+                          onSaved: (value) {
+                            name.text = value.toString();
+                          },
+                          // onChanged: (value) {
+                          // _name.text = value.toString();
+                          // },
+                        ),
+                        const Padding(
+                          padding: EdgeInsets.symmetric(vertical: 8.0),
+                        ),
+                        TextFormField(
+                          enabled: edit.value,
+                          controller: desc,
+                          maxLines: 2,
+                          // style: TextStyle(color: theme.appColors.onPrimary),
+                          decoration: const InputDecoration(
+                            border: OutlineInputBorder(),
+                            labelText: 'desc',
+                          ),
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please enter some text';
+                            }
+                            return null;
+                          },
+                          onSaved: (value) {
+                            desc.text = value.toString();
+                          },
+                        ),
+                        const Padding(
+                          padding: EdgeInsets.symmetric(vertical: 8.0),
+                        ),
+                        Row(
+                          children: [
+                            Flexible(
+                              child: TextFormField(
+                                enabled: edit.value,
+                                controller: stock,
+                                // style:
+                                // TextStyle(color: theme.appColors.onPrimary),
+                                decoration:
+                                    const InputDecoration(labelText: 'stock'),
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return 'Please enter some text';
+                                  }
+                                  return null;
+                                },
+                                onSaved: (value) {
+                                  stock.text = value.toString();
+                                },
+                              ),
+                            ),
+                            const Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 8.0),
+                            ),
+                            Flexible(
+                              child: TextFormField(
+                                enabled: edit.value,
+                                controller: price,
+                                // style:
+                                //     TextStyle(color: theme.appColors.onPrimary),
+                                decoration:
+                                    const InputDecoration(labelText: 'price'),
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return 'Please enter some text';
+                                  }
+                                  return null;
+                                },
+                                onSaved: (value) {
+                                  price.text = value.toString();
+                                },
+                              ),
+                            ),
+                          ],
+                        ),
+                        const Padding(
+                          padding: EdgeInsets.symmetric(vertical: 8.0),
+                        ),
+                        //
+                        Row(
+                          children: [
+                            (order.value || edit.value == false)
+                                ? const Text(
+                                    '有効期間',
+                                    // style: theme.textTheme.h30.copyWith(
+                                    //     color: theme.appColors.onPrimary),
+                                  )
+                                : ElevatedButton(
+                                    style: ElevatedButton.styleFrom(
+                                        // primary: theme.appColors.primary,
+                                        // onPrimary: theme.appColors.onPrimary,
+                                        ),
+                                    child: const Text(
+                                      '有効期間',
+                                      // style: theme.textTheme.h30.copyWith(
+                                      //     color: theme.appColors.onPrimary),
+                                    ),
+                                    onPressed: () async {
+                                      final dateRange =
+                                          await showDateRangePicker(
+                                        context: context,
+                                        initialDateRange: DateTimeRange(
+                                            start: DateTime.now(),
+                                            end: DateTime.now()),
+                                        firstDate: DateTime(
+                                            DateTime.now().year,
+                                            DateTime.now().month,
+                                            DateTime.now().day),
+                                        lastDate:
+                                            DateTime(DateTime.now().year + 3),
+                                        builder: isDarkMode(context)
+                                            ? null
+                                            : (context, child) {
+                                                return Theme(
+                                                  data: theme.data.copyWith(
+                                                    colorScheme: theme
+                                                        .data.colorScheme
+                                                        .copyWith(
+                                                      surface: theme
+                                                          .appColors.primary,
+                                                    ),
+                                                  ),
+                                                  child: child as Widget,
+                                                );
+                                              },
+                                      );
+                                      if (dateRange != null) {
+                                        expirationFrom.text = dateFormatter
+                                            .format(dateRange.start);
+                                        expirationTo.text =
+                                            dateFormatter.format(dateRange.end);
+                                      }
+                                    },
+                                  ),
+                            const Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 8.0),
+                            ),
+                            Flexible(
+                              child: TextFormField(
+                                enabled: false,
+                                controller: expirationFrom,
+                                // style:
+                                //     TextStyle(color: theme.appColors.onPrimary),
+                                decoration: const InputDecoration(
+                                  border: UnderlineInputBorder(),
+                                  labelText: "From",
+                                ),
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return 'Please enter some text';
+                                  }
+                                  if (DateTime.parse(value).isAfter(
+                                      DateTime.parse(expirationTo.text))) {
+                                    return 'Please enter a date after the specified date';
+                                  }
+                                  return null;
+                                },
+                                onSaved: (value) {
+                                  expirationFrom.text = value.toString();
+                                },
+                              ),
+                            ),
+                            const Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 4.0),
+                            ),
+                            Flexible(
+                              child: TextFormField(
+                                enabled: false,
+                                controller: expirationTo,
+                                // style:
+                                //     TextStyle(color: theme.appColors.onPrimary),
+                                decoration: const InputDecoration(
+                                  border: UnderlineInputBorder(),
+                                  labelText: "To",
+                                ),
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return 'Please enter some text';
+                                  }
+                                  return null;
+                                },
+                                onSaved: (value) {
+                                  expirationTo.text = value.toString();
+                                },
+                              ),
+                            ),
+                          ],
+                        ),
+                        const Padding(
+                          padding: EdgeInsets.symmetric(vertical: 12.0),
+                        ),
+                        if (order.value)
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text('数量：', style: theme.textTheme.h30
+                                  // .copyWith(color: theme.appColors.onPrimary),
+                                  ),
+                              const Padding(
+                                padding: EdgeInsets.symmetric(horizontal: 4.0),
+                              ),
+                              DropdownButton<String>(
+                                items: List.generate(
+                                        int.parse(product.stock.toString()),
+                                        (index) => 1 + index)
+                                    .map(
+                                      (quantity) => DropdownMenuItem<String>(
+                                        value: quantity.toString(),
+                                        child: Text(quantity.toString()),
+                                      ),
+                                    )
+                                    .toList(),
+                                value: quantity.value.toString(),
+                                onChanged: (value) => {
+                                  quantity.value = int.parse(value.toString())
+                                },
+                              ),
+                              const Padding(
+                                padding: EdgeInsets.symmetric(horizontal: 8.0),
+                              ),
+                              ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                    // primary: theme.appColors.primary,
+                                    // onPrimary: theme.appColors.onPrimary,
+                                    ),
+                                onPressed: (product.stock != 0 && isOpened)
+                                    ? () async {
+                                        // if(){};
+                                        final isConfirmed = await showConfirmDialog(
+                                            context,
+                                            '${product.name} を購入しますか？\n数量 ${quantity.value}');
+                                        // 購入処理
+                                        if (isConfirmed) {
+                                          try {
+                                            // await model.createCharge(product);
+                                            await viewModel.updateProduct(
+                                                updateProduct: product.copyWith(
+                                                    stock: (product.stock! -
+                                                        quantity.value)));
+                                            await ref
+                                                .watch(orderViewModelProvider
+                                                    .notifier)
+                                                .addOrder(
+                                                  userId: uid,
+                                                  userName: '',
+                                                  organizer: product.organizer,
+                                                  bazaarId: product.bazaarId,
+                                                  bazaarName:
+                                                      product.bazaarName,
+                                                  code: product.code,
+                                                  name: product.name,
+                                                  desc: product.desc,
+                                                  price: product.price as int,
+                                                  quantity: quantity.value,
+                                                  numberOfUse: quantity.value,
+                                                  picture1URL:
+                                                      product.picture1URL,
+                                                  picture2URL:
+                                                      product.picture2URL,
+                                                  picture3URL:
+                                                      product.picture3URL,
+                                                  expirationFrom:
+                                                      product.expirationFrom,
+                                                  expirationTo:
+                                                      product.expirationTo,
+                                                );
+                                            await showTextDialog(
+                                                context, '購入しました');
+                                            appRoute.pop();
+                                          } catch (e) {
+                                            await showTextDialog(
+                                                context, e.toString());
+                                          }
+                                        }
+                                      }
+                                    : null,
+                                child: const Text('購入する'),
+                              ),
+                            ],
+                          ),
+                      ],
+                    ),
                   ),
                 ),
               ),

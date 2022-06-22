@@ -9,7 +9,7 @@ final productRepositoryProvider =
     Provider<ProductRepository>((ref) => ProductRepositoryImpl(ref.read));
 
 final productListStreamProvider = StreamProvider.autoDispose((ref) {
-  CollectionReference ref = FirebaseFirestore.instance.collection('product');
+  CollectionReference ref = FirebaseFirestore.instance.collection('products');
   return ref.snapshots().map((snapshot) {
     return snapshot.docs.map((doc) {
       return Product.fromJson(doc.data() as Map<String, dynamic>)
@@ -23,7 +23,7 @@ class ProductRepositoryImpl implements ProductRepository {
   final Reader _reader;
 
   final _db = FirebaseFirestore.instance;
-  final _collectionPath = 'product';
+  final _collectionPath = 'products';
 
   @override
   Future<Result<List<Product>>> readProduct() async {
