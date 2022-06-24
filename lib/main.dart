@@ -10,8 +10,8 @@ import 'app.dart';
 import 'firebase_options.dart';
 
 // Future<void> main() async {
-//   WidgetsFlutterBinding.ensureInitialized;
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized;
   //Fimber
   if (!kReleaseMode) {
     Fimber.plantTree(DebugTree());
