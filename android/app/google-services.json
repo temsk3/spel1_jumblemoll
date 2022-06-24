@@ -29,6 +29,13 @@
             {
               "client_id": "174910327776-3fv576igcoaca1uq2vp8qk3dd37q93pd.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "174910327776-bfojcqpftt17g3epfiif2sh7oj012d2n.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.jumblemoll"
+              }
             }
           ]
         }
