@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:device_preview/device_preview.dart';
 import 'package:fimber/fimber.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
@@ -9,11 +8,10 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import 'app.dart';
 import 'firebase_options.dart';
-import 'foundation/constants.dart';
 
-Future<void> main() async {
-  WidgetsFlutterBinding.ensureInitialized;
-// void main() async {
+// Future<void> main() async {
+//   WidgetsFlutterBinding.ensureInitialized;
+void main() async {
   //Fimber
   if (!kReleaseMode) {
     Fimber.plantTree(DebugTree());
@@ -26,11 +24,11 @@ Future<void> main() async {
   runZonedGuarded(
     () => runApp(
       ProviderScope(
-        child: DevicePreview(
-          enabled: !kReleaseMode && Constants.enablePreview,
-          builder: (context) => MyApp(),
-        ),
-        // child: MyApp(),
+        // child: DevicePreview(
+        //   enabled: !kReleaseMode && Constants.enablePreview,
+        //   builder: (context) => MyApp(),
+        // ),
+        child: MyApp(),
       ),
     ),
     (error, stackTrace) {
