@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_multi_formatter/flutter_multi_formatter.dart';
 import 'package:provider/provider.dart';
 
-import '../../data/model/account/identification_model.dart';
 import '../../data/model/stripe/stripe_individual.dart';
 import '../../utils/show_dialog.dart';
 import '../../utils/verification_status.dart';
+import 'identification_model.dart';
 
 class IdentificationPage extends StatelessWidget {
   const IdentificationPage({Key? key}) : super(key: key);

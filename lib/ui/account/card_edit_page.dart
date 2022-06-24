@@ -1,74 +1,81 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_multi_formatter/flutter_multi_formatter.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import '../../data/model/account/card_model.dart';
 import '../../utils/show_dialog.dart';
+import 'card_edit_model.dart';
 
-class EditCardPage extends StatelessWidget {
+class EditCardPage extends HookConsumerWidget {
   const EditCardPage({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return ChangeNotifierProvider<EditCardModel>(
-      create: (_) => EditCardModel()..fetch(),
-      child: Consumer<EditCardModel>(
-        builder: (context, model, child) {
-          return Scaffold(
-            appBar: AppBar(title: const Text('クレジットカード登録')),
-            body: model.isLoading
-                ? const Center(
-                    child: CircularProgressIndicator(),
-                  )
-                : GestureDetector(
-                    onTap: () {
-                      model.unFocusAll();
-                    },
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        /// カード情報
-                        _cardInfoBody(context, model),
+  Widget build(BuildContext context, WidgetRef ref) {
+    // return ChangeNotifierProvider<EditCardModel>(
+    //   create: (_) => EditCardModel()..fetch(),
+    //   child: Consumer<EditCardModel>(
+    //     builder: (context, model, child) {
+    final model = ref.watch(editCardViewModelProvider.notifier);
+    useEffect(() {
+      model.fetch();
+      return null;
+    }, []);
+    return Scaffold(
+      appBar: AppBar(title: const Text('クレジットカード登録')),
+      body: model.isLoading
+          ? const Center(
+              child: CircularProgressIndicator(),
+            )
+          : GestureDetector(
+              onTap: () {
+                model.unFocusAll();
+              },
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  /// カード情報
+                  _cardInfoBody(context, model),
 
-                        const Spacer(),
+                  const Spacer(),
 
-                        /// ボタン
-                        model.isCardRegister
-                            ?
-                            // カード登録済
-                            ElevatedButton(
-                                child: const Text('新しいカードを登録する'),
-                                onPressed: () {
-                                  // ローカルのカード情報をクリアする
-                                  model.clearCardCache();
-                                },
-                              )
-                            :
-                            // カード未登録
-                            ElevatedButton(
-                                onPressed: model.isFilledAll
-                                    ? () async {
-                                        // 保存するしないに関わらず、一旦遷移時にカード情報を登録
-                                        try {
-                                          await model.saveCardInfo();
-                                          await showTextDialog(
-                                            context,
-                                            'カード情報を保存しました',
-                                          );
-                                        } catch (e) {
-                                          showTextDialog(context, e.toString());
-                                        }
-                                      }
-                                    : null,
-                                child: const Text('保存'),
-                              ),
-                        const SizedBox(height: 80)
-                      ],
-                    ),
-                  ),
-          );
-        },
-      ),
+                  /// ボタン
+                  model.isCardRegister
+                      ?
+                      // カード登録済
+                      ElevatedButton(
+                          child: const Text('新しいカードを登録する'),
+                          onPressed: () {
+                            // ローカルのカード情報をクリアする
+                            model.clearCardCache();
+                          },
+                        )
+                      :
+                      // カード未登録
+                      ElevatedButton(
+                          onPressed: model.isFilledAll
+                              ? () async {
+                                  // 保存するしないに関わらず、一旦遷移時にカード情報を登録
+                                  try {
+                                    await model.saveCardInfo();
+                                    await showTextDialog(
+                                      context,
+                                      'カード情報を保存しました',
+                                    );
+                                  } catch (e) {
+                                    showTextDialog(context, e.toString());
+                                  }
+                                }
+                              : null,
+                          child: const Text('保存'),
+                        ),
+                  const SizedBox(height: 80)
+                ],
+              ),
+            ),
     );
+    // },
+    //   ),
+    // );
   }
 
   /// カード部分

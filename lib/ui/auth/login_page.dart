@@ -113,7 +113,7 @@ class _LoginPageState extends State<LoginPage> {
               loading();
               await auth
                   .signUpWithEmailAndPassword(
-                      _email.text, _password.text, context)
+                      _email.text, _password.text, context, ref)
                   .whenComplete(
                       () => auth.authStateChange.listen((event) async {
                             if (event == null) {
@@ -132,7 +132,7 @@ class _LoginPageState extends State<LoginPage> {
           Future<void> _loginWithGoogle() async {
             loading2();
             await auth
-                .signInWithGoogle(context)
+                .signInWithGoogle(context, ref)
                 .whenComplete(() => auth.authStateChange.listen((event) async {
                       if (event == null) {
                         loading2();

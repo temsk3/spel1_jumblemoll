@@ -7,11 +7,11 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 import 'package:stripe_sdk/stripe_sdk.dart';
 
-import '../../../utils/validation_utils.dart';
-import '../../repository/stripe/stripe_repository.dart';
-import '../../repository/user/user_repository.dart';
-import '../stripe/stripe_individual.dart';
-import '../user/user_model.dart';
+import '../../data/model/stripe/stripe_individual.dart';
+import '../../data/model/user/user_model.dart';
+import '../../data/repository/stripe/stripe_repository.dart';
+import '../../data/repository/user/user_repository.dart';
+import '../../utils/validation_utils.dart';
 
 class IdentificationModel extends ChangeNotifier {
   bool isLoading = false;

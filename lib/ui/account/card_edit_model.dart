@@ -1,13 +1,26 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:stripe_sdk/stripe_sdk.dart';
 
-import '../../repository/stripe/stripe_repository.dart';
-import '../../repository/user/user_repository.dart';
-import '../user/user_model.dart';
-import 'credit_card.dart';
+import '../../data/model/account/credit_card.dart';
+import '../../data/model/user/user_model.dart';
+import '../../data/repository/stripe/stripe_repository.dart';
+import '../../data/repository/user/user_repository.dart';
 
-class EditCardModel extends ChangeNotifier {
+final editCardViewModelProvider =
+    StateNotifierProvider.autoDispose<EditCardModel, AsyncValue<void>>(
+  (ref) => EditCardModel(ref: ref),
+);
+
+class EditCardModel extends StateNotifier<AsyncValue<void>> {
+  final AutoDisposeStateNotifierProviderRef _ref;
+  EditCardModel({required AutoDisposeStateNotifierProviderRef ref})
+      : _ref = ref,
+        super(const AsyncLoading()) {
+    fetch();
+  }
+
   User? user;
   bool isCardRegister = false;
   bool isLoading = false;
@@ -15,7 +28,7 @@ class EditCardModel extends ChangeNotifier {
   late CreditCard creditCardNow;
   CreditCard newCreditCard = CreditCard();
 
-  final userRepo = UserRepository();
+  late final userRepo = _ref.watch(userRepositoryProvider);
   final stripeRepo = StripeRepository();
 
   final numberNode = FocusNode();
@@ -36,7 +49,7 @@ class EditCardModel extends ChangeNotifier {
     isCardRegister = sourceId != null;
     if (!isCardRegister) {
       // カードが登録されてなければ何もしない
-      notifyListeners();
+      // notifyListeners();
       return;
     }
 
@@ -60,21 +73,21 @@ class EditCardModel extends ChangeNotifier {
   void clearCardCache() {
     creditCardNow = newCreditCard;
     isCardRegister = false;
-    notifyListeners();
+    // notifyListeners();
   }
 
   /// カード番号
   void changeCreditNumber(text) {
     newCreditCard.cardNumber = text;
     checkIsFilled();
-    notifyListeners();
+    // notifyListeners();
   }
 
   /// 有効期限
   void changeExp(text) {
     newCreditCard.exp = text;
     checkIsFilled();
-    notifyListeners();
+    // notifyListeners();
   }
 
   /// CVC
@@ -82,7 +95,7 @@ class EditCardModel extends ChangeNotifier {
     //AMEX: 4桁、それ以外が3桁
     newCreditCard.cvc = text;
     checkIsFilled();
-    notifyListeners();
+    // notifyListeners();
   }
 
   /// 入力されているかチェックする
@@ -90,7 +103,7 @@ class EditCardModel extends ChangeNotifier {
     isFilledAll = newCreditCard.cardNumber.isNotEmpty &&
         newCreditCard.exp.isNotEmpty &&
         newCreditCard.cvc.isNotEmpty;
-    notifyListeners();
+    // notifyListeners();
   }
 
   /// フォーカスを解く
@@ -98,7 +111,7 @@ class EditCardModel extends ChangeNotifier {
     numberNode.unfocus();
     expNode.unfocus();
     cvcNode.unfocus();
-    notifyListeners();
+    // notifyListeners();
   }
 
   /// カード情報の保存
@@ -166,11 +179,11 @@ class EditCardModel extends ChangeNotifier {
 
   void _startLoading() {
     isLoading = true;
-    notifyListeners();
+    //   notifyListeners();
   }
 
   void _endLoading() {
     isLoading = false;
-    notifyListeners();
+    //   notifyListeners();
   }
 }

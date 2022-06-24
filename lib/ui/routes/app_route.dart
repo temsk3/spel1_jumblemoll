@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 
 import '../../ui/routes/route_path.dart';
+import '../account/account_page.dart';
 import '../auth/auth.dart';
 import '../bazaar/bazaar_add_page.dart';
 import '../bazaar/bazaar_details_page.dart';
@@ -31,6 +32,12 @@ import '../product/product_page.dart';
       fullscreenDialog: true,
       path: RoutePath.appRouteAuth,
       page: AuthPage,
+    ),
+    // Account
+    AutoRoute(
+      fullscreenDialog: true,
+      path: RoutePath.appRouteAccount,
+      page: AccountPage,
     ),
     AutoRoute(
       path: RoutePath.appRouteHome,

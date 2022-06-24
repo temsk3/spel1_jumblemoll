@@ -1,16 +1,21 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart' as auth;
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../utils/verification_status.dart';
 import '../../model/user/user_model.dart';
 
-class UserRepository {
-  static final UserRepository _instance = UserRepository._internal();
-  UserRepository._internal();
-  factory UserRepository() {
-    return _instance;
-  }
+final userRepositoryProvider =
+    Provider<UserRepository>((ref) => UserRepository(ref.read));
 
+class UserRepository {
+  // static final UserRepository _instance = UserRepository._internal();
+  // UserRepository._internal();
+  // factory UserRepository() {
+  //   return _instance;
+  // }
+  UserRepository(this._reader);
+  final Reader _reader;
   User? _user;
   final _firestore = FirebaseFirestore.instance;
 
