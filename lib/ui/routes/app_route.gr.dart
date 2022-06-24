@@ -11,12 +11,13 @@
 // ignore_for_file: type=lint
 
 import 'package:auto_route/auto_route.dart' as _i3;
-import 'package:flutter/material.dart' as _i22;
+import 'package:flutter/material.dart' as _i23;
 import 'package:jumblemoll/ui/auth/auth.dart' as _i1;
 import 'package:jumblemoll/ui/bazaar/bazaar_add_page.dart' as _i12;
 import 'package:jumblemoll/ui/bazaar/bazaar_details_page.dart' as _i10;
 import 'package:jumblemoll/ui/bazaar/bazaar_edit_page.dart' as _i11;
 import 'package:jumblemoll/ui/bazaar/bazaar_page.dart' as _i9;
+import 'package:jumblemoll/ui/bazaar/supporter_page.dart' as _i17;
 import 'package:jumblemoll/ui/common/image_crop.dart' as _i13;
 import 'package:jumblemoll/ui/favorite/favorite_page.dart' as _i8;
 import 'package:jumblemoll/ui/home.dart' as _i2;
@@ -27,14 +28,14 @@ import 'package:jumblemoll/ui/order/sales_status_page.dart' as _i6;
 import 'package:jumblemoll/ui/product/product_add_page.dart' as _i16;
 import 'package:jumblemoll/ui/product/product_details_page.dart' as _i14;
 import 'package:jumblemoll/ui/product/product_edit_page.dart' as _i15;
-import 'package:jumblemoll/ui/product/product_list_all.dart' as _i18;
-import 'package:jumblemoll/ui/product/product_list_foods.dart' as _i19;
-import 'package:jumblemoll/ui/product/product_list_goods.dart' as _i20;
-import 'package:jumblemoll/ui/product/product_list_others.dart' as _i21;
-import 'package:jumblemoll/ui/product/product_page.dart' as _i17;
+import 'package:jumblemoll/ui/product/product_list_all.dart' as _i19;
+import 'package:jumblemoll/ui/product/product_list_foods.dart' as _i20;
+import 'package:jumblemoll/ui/product/product_list_goods.dart' as _i21;
+import 'package:jumblemoll/ui/product/product_list_others.dart' as _i22;
+import 'package:jumblemoll/ui/product/product_page.dart' as _i18;
 
 class AppRouter extends _i3.RootStackRouter {
-  AppRouter([_i22.GlobalKey<_i22.NavigatorState>? navigatorKey])
+  AppRouter([_i23.GlobalKey<_i23.NavigatorState>? navigatorKey])
       : super(navigatorKey);
 
   @override
@@ -140,25 +141,31 @@ class AppRouter extends _i3.RootStackRouter {
           routeData: routeData,
           child: _i16.ProductAddPage(key: args.key, bazaar: args.bazaar));
     },
+    SupporterRoute.name: (routeData) {
+      final args = routeData.argsAs<SupporterRouteArgs>();
+      return _i3.AdaptivePage<dynamic>(
+          routeData: routeData,
+          child: _i17.SupporterPage(key: args.key, bazaarId: args.bazaarId));
+    },
     ProductRoute.name: (routeData) {
       return _i3.AdaptivePage<dynamic>(
-          routeData: routeData, child: const _i17.ProductPage());
+          routeData: routeData, child: const _i18.ProductPage());
     },
     ProductAllRoute.name: (routeData) {
       return _i3.AdaptivePage<dynamic>(
-          routeData: routeData, child: const _i18.ProductAllPage());
+          routeData: routeData, child: const _i19.ProductAllPage());
     },
     ProductFoodsRoute.name: (routeData) {
       return _i3.AdaptivePage<dynamic>(
-          routeData: routeData, child: const _i19.ProductFoodsPage());
+          routeData: routeData, child: const _i20.ProductFoodsPage());
     },
     ProductGoodsRoute.name: (routeData) {
       return _i3.AdaptivePage<dynamic>(
-          routeData: routeData, child: const _i20.ProductGoodsPage());
+          routeData: routeData, child: const _i21.ProductGoodsPage());
     },
     ProductOthersRoute.name: (routeData) {
       return _i3.AdaptivePage<dynamic>(
-          routeData: routeData, child: const _i21.ProductOthersPage());
+          routeData: routeData, child: const _i22.ProductOthersPage());
     }
   };
 
@@ -191,6 +198,8 @@ class AppRouter extends _i3.RootStackRouter {
                     path: 'productEdit', parent: BazaarListRouter.name),
                 _i3.RouteConfig(ProductAddRoute.name,
                     path: 'productAdd', parent: BazaarListRouter.name),
+                _i3.RouteConfig(SupporterRoute.name,
+                    path: 'bazaarSupport', parent: BazaarListRouter.name),
                 _i3.RouteConfig(OrderRoute.name,
                     path: 'order', parent: BazaarListRouter.name),
                 _i3.RouteConfig(SalesStatusRoute.name,
@@ -287,7 +296,7 @@ class PurchaseRoute extends _i3.PageRouteInfo<void> {
 /// generated route for
 /// [_i5.OrderPage]
 class OrderRoute extends _i3.PageRouteInfo<OrderRouteArgs> {
-  OrderRoute({_i22.Key? key, required String? bazaar})
+  OrderRoute({_i23.Key? key, required String? bazaar})
       : super(OrderRoute.name,
             path: 'order', args: OrderRouteArgs(key: key, bazaar: bazaar));
 
@@ -297,7 +306,7 @@ class OrderRoute extends _i3.PageRouteInfo<OrderRouteArgs> {
 class OrderRouteArgs {
   const OrderRouteArgs({this.key, required this.bazaar});
 
-  final _i22.Key? key;
+  final _i23.Key? key;
 
   final String? bazaar;
 
@@ -310,7 +319,7 @@ class OrderRouteArgs {
 /// generated route for
 /// [_i6.SalesStatusPage]
 class SalesStatusRoute extends _i3.PageRouteInfo<SalesStatusRouteArgs> {
-  SalesStatusRoute({_i22.Key? key, required dynamic bazaar})
+  SalesStatusRoute({_i23.Key? key, required dynamic bazaar})
       : super(SalesStatusRoute.name,
             path: 'salesStatus',
             args: SalesStatusRouteArgs(key: key, bazaar: bazaar));
@@ -321,7 +330,7 @@ class SalesStatusRoute extends _i3.PageRouteInfo<SalesStatusRouteArgs> {
 class SalesStatusRouteArgs {
   const SalesStatusRouteArgs({this.key, required this.bazaar});
 
-  final _i22.Key? key;
+  final _i23.Key? key;
 
   final dynamic bazaar;
 
@@ -334,7 +343,7 @@ class SalesStatusRouteArgs {
 /// generated route for
 /// [_i7.ProductStatusPage]
 class ProductStatusRoute extends _i3.PageRouteInfo<ProductStatusRouteArgs> {
-  ProductStatusRoute({_i22.Key? key, required dynamic bazaar})
+  ProductStatusRoute({_i23.Key? key, required dynamic bazaar})
       : super(ProductStatusRoute.name,
             path: 'productStatus',
             args: ProductStatusRouteArgs(key: key, bazaar: bazaar));
@@ -345,7 +354,7 @@ class ProductStatusRoute extends _i3.PageRouteInfo<ProductStatusRouteArgs> {
 class ProductStatusRouteArgs {
   const ProductStatusRouteArgs({this.key, required this.bazaar});
 
-  final _i22.Key? key;
+  final _i23.Key? key;
 
   final dynamic bazaar;
 
@@ -374,7 +383,7 @@ class BazaarListRoute extends _i3.PageRouteInfo<void> {
 /// generated route for
 /// [_i10.BazaarDetailsPage]
 class BazaarDetailsRoute extends _i3.PageRouteInfo<BazaarDetailsRouteArgs> {
-  BazaarDetailsRoute({_i22.Key? key, required int index, dynamic bazaarEvent})
+  BazaarDetailsRoute({_i23.Key? key, required int index, dynamic bazaarEvent})
       : super(BazaarDetailsRoute.name,
             path: ':bazaarId',
             args: BazaarDetailsRouteArgs(
@@ -388,7 +397,7 @@ class BazaarDetailsRouteArgs {
   const BazaarDetailsRouteArgs(
       {this.key, required this.index, this.bazaarEvent});
 
-  final _i22.Key? key;
+  final _i23.Key? key;
 
   final int index;
 
@@ -403,7 +412,7 @@ class BazaarDetailsRouteArgs {
 /// generated route for
 /// [_i11.BazaarEditPage]
 class BazaarEditRoute extends _i3.PageRouteInfo<BazaarEditRouteArgs> {
-  BazaarEditRoute({_i22.Key? key, required int index})
+  BazaarEditRoute({_i23.Key? key, required int index})
       : super(BazaarEditRoute.name,
             path: 'bazaarEdit',
             args: BazaarEditRouteArgs(key: key, index: index));
@@ -414,7 +423,7 @@ class BazaarEditRoute extends _i3.PageRouteInfo<BazaarEditRouteArgs> {
 class BazaarEditRouteArgs {
   const BazaarEditRouteArgs({this.key, required this.index});
 
-  final _i22.Key? key;
+  final _i23.Key? key;
 
   final int index;
 
@@ -444,7 +453,7 @@ class ImageCropRoute extends _i3.PageRouteInfo<void> {
 /// [_i14.ProductDetailsPage]
 class ProductDetailsRoute extends _i3.PageRouteInfo<ProductDetailsRouteArgs> {
   ProductDetailsRoute(
-      {_i22.Key? key, dynamic index, dynamic bazaarEvent, dynamic productItem})
+      {_i23.Key? key, dynamic index, dynamic bazaarEvent, dynamic productItem})
       : super(ProductDetailsRoute.name,
             path: ':productId',
             args: ProductDetailsRouteArgs(
@@ -465,7 +474,7 @@ class ProductDetailsRouteArgs {
   const ProductDetailsRouteArgs(
       {this.key, this.index, this.bazaarEvent, this.productItem});
 
-  final _i22.Key? key;
+  final _i23.Key? key;
 
   final dynamic index;
 
@@ -482,7 +491,7 @@ class ProductDetailsRouteArgs {
 /// generated route for
 /// [_i15.ProductEditPage]
 class ProductEditRoute extends _i3.PageRouteInfo<ProductEditRouteArgs> {
-  ProductEditRoute({_i22.Key? key, required int index})
+  ProductEditRoute({_i23.Key? key, required int index})
       : super(ProductEditRoute.name,
             path: 'productEdit',
             args: ProductEditRouteArgs(key: key, index: index));
@@ -493,7 +502,7 @@ class ProductEditRoute extends _i3.PageRouteInfo<ProductEditRouteArgs> {
 class ProductEditRouteArgs {
   const ProductEditRouteArgs({this.key, required this.index});
 
-  final _i22.Key? key;
+  final _i23.Key? key;
 
   final int index;
 
@@ -506,7 +515,7 @@ class ProductEditRouteArgs {
 /// generated route for
 /// [_i16.ProductAddPage]
 class ProductAddRoute extends _i3.PageRouteInfo<ProductAddRouteArgs> {
-  ProductAddRoute({_i22.Key? key, dynamic bazaar})
+  ProductAddRoute({_i23.Key? key, dynamic bazaar})
       : super(ProductAddRoute.name,
             path: 'productAdd',
             args: ProductAddRouteArgs(key: key, bazaar: bazaar),
@@ -518,7 +527,7 @@ class ProductAddRoute extends _i3.PageRouteInfo<ProductAddRouteArgs> {
 class ProductAddRouteArgs {
   const ProductAddRouteArgs({this.key, this.bazaar});
 
-  final _i22.Key? key;
+  final _i23.Key? key;
 
   final dynamic bazaar;
 
@@ -529,7 +538,31 @@ class ProductAddRouteArgs {
 }
 
 /// generated route for
-/// [_i17.ProductPage]
+/// [_i17.SupporterPage]
+class SupporterRoute extends _i3.PageRouteInfo<SupporterRouteArgs> {
+  SupporterRoute({_i23.Key? key, required dynamic bazaarId})
+      : super(SupporterRoute.name,
+            path: 'bazaarSupport',
+            args: SupporterRouteArgs(key: key, bazaarId: bazaarId));
+
+  static const String name = 'SupporterRoute';
+}
+
+class SupporterRouteArgs {
+  const SupporterRouteArgs({this.key, required this.bazaarId});
+
+  final _i23.Key? key;
+
+  final dynamic bazaarId;
+
+  @override
+  String toString() {
+    return 'SupporterRouteArgs{key: $key, bazaarId: $bazaarId}';
+  }
+}
+
+/// generated route for
+/// [_i18.ProductPage]
 class ProductRoute extends _i3.PageRouteInfo<void> {
   const ProductRoute({List<_i3.PageRouteInfo>? children})
       : super(ProductRoute.name, path: '', initialChildren: children);
@@ -538,7 +571,7 @@ class ProductRoute extends _i3.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i18.ProductAllPage]
+/// [_i19.ProductAllPage]
 class ProductAllRoute extends _i3.PageRouteInfo<void> {
   const ProductAllRoute() : super(ProductAllRoute.name, path: 'productAll');
 
@@ -546,7 +579,7 @@ class ProductAllRoute extends _i3.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i19.ProductFoodsPage]
+/// [_i20.ProductFoodsPage]
 class ProductFoodsRoute extends _i3.PageRouteInfo<void> {
   const ProductFoodsRoute()
       : super(ProductFoodsRoute.name, path: 'productFoods');
@@ -555,7 +588,7 @@ class ProductFoodsRoute extends _i3.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i20.ProductGoodsPage]
+/// [_i21.ProductGoodsPage]
 class ProductGoodsRoute extends _i3.PageRouteInfo<void> {
   const ProductGoodsRoute()
       : super(ProductGoodsRoute.name, path: 'productGoods');
@@ -564,7 +597,7 @@ class ProductGoodsRoute extends _i3.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i21.ProductOthersPage]
+/// [_i22.ProductOthersPage]
 class ProductOthersRoute extends _i3.PageRouteInfo<void> {
   const ProductOthersRoute()
       : super(ProductOthersRoute.name, path: 'productOthers');

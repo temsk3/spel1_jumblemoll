@@ -3,6 +3,7 @@ import 'dart:typed_data';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../data/model/bazaar/bazaar_model.dart';
+import '../../data/model/bazaar/supporter_model.dart';
 import '../../data/repository/bazaar/bazaar_repository.dart';
 import '../../data/repository/bazaar/bazaar_repository_impal.dart';
 import '../../data/repository/iamge/image_repository.dart';
@@ -183,6 +184,52 @@ class BazaarViewModel extends StateNotifier<AsyncValue<BazaarState>> {
     return updateBazaar.copyWith(
       pictureName: pictureName,
       pictureURL: pictureURL,
+    );
+  }
+
+  //Supporter
+  Future<void> createSupporter({
+    required String bazaarId,
+    required String uid,
+    required String name,
+  }) async {
+    var supporter = Supporter(
+      uid: uid,
+      name: name,
+      isActive: false,
+    );
+    final result = await bazaarRepository.createSupporter(
+      bazaarId: bazaarId,
+      supporter: supporter,
+    );
+    result.when(
+      success: (data) {},
+      failure: (error) {
+        state = AsyncValue.error(error);
+      },
+    );
+  }
+
+  Future<void> updateSupporter({
+    required String bazaarId,
+    required String uid,
+    required String name,
+    required bool isActive,
+  }) async {
+    var supporter = Supporter(
+      uid: uid,
+      name: name,
+      isActive: isActive,
+    );
+    final result = await bazaarRepository.updateSupporter(
+      bazaarId: bazaarId,
+      supporter: supporter,
+    );
+    result.when(
+      success: (data) {},
+      failure: (error) {
+        state = AsyncValue.error(error);
+      },
     );
   }
 }

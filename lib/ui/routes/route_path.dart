@@ -14,6 +14,7 @@ class RoutePath {
   static const appRouteBazaarDetails = ':bazaarId';
   static const appRouteBazaarEdit = 'bazaarEdit';
   static const appRouteBazaarAdd = 'bazaarAdd';
+  static const appRouteSupporter = 'bazaarSupport';
   // image crop
   static const appRouteImageCrop = 'crop';
   // Product

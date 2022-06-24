@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../model/bazaar/bazaar_model.dart';
+import '../../model/bazaar/supporter_model.dart';
 import '../../model/result/result.dart';
 import 'bazaar_repository.dart';
 
@@ -14,6 +15,17 @@ final bazaarListStreamProvider = StreamProvider.autoDispose((ref) {
     return snapshot.docs.map((doc) {
       return Bazaar.fromJson(doc.data() as Map<String, dynamic>)
           .copyWith(id: doc.id);
+    }).toList();
+  });
+});
+
+final supporterListStreamProvider = StreamProvider.autoDispose((ref) {
+  CollectionReference ref =
+      FirebaseFirestore.instance.collection('events/supporter');
+  return ref.snapshots().map((snapshot) {
+    return snapshot.docs.map((doc) {
+      return Supporter.fromJson(doc.data() as Map<String, dynamic>)
+          .copyWith(uid: doc.id);
     }).toList();
   });
 });
@@ -88,6 +100,46 @@ class BazaarRepositoryImpl implements BazaarRepository {
       () async {
         // アイテムを削除
         await _db.collection(_collectionPath).doc(bazaarId).delete();
+      },
+    );
+  }
+
+  //
+  @override
+  Future<Result<void>> createSupporter(
+      {required String bazaarId, required Supporter supporter}) async {
+    return Result.guardFuture(
+      () async {
+        final docRef = _db
+            .collection('events')
+            .doc(bazaarId.toString())
+            .collection('supporter')
+            .doc(supporter.uid);
+        await docRef.set({
+          'name': supporter.name,
+          'isActive': supporter.isActive,
+          'createdAt': FieldValue.serverTimestamp(),
+          'updatedAt': FieldValue.serverTimestamp(),
+        }, SetOptions(merge: true));
+      },
+    );
+  }
+
+  @override
+  Future<Result<void>> updateSupporter(
+      {required String bazaarId, required Supporter supporter}) async {
+    return Result.guardFuture(
+      () async {
+        // アイテムを更新
+        _db
+            .collection('events')
+            .doc(bazaarId.toString())
+            .collection('supporter')
+            .doc(supporter.uid)
+          ..update(supporter.toJson())
+          ..set({
+            'updatedAt': FieldValue.serverTimestamp(),
+          }, SetOptions(merge: true));
       },
     );
   }

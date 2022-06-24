@@ -20,6 +20,10 @@ class EventCard extends HookConsumerWidget {
     final l10n = useL10n();
     final appRoute = useRouter();
     final viewModel = ref.watch(bazzarViewModelProvider.notifier);
+
+    //
+    const uid = 'test';
+    const name = '名無し';
     return Card(
       // color: theme.appColors.background,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
@@ -55,6 +59,17 @@ class EventCard extends HookConsumerWidget {
                 Text(bazaar.name.toString(), style: theme.textTheme.h30.bold()
                     // .copyWith(color: theme.appColors.onBackground),
                     ),
+                IconButton(
+                  icon: const Icon(Icons.person_add_alt),
+                  onPressed: () {
+                    viewModel.createSupporter(
+                      bazaarId: bazaar.id.toString(),
+                      uid: uid,
+                      name: name,
+                    );
+                  },
+                  tooltip: 'Supporter request',
+                ),
               ],
             ),
             subtitle: Text(bazaar.message.toString(), style: theme.textTheme.h10

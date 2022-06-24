@@ -21,7 +21,8 @@ class BazaarListPage extends HookConsumerWidget {
     final l10n = useL10n();
     final appRoute = useRouter();
     final asyncValue = ref.watch(bazaarListStreamProvider);
-    const staff = true; // c
+    bool owner = false;
+    const supporter = true; // c
     return asyncValue.when(
       data: (data) {
         return Scaffold(
@@ -59,7 +60,7 @@ class BazaarListPage extends HookConsumerWidget {
             ),
           ),
           floatingActionButton: Visibility(
-            visible: staff,
+            visible: true,
             child: FloatingActionButton(
               // backgroundColor: theme.appColors.primary,
               // foregroundColor: theme.appColors.onPrimary,
@@ -97,33 +98,3 @@ class BazaarListPage extends HookConsumerWidget {
     );
   }
 }
-
-// // AlertDialog
-// Future<bool> customShowDialog(
-//     BuildContext context, String title, String message) async {
-//   var result = await showDialog(
-//     barrierDismissible: false,
-//     context: context,
-//     builder: (context) {
-//       return AlertDialog(
-//         title: Text(title),
-//         content: Text(message),
-//         actions: <Widget>[
-//           TextButton(
-//             onPressed: () {
-//               Navigator.pop(context, false);
-//             },
-//             child: const Text('キャンセル'),
-//           ),
-//           TextButton(
-//             onPressed: () {
-//               Navigator.pop(context, true);
-//             },
-//             child: const Text('OK'),
-//           ),
-//         ],
-//       );
-//     },
-//   );
-//   return result;
-// }

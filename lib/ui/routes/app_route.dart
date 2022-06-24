@@ -6,6 +6,7 @@ import '../bazaar/bazaar_add_page.dart';
 import '../bazaar/bazaar_details_page.dart';
 import '../bazaar/bazaar_edit_page.dart';
 import '../bazaar/bazaar_page.dart';
+import '../bazaar/supporter_page.dart';
 import '../common/image_crop.dart';
 import '../favorite/favorite_page.dart';
 import '../home.dart';
@@ -87,6 +88,11 @@ import '../product/product_page.dart';
             AutoRoute(
               path: RoutePath.appRouteProductAdd,
               page: ProductAddPage,
+            ),
+            //
+            AutoRoute(
+              path: RoutePath.appRouteSupporter,
+              page: SupporterPage,
             ),
             //
             AutoRoute(
