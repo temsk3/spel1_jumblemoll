@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:fimber/fimber.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
@@ -11,14 +10,14 @@ import 'firebase_options.dart';
 
 // Future<void> main() async {
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized;
   //Fimber
-  if (!kReleaseMode) {
-    Fimber.plantTree(DebugTree());
-  } else {
-    debugPrint = (message, {wrapWidget}) {} as DebugPrintCallback;
-  }
+  // if (!kReleaseMode) {
+  //   Fimber.plantTree(DebugTree());
+  // } else {
+  //   debugPrint = (message, {wrapWidget}) {} as DebugPrintCallback;
+  // }
 
+  WidgetsFlutterBinding.ensureInitialized;
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
   runZonedGuarded(
