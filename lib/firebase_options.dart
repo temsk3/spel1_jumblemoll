@@ -21,9 +21,15 @@ class DefaultFirebaseOptions {
     }
     switch (defaultTargetPlatform) {
       case TargetPlatform.android:
-        return android;
+        throw UnsupportedError(
+          'DefaultFirebaseOptions have not been configured for android - '
+          'you can reconfigure this by running the FlutterFire CLI again.',
+        );
       case TargetPlatform.iOS:
-        return ios;
+        throw UnsupportedError(
+          'DefaultFirebaseOptions have not been configured for ios - '
+          'you can reconfigure this by running the FlutterFire CLI again.',
+        );
       case TargetPlatform.macOS:
         throw UnsupportedError(
           'DefaultFirebaseOptions have not been configured for macos - '
@@ -54,23 +60,5 @@ class DefaultFirebaseOptions {
     authDomain: 'jumblemoll.firebaseapp.com',
     storageBucket: 'jumblemoll.appspot.com',
     measurementId: 'G-LVKLTVBBQT',
-  );
-
-  static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyDr-mfKcep2zZ-DDsvCp9He-83AQWxWc50',
-    appId: '1:174910327776:android:48108a05e8ef13e2c4f985',
-    messagingSenderId: '174910327776',
-    projectId: 'jumblemoll',
-    storageBucket: 'jumblemoll.appspot.com',
-  );
-
-  static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyAadU-TMX1UFv6ixdaFHiS601gV-oOO890',
-    appId: '1:174910327776:ios:9fa3d14ae2fd02e0c4f985',
-    messagingSenderId: '174910327776',
-    projectId: 'jumblemoll',
-    storageBucket: 'jumblemoll.appspot.com',
-    iosClientId: '174910327776-bfojcqpftt17g3epfiif2sh7oj012d2n.apps.googleusercontent.com',
-    iosBundleId: 'com.example.jumblemoll',
   );
 }

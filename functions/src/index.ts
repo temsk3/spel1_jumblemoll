@@ -9,7 +9,7 @@ import * as stripe from './stripe';
 //   functions.logger.info("Hello logs!", {structuredData: true});
 //   response.send("Hello from Firebase!");
 // });
-// Firebaseプロジェクトの初期化
+
 firebaseAdmin.initializeApp(functions.config().firebase);
 
 export {
