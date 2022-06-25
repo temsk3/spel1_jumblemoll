@@ -1,32 +1,33 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_multi_formatter/flutter_multi_formatter.dart';
-import 'package:provider/provider.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../data/model/stripe/stripe_individual.dart';
 import '../../utils/show_dialog.dart';
 import '../../utils/verification_status.dart';
 import 'identification_model.dart';
 
-class IdentificationPage extends StatelessWidget {
+class IdentificationPage extends HookConsumerWidget {
   const IdentificationPage({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return ChangeNotifierProvider<IdentificationModel>(
-      create: (_) => IdentificationModel()..fetchIndividual(),
-      child: Consumer<IdentificationModel>(
-        builder: (context, model, child) {
-          return Scaffold(
-            appBar: AppBar(title: const Text('本人確認')),
-            body: model.isLoading
-                ? const Center(
-                    child: CircularProgressIndicator(),
-                  )
-                : SingleChildScrollView(child: _body(context, model)),
-          );
-        },
-      ),
+  Widget build(BuildContext context, WidgetRef ref) {
+    // return ChangeNotifierProvider<IdentificationModel>(
+    //   create: (_) => IdentificationModel()..fetchIndividual(),
+    //   child: Consumer<IdentificationModel>(
+    //     builder: (context, model, child) {
+    final model = ref.watch(identificationViewModelProvider.notifier);
+    return Scaffold(
+      appBar: AppBar(title: const Text('本人確認')),
+      body: model.isLoading
+          ? const Center(
+              child: CircularProgressIndicator(),
+            )
+          : SingleChildScrollView(child: _body(context, model)),
     );
+    // },
+    //   ),
+    // );
   }
 
   Widget _body(BuildContext context, IdentificationModel model) {

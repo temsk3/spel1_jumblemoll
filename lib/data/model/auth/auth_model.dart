@@ -60,7 +60,7 @@ class Authentication {
       );
       // user ドキュメントがあるか確認
       User? user = result.user;
-      final userId = user?.uid;
+      final userId = user!.uid;
       final doc = await FirebaseFirestore.instance
           .collection('users')
           .doc(userId)

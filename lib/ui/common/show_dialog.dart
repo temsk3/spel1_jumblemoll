@@ -61,7 +61,7 @@ Future<bool> showConfirmDialog(
       false;
 }
 
-/// 確認用ダイアログ（bool を返す）
+/// 確認用ダイアログ（ を返す）
 Future<int> showQuantityConfirmDialog(
   BuildContext context,
   int quantity,

@@ -27,7 +27,7 @@ class BazaarDetailsPage extends HookConsumerWidget {
     final state = ref.watch(bazzarViewModelProvider);
     final viewModel = ref.watch(bazzarViewModelProvider.notifier);
     final asyncValue = ref.watch(productListStreamProvider);
-    bool owner = false;
+    bool owner = true;
     bool supporter = true;
 
     return asyncValue.when(

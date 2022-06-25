@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../data/model/bazaar/bazaar_model.dart';
+import '../../common/show_dialog.dart';
 import '../../hooks/use_l10n.dart';
 import '../../hooks/use_router.dart';
 import '../../routes/app_route.gr.dart';
@@ -54,28 +55,35 @@ class EventCard extends HookConsumerWidget {
                     )
                   : null,
             ),
-            title: Row(
-              children: [
+            title:
                 Text(bazaar.name.toString(), style: theme.textTheme.h30.bold()
                     // .copyWith(color: theme.appColors.onBackground),
                     ),
-                IconButton(
-                  icon: const Icon(Icons.person_add_alt),
-                  onPressed: () {
-                    viewModel.createSupporter(
-                      bazaarId: bazaar.id.toString(),
-                      uid: uid,
-                      name: name,
-                    );
-                  },
-                  tooltip: 'Supporter request',
-                ),
-              ],
-            ),
             subtitle: Text(bazaar.message.toString(), style: theme.textTheme.h10
                 // .copyWith(color: theme.appColors.onBackground),
                 ),
-            trailing: const Icon(Icons.navigate_next),
+            trailing: Container(
+              child: Column(
+                children: [
+                  // Text('Supporter request', style: theme.textTheme.h10),
+                  IconButton(
+                    icon: const Icon(Icons.person_add_alt),
+                    onPressed: () async {
+                      final result = await showConfirmDialog(
+                          context, 'Do you want to apply for supporters?');
+                      if (result) {
+                        viewModel.createSupporter(
+                          bazaarId: bazaar.id.toString(),
+                          uid: uid,
+                          name: name,
+                        );
+                      }
+                    },
+                    tooltip: 'Supporter request',
+                  ),
+                ],
+              ),
+            ),
             onTap: () {
               appRoute
                   .push(BazaarDetailsRoute(index: index, bazaarEvent: bazaar));

@@ -4,7 +4,6 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:jumblemoll/data/repository/bazaar/bazaar_repository_impal.dart';
 
 import '../hooks/use_l10n.dart';
-import '../hooks/use_router.dart';
 import '../theme/app_theme.dart';
 import 'bazaar_view_model.dart';
 
@@ -16,9 +15,10 @@ class SupporterPage extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = ref.watch(appThemeProvider);
     final l10n = useL10n();
-    final appRoute = useRouter();
+    // final appRoute = useRouter();
     final viewModel = ref.watch(bazzarViewModelProvider.notifier);
-    final asyncValue = ref.watch(supporterListStreamProvider);
+    final asyncValue = ref.watch(supporterListStreamProvider(bazaarId));
+    final active = useState<bool>(false);
     return asyncValue.when(
       data: (data) {
         return Scaffold(
@@ -30,8 +30,8 @@ class SupporterPage extends HookConsumerWidget {
               child: Center(
             child: ListView.builder(
               itemCount: data.length,
-              itemBuilder: (context, index) {
-                final active = useState(data[index].isActive as bool);
+              itemBuilder: (_, index) {
+                active.value = data[index].isActive as bool;
                 return SwitchListTile(
                   value: active.value,
                   title: Text(data[index].name.toString()),

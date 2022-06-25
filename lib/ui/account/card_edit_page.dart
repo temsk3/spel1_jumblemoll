@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_multi_formatter/flutter_multi_formatter.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
@@ -16,10 +15,10 @@ class EditCardPage extends HookConsumerWidget {
     //   child: Consumer<EditCardModel>(
     //     builder: (context, model, child) {
     final model = ref.watch(editCardViewModelProvider.notifier);
-    useEffect(() {
-      model.fetch();
-      return null;
-    }, []);
+    // useEffect(() {
+    //   model.fetch();
+    //   return null;
+    // }, []);
     return Scaffold(
       appBar: AppBar(title: const Text('クレジットカード登録')),
       body: model.isLoading

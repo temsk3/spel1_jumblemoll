@@ -46,6 +46,7 @@ class BazaarListPage extends HookConsumerWidget {
                         },
                         child: ListView.builder(
                           physics: const AlwaysScrollableScrollPhysics(),
+                          // itemExtent: 100,
                           itemCount: data.length,
                           itemBuilder: (_, index) {
                             final bazaar = data[index];

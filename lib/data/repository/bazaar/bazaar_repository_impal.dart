@@ -6,11 +6,15 @@ import '../../model/bazaar/supporter_model.dart';
 import '../../model/result/result.dart';
 import 'bazaar_repository.dart';
 
+const _collectionPath = 'events';
+const _subCollectionPath = 'supporter';
+
 final bazaarRepositoryProvider =
     Provider<BazaarRepository>((ref) => BazaarRepositoryImpl(ref.read));
 
 final bazaarListStreamProvider = StreamProvider.autoDispose((ref) {
-  CollectionReference ref = FirebaseFirestore.instance.collection('events');
+  CollectionReference ref =
+      FirebaseFirestore.instance.collection(_collectionPath);
   return ref.snapshots().map((snapshot) {
     return snapshot.docs.map((doc) {
       return Bazaar.fromJson(doc.data() as Map<String, dynamic>)
@@ -19,9 +23,10 @@ final bazaarListStreamProvider = StreamProvider.autoDispose((ref) {
   });
 });
 
-final supporterListStreamProvider = StreamProvider.autoDispose((ref) {
+final supporterListStreamProvider =
+    StreamProvider.autoDispose.family<List<Supporter>, String>((ref, bazaarId) {
   CollectionReference ref =
-      FirebaseFirestore.instance.collection('events/supporter');
+      FirebaseFirestore.instance.collection('events/$bazaarId/supporter');
   return ref.snapshots().map((snapshot) {
     return snapshot.docs.map((doc) {
       return Supporter.fromJson(doc.data() as Map<String, dynamic>)
@@ -35,7 +40,6 @@ class BazaarRepositoryImpl implements BazaarRepository {
   final Reader _reader;
 
   final _db = FirebaseFirestore.instance;
-  final _collectionPath = 'events';
 
   @override
   Future<Result<List<Bazaar>>> readBazaar() async {
@@ -111,16 +115,23 @@ class BazaarRepositoryImpl implements BazaarRepository {
     return Result.guardFuture(
       () async {
         final docRef = _db
-            .collection('events')
-            .doc(bazaarId.toString())
-            .collection('supporter')
+            .collection(_collectionPath)
+            .doc(bazaarId)
+            .collection(_subCollectionPath)
             .doc(supporter.uid);
-        await docRef.set({
-          'name': supporter.name,
-          'isActive': supporter.isActive,
-          'createdAt': FieldValue.serverTimestamp(),
-          'updatedAt': FieldValue.serverTimestamp(),
-        }, SetOptions(merge: true));
+
+        final doc = await docRef.get();
+
+        if (!doc.exists) {
+          docRef
+            ..set(supporter.toJson())
+            ..set({
+              'name': supporter.name,
+              'isActive': supporter.isActive,
+              'createdAt': FieldValue.serverTimestamp(),
+              'updatedAt': FieldValue.serverTimestamp(),
+            }, SetOptions(merge: true));
+        }
       },
     );
   }
@@ -131,15 +142,16 @@ class BazaarRepositoryImpl implements BazaarRepository {
     return Result.guardFuture(
       () async {
         // アイテムを更新
-        _db
-            .collection('events')
+        final docRef = _db
+            .collection(_collectionPath)
             .doc(bazaarId.toString())
-            .collection('supporter')
-            .doc(supporter.uid)
-          ..update(supporter.toJson())
-          ..set({
-            'updatedAt': FieldValue.serverTimestamp(),
-          }, SetOptions(merge: true));
+            .collection(_subCollectionPath)
+            .doc(supporter.uid);
+        // ..update(supporter.toJson())
+        await docRef.set({
+          'isActive': supporter.isActive,
+          'updatedAt': FieldValue.serverTimestamp(),
+        }, SetOptions(merge: true));
       },
     );
   }

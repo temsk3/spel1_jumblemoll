@@ -27,7 +27,7 @@ class ProductCard extends HookConsumerWidget {
         locale: Localizations.localeOf(context).toString());
     final isOpened = (now.compareTo(product.salesStart as DateTime) >= 0 &&
         now.compareTo(product.salesEnd as DateTime) < 0);
-    print(isOpened);
+    // print(isOpened);
     return Stack(
       children: [
         Card(

@@ -2,8 +2,8 @@ import 'dart:convert';
 import 'dart:developer';
 
 import 'package:file_picker/file_picker.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:http/http.dart' as http;
 import 'package:stripe_sdk/stripe_sdk.dart';
 
@@ -13,17 +13,28 @@ import '../../data/repository/stripe/stripe_repository.dart';
 import '../../data/repository/user/user_repository.dart';
 import '../../utils/validation_utils.dart';
 
-class IdentificationModel extends ChangeNotifier {
+final identificationViewModelProvider =
+    StateNotifierProvider.autoDispose<IdentificationModel, AsyncValue<void>>(
+  (ref) => IdentificationModel(ref: ref),
+);
+
+class IdentificationModel extends StateNotifier<AsyncValue<void>> {
+  final AutoDisposeStateNotifierProviderRef _ref;
+  IdentificationModel({required AutoDisposeStateNotifierProviderRef ref})
+      : _ref = ref,
+        super(const AsyncLoading()) {
+    // fetch();
+  }
   bool isLoading = false;
 
   void startLoading() {
     isLoading = true;
-    notifyListeners();
+    // notifyListeners();
   }
 
   void endLoading() {
     isLoading = false;
-    notifyListeners();
+    // notifyListeners();
   }
 
   final String termText =
@@ -41,7 +52,7 @@ class IdentificationModel extends ChangeNotifier {
 - .pngもしくは.jpgの形式
 ''';
 
-  final _userRepo = UserRepository();
+  late final _userRepo = _ref.watch(userRepositoryProvider);
   final _stripeRepo = StripeRepository();
 
   bool isAcceptTerm = false;
@@ -104,7 +115,7 @@ class IdentificationModel extends ChangeNotifier {
   /// 利用規約
   Future<void> setTosAcceptance(bool value) async {
     isAcceptTerm = value;
-    notifyListeners();
+    // notifyListeners();
 
     if (isAcceptTerm) {
       // 利用規約
@@ -168,7 +179,7 @@ class IdentificationModel extends ChangeNotifier {
   void showIdentificationImageFrontPicker() {
     _selectImage(onSelected: (file) {
       identificationImageFront = file;
-      notifyListeners();
+      // notifyListeners();
     });
   }
 
@@ -176,7 +187,7 @@ class IdentificationModel extends ChangeNotifier {
   void showIdentificationImageBackPicker() {
     _selectImage(onSelected: (file) {
       identificationImageBack = file;
-      notifyListeners();
+      // notifyListeners();
     });
   }
 
