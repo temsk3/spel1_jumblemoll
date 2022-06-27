@@ -71,7 +71,17 @@ class BazaarDetailsPage extends HookConsumerWidget {
                         appRoute.popUntilRoot();
                       } else {}
                     },
-                    icon: const Icon(Icons.delete)),
+                    icon: const Icon(
+                      Icons.delete,
+                      shadows: [
+                        BoxShadow(
+                          color: Color.fromARGB(255, 0, 0, 0),
+                          blurRadius: 10,
+                          spreadRadius: 30.0,
+                          blurStyle: BlurStyle.solid,
+                        ),
+                      ],
+                    )),
               ),
               Visibility(
                 visible: owner,
@@ -79,12 +89,32 @@ class BazaarDetailsPage extends HookConsumerWidget {
                     onPressed: () async {
                       appRoute.push(BazaarEditRoute(index: index));
                     },
-                    icon: const Icon(Icons.edit)),
+                    icon: const Icon(
+                      Icons.edit,
+                      shadows: [
+                        BoxShadow(
+                          color: Color.fromARGB(255, 0, 0, 0),
+                          blurRadius: 10,
+                          spreadRadius: 30.0,
+                          blurStyle: BlurStyle.solid,
+                        ),
+                      ],
+                    )),
               ),
             ],
             title: Text(
               bazaar.name.toString(),
               // style: theme.textTheme.h50,
+              style: const TextStyle(
+                shadows: [
+                  BoxShadow(
+                    color: Color.fromARGB(255, 0, 0, 0),
+                    blurRadius: 10,
+                    spreadRadius: 30.0,
+                    blurStyle: BlurStyle.solid,
+                  ),
+                ],
+              ),
             ),
             centerTitle: true,
             toolbarHeight: 100,

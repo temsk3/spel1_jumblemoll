@@ -5,6 +5,7 @@ import '../../data/repository/bazaar/bazaar_repository_impal.dart';
 import '../../ui/bazaar/widget/bazaar_list.dart';
 import '../common/drawer.dart';
 import '../hooks/use_l10n.dart';
+import '../hooks/use_media_query.dart';
 import '../hooks/use_router.dart';
 import '../routes/app_route.gr.dart';
 import '../theme/app_theme.dart';
@@ -16,6 +17,7 @@ class BazaarListPage extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = ref.watch(appThemeProvider);
+    final appMQ = useMediaQuery();
     final state = ref.watch(bazzarViewModelProvider);
     final viewModel = ref.watch(bazzarViewModelProvider.notifier);
     final l10n = useL10n();
@@ -36,9 +38,9 @@ class BazaarListPage extends HookConsumerWidget {
                     ? const CustomDrawer()
                     : Container(),
                 Expanded(
-                  child: SizedBox(
-                    width: 400,
-                    child: Center(
+                  child: Center(
+                    child: SizedBox(
+                      width: appMQ.size.width >= 768 ? 600 : null,
                       child: RefreshIndicator(
                         onRefresh: () async {
                           // ref.refresh(bazzarViewModelProvider);

@@ -14,6 +14,7 @@ import '../../ui/order/order_view_model.dart';
 import '../common/alertdialog.dart';
 import '../common/show_dialog.dart';
 import '../hooks/use_l10n.dart';
+import '../hooks/use_media_query.dart';
 import '../hooks/use_router.dart';
 import '../theme/app_theme.dart';
 import 'product_view_model.dart';
@@ -34,6 +35,7 @@ class ProductDetailsPage extends HookConsumerWidget {
     final theme = ref.watch(appThemeProvider);
     final l10n = useL10n();
     final appRoute = useRouter();
+    final appMQ = useMediaQuery();
     final state = ref.watch(productViewModelProvider);
     final viewModel = ref.watch(productViewModelProvider.notifier);
     final asyncValue = ref.watch(productListStreamProvider);
@@ -47,7 +49,8 @@ class ProductDetailsPage extends HookConsumerWidget {
     //
     Product product;
     Bazaar bazaar;
-    final staff = useState<bool>(false);
+    final owner = useState<bool>(false);
+    final supporter = useState<bool>(false);
     final order = useState<bool>(false);
     final edit = useState<bool>(false);
     final update = useState<bool>(false);
@@ -60,6 +63,9 @@ class ProductDetailsPage extends HookConsumerWidget {
     if (bazaarEvent == null) {
       order.value = true;
     } else {
+      if (owner.value == false || supporter.value == false) {
+        order.value = true;
+      }
       if (productItem != null) {
         update.value = true;
       } else {
@@ -209,6 +215,7 @@ class ProductDetailsPage extends HookConsumerWidget {
                       viewModel.addProduct(
                           organizer: organizer.toString(),
                           bazaarId: bazaarId.toString(),
+                          bazaarName: bazaar.name.toString(),
                           salesStart: bazaar.salesStart as DateTime,
                           salesEnd: bazaar.salesEnd as DateTime,
                           register: uid,
@@ -241,7 +248,7 @@ class ProductDetailsPage extends HookConsumerWidget {
               padding: const EdgeInsets.all(20.0),
               child: Center(
                 child: SizedBox(
-                  // width: 400,
+                  width: appMQ.size.width >= 768 ? 400 : null,
                   child: Form(
                     key: form,
                     child: Column(
@@ -571,8 +578,9 @@ class ProductDetailsPage extends HookConsumerWidget {
                         const Padding(
                           padding: EdgeInsets.symmetric(vertical: 12.0),
                         ),
-                        if (order.value)
-                          Row(
+                        Visibility(
+                          visible: order.value,
+                          child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Text('数量：', style: theme.textTheme.h30
@@ -660,6 +668,7 @@ class ProductDetailsPage extends HookConsumerWidget {
                               ),
                             ],
                           ),
+                        ),
                       ],
                     ),
                   ),

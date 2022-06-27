@@ -7,6 +7,7 @@ import '../../ui/theme/app_text_theme.dart';
 import '../common/drawer.dart';
 import '../common/show_dialog.dart';
 import '../hooks/use_l10n.dart';
+import '../hooks/use_media_query.dart';
 import '../hooks/use_router.dart';
 import '../theme/app_theme.dart';
 import 'order_view_model.dart';
@@ -19,6 +20,7 @@ class PurchasePage extends HookConsumerWidget {
     final theme = ref.watch(appThemeProvider);
     final l10n = useL10n();
     final appRoute = useRouter();
+    final appMQ = useMediaQuery();
     final state = ref.watch(orderViewModelProvider);
     final viewModel = ref.watch(orderViewModelProvider.notifier);
     final asyncValue = ref.watch(orderListStreamProvider);
@@ -49,7 +51,8 @@ class PurchasePage extends HookConsumerWidget {
               : Container(),
           Expanded(
               child: Center(
-            child: Center(
+            child: SizedBox(
+              width: appMQ.size.width >= 768 ? 400 : null,
               child: ListView.builder(
                 physics: const AlwaysScrollableScrollPhysics(),
                 itemCount: data.length,
@@ -144,7 +147,7 @@ class PurchasePage extends HookConsumerWidget {
                                       ? () async {
                                           final isConfirmed =
                                               await showConfirmDialog(context,
-                                                  '${ticket.numberOfUse.toString()}枚使用します');
+                                                  '「${ticket.name.toString()}」チケットを${ticket.numberOfUse.toString()}枚使用します');
                                           if (isConfirmed) {
                                             try {
                                               // 使用処理

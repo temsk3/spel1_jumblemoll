@@ -12,23 +12,6 @@ import 'order_view_model.dart';
 class SalesStatusPage extends HookConsumerWidget {
   const SalesStatusPage({Key? key, required this.bazaar}) : super(key: key);
   final bazaar;
-  List<Widget> _getTitleWidget() {
-    return [
-      _getTitleItemWidget('code', 100),
-      _getTitleItemWidget('product', 200),
-      _getTitleItemWidget('sum', 100),
-    ];
-  }
-
-  Widget _getTitleItemWidget(String label, double width) {
-    return Container(
-      width: width,
-      height: 56,
-      padding: const EdgeInsets.fromLTRB(5, 0, 0, 0),
-      alignment: Alignment.centerLeft,
-      child: Text(label, style: const TextStyle(fontWeight: FontWeight.bold)),
-    );
-  }
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -43,8 +26,6 @@ class SalesStatusPage extends HookConsumerWidget {
     final DateFormat dateFormatter =
         DateFormat.yMMMEd(Localizations.localeOf(context).toString()).add_Hm();
     final scrollController = ScrollController();
-    var verticalScrollController = ScrollController();
-    var horizontalScrollController = ScrollController();
     return asyncValue.when(
       data: (order) {
         final data = order.where((data) => data.bazaarId == bazaar).toList();
@@ -63,12 +44,15 @@ class SalesStatusPage extends HookConsumerWidget {
           //   centerTitle: true,
           // ),
           body: SafeArea(
-            child: Column(children: [
-              Text('sum:${numFormatter.format(sum)}', style: theme.textTheme.h50
-                  // .copyWith(color: theme.appColors.onPrimary),
-                  ),
-              // Flexible(child: salesDataTable(data: data))
-            ]),
+            child: Column(
+              children: [
+                Text('sum:${numFormatter.format(sum)}',
+                    style: theme.textTheme.h50
+                    // .copyWith(color: theme.appColors.onPrimary),
+                    ),
+                // Flexible(child: salesDataTable(data: data))
+              ],
+            ),
           ),
           // ),
         );

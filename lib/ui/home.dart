@@ -95,7 +95,7 @@ class HomePage extends HookConsumerWidget {
               NavigationDestination(
                 selectedIcon: Icon(Icons.shopping_basket),
                 icon: Icon(Icons.shopping_basket_outlined),
-                label: 'Item List',
+                label: 'Product Item List',
               ),
               NavigationDestination(
                 selectedIcon: Icon(Icons.event),

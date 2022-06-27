@@ -47,6 +47,7 @@ class ProductViewModel extends StateNotifier<AsyncValue<ProductState>> {
   Future<void> addProduct({
     required String organizer,
     required String bazaarId,
+    required String bazaarName,
     required DateTime salesStart,
     required DateTime salesEnd,
     required String register,
@@ -66,6 +67,7 @@ class ProductViewModel extends StateNotifier<AsyncValue<ProductState>> {
     var product = Product(
       organizer: organizer,
       bazaarId: bazaarId,
+      bazaarName: bazaarName,
       salesStart: salesStart,
       salesEnd: salesEnd,
       register: register,

@@ -79,6 +79,7 @@ class ProductAddPage extends HookConsumerWidget {
                 viewModel.addProduct(
                     organizer: organizer,
                     bazaarId: bazaarId,
+                    bazaarName: bazaar.name.toString(),
                     salesStart: bazaar.salesStart as DateTime,
                     salesEnd: bazaar.salesEnd as DateTime,
                     register: uid,
