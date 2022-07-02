@@ -9,7 +9,9 @@ import 'package:intl/intl.dart';
 
 import '../../data/model/bazaar/bazaar_model.dart';
 import '../../data/model/product/product_model.dart';
+import '../../data/repository/auth/auth_repository.dart';
 import '../../data/repository/product/product_repository_impal.dart';
+import '../../data/repository/user/user_repository.dart';
 import '../../ui/order/order_view_model.dart';
 import '../common/alertdialog.dart';
 import '../common/show_dialog.dart';
@@ -118,6 +120,22 @@ class ProductDetailsPage extends HookConsumerWidget {
     //
     final ImagePicker picker = ImagePicker();
     var uint8List = useState<Uint8List?>(null);
+
+    final user = ref.watch(userRepositoryProvider);
+    final authState = ref.watch(authStateProvider);
+    final verified = useState<bool>(false);
+    authState.whenData(
+      (data) async {
+        // print(data!.uid);
+        final result = (await user.fetchStatus(data!.uid));
+        if (result == 'verified') {
+          verified.value = true;
+        } else {
+          verified.value = false;
+        }
+      },
+    );
+
     return asyncValue.when(
       data: (data) {
         // final product = data.productList[index];
@@ -613,7 +631,9 @@ class ProductDetailsPage extends HookConsumerWidget {
                                     // primary: theme.appColors.primary,
                                     // onPrimary: theme.appColors.onPrimary,
                                     ),
-                                onPressed: (product.stock != 0 && isOpened)
+                                onPressed: (product.stock != 0 &&
+                                        isOpened &&
+                                        verified.value)
                                     ? () async {
                                         // if(){};
                                         final isConfirmed = await showConfirmDialog(

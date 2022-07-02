@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:jumblemoll/data/repository/user/user_repository.dart';
 
+import '../../data/repository/auth/auth_repository.dart';
 import '../../data/repository/bazaar/bazaar_repository_impal.dart';
 import '../../ui/bazaar/widget/bazaar_list.dart';
 import '../common/drawer.dart';
@@ -23,20 +26,32 @@ class BazaarListPage extends HookConsumerWidget {
     final l10n = useL10n();
     final appRoute = useRouter();
     final asyncValue = ref.watch(bazaarListStreamProvider);
-    bool owner = false;
-    const supporter = true; // c
+    final user = ref.watch(userRepositoryProvider);
+
+    var organizer = useState<bool>(false);
+
+    final authState = ref.watch(authStateProvider);
+    authState.whenData(
+      (data) async {
+        // print(data!.uid);
+        final result = (await user.fetchBankStatus(data!.uid));
+        if (result == 'verified') {
+          organizer.value = true;
+        } else {
+          organizer.value = false;
+        }
+      },
+    );
+    // const supporter = true; // c
     return asyncValue.when(
       data: (data) {
         return Scaffold(
           // backgroundColor: theme.appColors.background,
           // appBar: TopHeader(title: 'All Event'),
-          // drawer: const CustomDrawer(),
           body: SafeArea(
             child: Row(
               children: [
-                MediaQuery.of(context).size.width > 768
-                    ? const CustomDrawer()
-                    : Container(),
+                appMQ.size.width > 768 ? const CustomDrawer() : Container(),
                 Expanded(
                   child: Center(
                     child: SizedBox(
@@ -63,7 +78,7 @@ class BazaarListPage extends HookConsumerWidget {
             ),
           ),
           floatingActionButton: Visibility(
-            visible: true,
+            visible: organizer.value,
             child: FloatingActionButton(
               // backgroundColor: theme.appColors.primary,
               // foregroundColor: theme.appColors.onPrimary,

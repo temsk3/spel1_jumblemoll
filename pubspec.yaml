@@ -67,8 +67,9 @@ flutter:
   generate: true
   uses-material-design: true
   assets:
-    # - assets/img/
-    - .env
+    - assets/img/
+functions:
+  - .env
 
 flutter_gen:
   integrations:

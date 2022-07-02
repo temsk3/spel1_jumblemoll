@@ -46,9 +46,7 @@ class PurchasePage extends HookConsumerWidget {
         });
         return SafeArea(
             child: Row(children: [
-          MediaQuery.of(context).size.width > 768
-              ? const CustomDrawer()
-              : Container(),
+          appMQ.size.width > 768 ? const CustomDrawer() : Container(),
           Expanded(
               child: Center(
             child: SizedBox(

@@ -26,7 +26,7 @@ class ImageCropPage extends HookConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: theme.appColors.primary,
+        // backgroundColor: theme.appColors.primary,
         title: const Text(
           'Image Crop',
           // style: TextStyle(color: theme.appColors.onPrimary),
@@ -58,6 +58,17 @@ class ImageCropPage extends HookConsumerWidget {
       ),
       body: Visibility(
         visible: croppedData == null,
+        replacement: croppedData != null
+            ? Container(
+                padding: const EdgeInsets.all(16),
+                height: double.infinity,
+                width: double.infinity,
+                child: Image.memory(
+                  croppedData,
+                  fit: BoxFit.contain,
+                ),
+              )
+            : const SizedBox.shrink(),
         child: Crop(
             controller: controller,
             image: photoImage,
@@ -79,17 +90,6 @@ class ImageCropPage extends HookConsumerWidget {
             baseColor: Colors.grey
             // withCircleUi: true,
             ),
-        replacement: croppedData != null
-            ? Container(
-                padding: const EdgeInsets.all(16),
-                height: double.infinity,
-                width: double.infinity,
-                child: Image.memory(
-                  croppedData,
-                  fit: BoxFit.contain,
-                ),
-              )
-            : const SizedBox.shrink(),
       ),
     );
   }

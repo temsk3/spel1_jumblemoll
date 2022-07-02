@@ -1,7 +1,10 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
+import '../../data/repository/auth/auth_repository.dart';
+import '../../data/repository/bazaar/bazaar_repository_impal.dart';
 import '../../data/repository/product/product_repository_impal.dart';
 import '../common/alertdialog.dart';
 import '../hooks/use_l10n.dart';
@@ -27,13 +30,38 @@ class BazaarDetailsPage extends HookConsumerWidget {
     final state = ref.watch(bazzarViewModelProvider);
     final viewModel = ref.watch(bazzarViewModelProvider.notifier);
     final asyncValue = ref.watch(productListStreamProvider);
-    bool owner = true;
-    bool supporter = true;
+
+    final bazaar = bazaarEvent;
+    final supported = ref.watch(supporterListStreamProvider(bazaar.id));
+    final owner = useState<bool>(false);
+    final supporter = useState<bool>(false);
+    final authState = ref.watch(authStateProvider);
+    authState.whenData(
+      (data) {
+        if (data != null) {
+          if (data.uid == bazaar.organizer) {
+            owner.value = true;
+          } else {
+            supported.whenData(
+              (values) {
+                // supporter.value = value.contains(data.uid);
+                for (var value in values) {
+                  if (value.uid == data.uid && value.isActive == true) {
+                    supporter.value = true;
+                  }
+                }
+              },
+            );
+          }
+        } else {
+          owner.value = false;
+          supporter.value = false;
+        }
+      },
+    );
 
     return asyncValue.when(
       data: (value) {
-        final bazaar = bazaarEvent;
-
         final data =
             value.where((element) => element.bazaarId == bazaar.id).toList();
 
@@ -46,7 +74,7 @@ class BazaarDetailsPage extends HookConsumerWidget {
             automaticallyImplyLeading: false,
             actions: [
               Visibility(
-                visible: owner,
+                visible: owner.value,
                 child: IconButton(
                     onPressed: () async {
                       // appRoute.pop();
@@ -84,7 +112,7 @@ class BazaarDetailsPage extends HookConsumerWidget {
                     )),
               ),
               Visibility(
-                visible: owner,
+                visible: owner.value,
                 child: IconButton(
                     onPressed: () async {
                       appRoute.push(BazaarEditRoute(index: index));
@@ -144,6 +172,7 @@ class BazaarDetailsPage extends HookConsumerWidget {
           ),
           body: SafeArea(
             child: SingleChildScrollView(
+              // padding: const EdgeInsets.all(20.0),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -151,7 +180,7 @@ class BazaarDetailsPage extends HookConsumerWidget {
                     padding: EdgeInsets.symmetric(vertical: 5.0),
                   ),
                   Visibility(
-                    visible: owner || supporter,
+                    visible: owner.value || supporter.value,
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
@@ -161,7 +190,7 @@ class BazaarDetailsPage extends HookConsumerWidget {
                             ),
                         const Spacer(),
                         Visibility(
-                          visible: owner,
+                          visible: owner.value,
                           child: ElevatedButton(
                             style: ElevatedButton.styleFrom(
                                 // primary: theme.appColors.primary,
@@ -220,6 +249,9 @@ class BazaarDetailsPage extends HookConsumerWidget {
                       ],
                     ),
                   ),
+                  const Padding(
+                    padding: EdgeInsets.symmetric(vertical: 5.0),
+                  ),
                   Text('Place:${bazaar.place}'),
                   const Padding(
                     padding: EdgeInsets.symmetric(vertical: 5.0),
@@ -244,7 +276,7 @@ class BazaarDetailsPage extends HookConsumerWidget {
             ),
           ),
           floatingActionButton: Visibility(
-            visible: owner || supporter,
+            visible: owner.value || supporter.value,
             child: FloatingActionButton(
               // backgroundColor: theme.appColors.primary,
               // foregroundColor: theme.appColors.onPrimary,

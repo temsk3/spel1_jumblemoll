@@ -3,6 +3,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../common/drawer.dart';
 import '../hooks/use_l10n.dart';
+import '../hooks/use_media_query.dart';
 import '../hooks/use_router.dart';
 import '../theme/app_theme.dart';
 
@@ -14,6 +15,7 @@ class FavoritePage extends HookConsumerWidget {
     final theme = ref.watch(appThemeProvider);
     final l10n = useL10n();
     final appRoute = useRouter();
+    final appMQ = useMediaQuery();
 
     return Scaffold(
       // appBar: TopHeader(title: 'Products you care about'),
@@ -41,9 +43,7 @@ class FavoritePage extends HookConsumerWidget {
       body: SafeArea(
         child: Row(
           children: [
-            MediaQuery.of(context).size.width > 768
-                ? CustomDrawer()
-                : Container(),
+            appMQ.size.width > 768 ? const CustomDrawer() : Container(),
             Expanded(
               child: Center(
                 child: ListView(children: const []),

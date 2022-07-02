@@ -46,6 +46,7 @@ class User {
   String? accountId;
   String? sourceId;
   Status? status;
+  Status? bankStatus;
   bool? chargesEnabled;
 
   User({
@@ -56,6 +57,7 @@ class User {
     this.accountId,
     this.sourceId,
     this.status,
+    this.bankStatus,
     this.chargesEnabled,
   });
 
@@ -67,6 +69,7 @@ class User {
     accountId = json['accountId'];
     sourceId = json['sourceId'];
     status = StatusExtension.parseUserStatus(json['status'] as String);
+    status = StatusExtension.parseUserStatus(json['bankStatus'] as String);
     chargesEnabled = json['chargesEnabled'];
   }
 }

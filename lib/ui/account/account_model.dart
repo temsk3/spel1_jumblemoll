@@ -1,8 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart' as auth;
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:jumblemoll/data/repository/user/user_repository.dart';
 
 import '../../data/model/user/user_model.dart';
+import '../../data/repository/user/user_repository.dart';
 
 final userViewModelProvider =
     StateNotifierProvider.autoDispose<AccountModel, AsyncValue<User>>(

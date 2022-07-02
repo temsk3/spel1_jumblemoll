@@ -4,6 +4,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../common/drawer.dart';
 import '../hooks/use_l10n.dart';
+import '../hooks/use_media_query.dart';
 import '../hooks/use_router.dart';
 import '../routes/app_route.gr.dart';
 import '../theme/app_theme.dart';
@@ -17,6 +18,7 @@ class ProductPage extends HookConsumerWidget {
     final theme = ref.watch(appThemeProvider);
     final l10n = useL10n();
     final appRoute = useRouter();
+    final appMQ = useMediaQuery();
     final state = ref.watch(productViewModelProvider);
     final viewModel = ref.watch(productViewModelProvider.notifier);
     return state.when(
@@ -81,7 +83,7 @@ class ProductPage extends HookConsumerWidget {
                       ? const CustomDrawer()
                       : Container(),
                   Expanded(
-                    child: MediaQuery.of(context).size.width > 768
+                    child: appMQ.size.width > 768
                         ? SizedBox(
                             width: 400,
                             child: Center(

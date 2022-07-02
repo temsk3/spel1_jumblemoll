@@ -1,9 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
+import '../../data/repository/auth/auth_repository.dart';
+import '../auth/error_screen.dart';
+import '../auth/loading_screen.dart';
 import '../hooks/use_router.dart';
 import '../routes/app_route.gr.dart';
 import '../theme/app_theme.dart';
+
+enum Status {
+  login,
+  logout,
+}
+
+Status type = Status.logout;
 
 class CustomDrawer extends HookConsumerWidget {
   const CustomDrawer({Key? key}) : super(key: key);
@@ -12,6 +22,22 @@ class CustomDrawer extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = ref.watch(appThemeProvider);
     final appRoute = useRouter();
+    final data = ref.watch(fireBaseAuthProvider);
+    final auth = ref.watch(authenticationProvider);
+    final authState = ref.watch(authStateProvider);
+
+    authState.when(
+      data: (data) {
+        if (data != null) {
+          type = Status.login;
+        } else {
+          type = Status.logout;
+        }
+      },
+      loading: () => const LoadingScreen(),
+      error: (e, trace) => ErrorScreen(e, trace),
+    );
+
     return SafeArea(
       bottom: false,
       child: ClipRRect(
@@ -21,24 +47,26 @@ class CustomDrawer extends HookConsumerWidget {
         child: Drawer(
           child: ListView(
             children: [
-              const UserAccountsDrawerHeader(
+              UserAccountsDrawerHeader(
                 // decoration:
                 //     BoxDecoration(color: theme.appColors.onInverseSurface),
-                accountName: Text(
-                  "User Name",
-                  // style: theme.textTheme.h30
-                  // .copyWith(
-                  //   color: theme.appColors.onPrimary,
-                  // ),
-                ),
-                accountEmail: Text(
-                  "User Email",
-                  // style: theme.textTheme.h30
-                  // .copyWith(
-                  //   color: theme.appColors.onPrimary,
-                  // ),
-                ),
-                currentAccountPicture: CircleAvatar(
+                accountName: type == Status.login
+                    ? Text(data.currentUser!.displayName.toString())
+                    : const Text('non'),
+                // style: theme.textTheme.h30
+                // .copyWith(
+                //   color: theme.appColors.onPrimary,
+                // ),
+                // ),
+                accountEmail: type == Status.login
+                    ? Text(data.currentUser!.email.toString())
+                    : const Text('non'),
+                // style: theme.textTheme.h30
+                // .copyWith(
+                //   color: theme.appColors.onPrimary,
+                // ),
+                // ),
+                currentAccountPicture: const CircleAvatar(
                   backgroundColor: Colors.grey,
                   // backgroundImage: NetworkImage(userAvatarUrl),
                 ),
@@ -51,11 +79,16 @@ class CustomDrawer extends HookConsumerWidget {
               //   decoration: BoxDecoration(color: theme.appColors.primary),
               // ),
               ListTile(
-                title: const Text('SignIn'),
-                onTap: () {
-                  // appRoute.push(const LoginRoute());
-                  appRoute.replaceAll([const AuthRoute()]);
-                },
+                title: type == Status.login
+                    ? const Text('log out')
+                    : const Text('log in'),
+                onTap: type == Status.login
+                    ? () {
+                        auth.signOut();
+                      }
+                    : () {
+                        appRoute.replaceAll([const AuthRoute()]);
+                      },
               ),
               ListTile(
                 title: const Text('Profile'),
@@ -64,7 +97,7 @@ class CustomDrawer extends HookConsumerWidget {
                 },
               ),
               ListTile(
-                title: const Text('test3'),
+                title: const Text('terms'),
                 onTap: () {
                   // appRoute.push(const StartRoute());ß
                 },

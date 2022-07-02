@@ -9,6 +9,10 @@ import 'hooks/use_media_query.dart';
 import 'hooks/use_router.dart';
 import 'theme/app_theme.dart';
 
+// final firebaseinitializerProvider = FutureProvider<FirebaseApp>((ref) async {
+//   return await Firebase.initializeApp();
+// });
+
 class HomePage extends HookConsumerWidget {
   const HomePage({Key? key}) : super(key: key);
 

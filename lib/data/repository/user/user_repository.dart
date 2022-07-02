@@ -32,6 +32,7 @@ class UserRepository {
       'customerId': customerId,
       'accountId': accountId,
       'status': Status.unverified.toEnumString,
+      'bankStatus': Status.unverified.toEnumString,
       'chargesEnabled': false,
     });
   }
@@ -52,6 +53,16 @@ class UserRepository {
     try {
       final doc = await _firestore.collection('users').doc(id).get();
       return doc.data()?['status'];
+    } catch (e) {
+      return 'unknown';
+    }
+  }
+
+  /// statusを返す2
+  Future<String> fetchBankStatus(String id) async {
+    try {
+      final doc = await _firestore.collection('users').doc(id).get();
+      return doc.data()?['bankStatus'];
     } catch (e) {
       return 'unknown';
     }

@@ -9,6 +9,7 @@ import 'package:intl/intl.dart';
 import '../common/drawer.dart';
 import '../common/image_crop_controller.dart';
 import '../hooks/use_l10n.dart';
+import '../hooks/use_media_query.dart';
 import '../hooks/use_router.dart';
 import '../routes/app_route.gr.dart';
 import '../theme/app_theme.dart';
@@ -23,6 +24,7 @@ class BazaarEditPage extends HookConsumerWidget {
     final theme = ref.watch(appThemeProvider);
     final l10n = useL10n();
     final appRoute = useRouter();
+    final appMQ = useMediaQuery();
     final state = ref.watch(bazzarViewModelProvider);
     final viewModel = ref.watch(bazzarViewModelProvider.notifier);
     //
@@ -104,257 +106,269 @@ class BazaarEditPage extends HookConsumerWidget {
             ],
           ),
           // Header(title: 'Event'),
-          drawer: CustomDrawer(),
+          drawer: const CustomDrawer(),
           body: SafeArea(
             child: SingleChildScrollView(
               padding: const EdgeInsets.all(20.0),
-              child: Form(
-                key: form,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    InkWell(
-                      onTap: () async {
-                        form.currentState!.save();
-                        final XFile? image =
-                            await picker.pickImage(source: ImageSource.gallery);
-                        await ref
-                            .read(imageCropProvider.notifier)
-                            .pickImage(image);
-                        await appRoute.push(const ImageCropRoute());
-                      },
-                      child: Container(
-                        height: 100,
-                        width: 300,
-                        // color: theme.appColors.primary,
-                        alignment: Alignment.center,
-                        child: (ref.watch(imageCropProvider
-                                    .select((s) => s.croppedData)) ==
-                                null)
-                            ? (oldPicture.text == '')
-                                ? const Icon(Icons.add_photo_alternate)
-                                : SizedBox.expand(
-                                    child: Image.network(oldPicture.text))
-                            : SizedBox.expand(
-                                child: Image.memory(ref.watch(imageCropProvider
-                                        .select((s) => s.croppedData))
-                                    as Uint8List)),
-                      ),
-                    ),
-                    TextFormField(
-                      controller: name,
-                      decoration: const InputDecoration(labelText: 'title'),
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Please enter some text';
-                        }
-                        return null;
-                      },
-                      onSaved: (value) {
-                        name.text = value.toString();
-                      },
-                      onChanged: (value) {
-                        // _name.text = value.toString();
-                      },
-                    ),
-                    const Padding(
-                      padding: EdgeInsets.symmetric(vertical: 8.0),
-                    ),
-                    //
-                    Row(
-                      children: [
-                        ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                              // primary: theme.appColors.primary,
-                              // onPrimary: theme.appColors.onPrimary,
-                              ),
-                          child: const Text('販売期間'),
-                          onPressed: () async {
-                            final dateRange = await showDateRangePicker(
-                              context: context,
-                              initialDateRange: DateTimeRange(
-                                  start: DateTime.now(), end: DateTime.now()),
-                              firstDate: DateTime(DateTime.now().year,
-                                  DateTime.now().month, DateTime.now().day),
-                              lastDate: DateTime(DateTime.now().year + 3),
-                            );
-                            if (dateRange != null) {
-                              salesStart.text =
-                                  dateFormat.format(dateRange.start);
-                              salesEnd.text = dateFormat.format(dateRange.end);
-                            }
-                          },
-                        ),
-                        const Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 5.0),
-                        ),
-                        Flexible(
-                          child: TextFormField(
-                            controller: salesStart,
-                            decoration: const InputDecoration(
-                              border: UnderlineInputBorder(),
-                              labelText: "From",
-                            ),
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'Please enter some text';
-                              }
-                              if (DateTime.parse(value)
-                                  .isAfter(DateTime.parse(eventFrom.text))) {
-                                return 'Please enter a date after the specified date';
-                              }
-                              return null;
-                            },
-                            onSaved: (value) {
-                              salesStart.text = value.toString();
-                              // DateTime.parse(value) as TextEditingValue;
-                            },
-                          ),
-                        ),
-                        const Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 5.0),
-                        ),
-                        Flexible(
-                          child: TextFormField(
-                            controller: salesEnd,
-                            decoration: const InputDecoration(
-                              border: UnderlineInputBorder(),
-                              labelText: "To",
-                            ),
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'Please enter some text';
-                              }
-                              return null;
-                            },
-                            onSaved: (value) {
-                              salesEnd.text = value.toString();
-                              // DateTime.parse(value) as TextEditingValue;
-                            },
-                          ),
-                        ),
-                      ],
-                    ),
-                    const Padding(
-                      padding: EdgeInsets.symmetric(vertical: 8.0),
-                    ),
-                    Row(
+              child: Center(
+                child: SizedBox(
+                  width: appMQ.size.width >= 768 ? 400 : null,
+                  child: Form(
+                    key: form,
+                    child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                              // primary: theme.appColors.primary,
-                              // onPrimary: theme.appColors.onPrimary,
-                              ),
-                          child: const Text('開催期間'),
-                          onPressed: () async {
-                            final dateRange = await showDateRangePicker(
-                              context: context,
-                              initialDateRange: DateTimeRange(
-                                start: DateTime.parse(salesStart.text),
-                                end: DateTime.parse(salesEnd.text),
-                              ),
-                              firstDate: DateTime(now.year, now.month, now.day),
-                              lastDate: DateTime(now.year + 3),
-                            );
-                            if (dateRange != null) {
-                              eventFrom.text =
-                                  dateFormat.format(dateRange.start).toString();
-                              eventTo.text =
-                                  dateFormat.format(dateRange.end).toString();
+                        InkWell(
+                          onTap: () async {
+                            form.currentState!.save();
+                            final XFile? image = await picker.pickImage(
+                                source: ImageSource.gallery);
+                            await ref
+                                .read(imageCropProvider.notifier)
+                                .pickImage(image);
+                            await appRoute.push(const ImageCropRoute());
+                          },
+                          child: Container(
+                            height: 100,
+                            width: 300,
+                            color: Colors.grey.withOpacity(0.3),
+                            // color: theme.appColors.primary,
+                            alignment: Alignment.center,
+                            child: (ref.watch(imageCropProvider
+                                        .select((s) => s.croppedData)) ==
+                                    null)
+                                ? (oldPicture.text == '')
+                                    ? const Icon(Icons.add_photo_alternate)
+                                    : SizedBox.expand(
+                                        child: Image.network(oldPicture.text))
+                                : SizedBox.expand(
+                                    child: Image.memory(ref.watch(
+                                            imageCropProvider
+                                                .select((s) => s.croppedData))
+                                        as Uint8List)),
+                          ),
+                        ),
+                        TextFormField(
+                          controller: name,
+                          decoration: const InputDecoration(labelText: 'title'),
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please enter some text';
                             }
+                            return null;
+                          },
+                          onSaved: (value) {
+                            name.text = value.toString();
+                          },
+                          onChanged: (value) {
+                            // _name.text = value.toString();
                           },
                         ),
                         const Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 5.0),
+                          padding: EdgeInsets.symmetric(vertical: 8.0),
                         ),
-                        Flexible(
-                          child: TextFormField(
-                            controller: eventFrom,
-                            decoration: const InputDecoration(
-                              border: UnderlineInputBorder(),
-                              labelText: "From",
+                        //
+                        Row(
+                          children: [
+                            ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                  // primary: theme.appColors.primary,
+                                  // onPrimary: theme.appColors.onPrimary,
+                                  ),
+                              child: const Text('販売期間'),
+                              onPressed: () async {
+                                final dateRange = await showDateRangePicker(
+                                  context: context,
+                                  initialDateRange: DateTimeRange(
+                                      start: DateTime.now(),
+                                      end: DateTime.now()),
+                                  firstDate: DateTime(DateTime.now().year,
+                                      DateTime.now().month, DateTime.now().day),
+                                  lastDate: DateTime(DateTime.now().year + 3),
+                                );
+                                if (dateRange != null) {
+                                  salesStart.text =
+                                      dateFormat.format(dateRange.start);
+                                  salesEnd.text =
+                                      dateFormat.format(dateRange.end);
+                                }
+                              },
                             ),
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'Please enter some text';
-                              }
-                              return null;
-                            },
-                            onSaved: (value) {
-                              eventFrom.text = value.toString();
-                              // DateTime.parse(value);
-                            },
-                          ),
+                            const Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 5.0),
+                            ),
+                            Flexible(
+                              child: TextFormField(
+                                controller: salesStart,
+                                decoration: const InputDecoration(
+                                  border: UnderlineInputBorder(),
+                                  labelText: "From",
+                                ),
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return 'Please enter some text';
+                                  }
+                                  if (DateTime.parse(value).isAfter(
+                                      DateTime.parse(eventFrom.text))) {
+                                    return 'Please enter a date after the specified date';
+                                  }
+                                  return null;
+                                },
+                                onSaved: (value) {
+                                  salesStart.text = value.toString();
+                                  // DateTime.parse(value) as TextEditingValue;
+                                },
+                              ),
+                            ),
+                            const Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 5.0),
+                            ),
+                            Flexible(
+                              child: TextFormField(
+                                controller: salesEnd,
+                                decoration: const InputDecoration(
+                                  border: UnderlineInputBorder(),
+                                  labelText: "To",
+                                ),
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return 'Please enter some text';
+                                  }
+                                  return null;
+                                },
+                                onSaved: (value) {
+                                  salesEnd.text = value.toString();
+                                  // DateTime.parse(value) as TextEditingValue;
+                                },
+                              ),
+                            ),
+                          ],
                         ),
                         const Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 5.0),
+                          padding: EdgeInsets.symmetric(vertical: 8.0),
                         ),
-                        Flexible(
-                          child: TextFormField(
-                            controller: eventTo,
-                            decoration: const InputDecoration(
-                              border: UnderlineInputBorder(),
-                              labelText: "To",
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                  // primary: theme.appColors.primary,
+                                  // onPrimary: theme.appColors.onPrimary,
+                                  ),
+                              child: const Text('開催期間'),
+                              onPressed: () async {
+                                final dateRange = await showDateRangePicker(
+                                  context: context,
+                                  initialDateRange: DateTimeRange(
+                                    start: DateTime.parse(salesStart.text),
+                                    end: DateTime.parse(salesEnd.text),
+                                  ),
+                                  firstDate:
+                                      DateTime(now.year, now.month, now.day),
+                                  lastDate: DateTime(now.year + 3),
+                                );
+                                if (dateRange != null) {
+                                  eventFrom.text = dateFormat
+                                      .format(dateRange.start)
+                                      .toString();
+                                  eventTo.text = dateFormat
+                                      .format(dateRange.end)
+                                      .toString();
+                                }
+                              },
                             ),
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'Please enter some text';
-                              }
-                              if (DateTime.parse(salesEnd.text)
-                                  .isAfter(DateTime.parse(value))) {
-                                return 'Please enter a date after the specified date';
-                              }
-                              return null;
-                            },
-                            onSaved: (value) {
-                              eventTo.text = value.toString();
-                              // DateTime.parse(value) as TextEditingValue;
-                            },
+                            const Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 5.0),
+                            ),
+                            Flexible(
+                              child: TextFormField(
+                                controller: eventFrom,
+                                decoration: const InputDecoration(
+                                  border: UnderlineInputBorder(),
+                                  labelText: "From",
+                                ),
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return 'Please enter some text';
+                                  }
+                                  return null;
+                                },
+                                onSaved: (value) {
+                                  eventFrom.text = value.toString();
+                                  // DateTime.parse(value);
+                                },
+                              ),
+                            ),
+                            const Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 5.0),
+                            ),
+                            Flexible(
+                              child: TextFormField(
+                                controller: eventTo,
+                                decoration: const InputDecoration(
+                                  border: UnderlineInputBorder(),
+                                  labelText: "To",
+                                ),
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return 'Please enter some text';
+                                  }
+                                  if (DateTime.parse(salesEnd.text)
+                                      .isAfter(DateTime.parse(value))) {
+                                    return 'Please enter a date after the specified date';
+                                  }
+                                  return null;
+                                },
+                                onSaved: (value) {
+                                  eventTo.text = value.toString();
+                                  // DateTime.parse(value) as TextEditingValue;
+                                },
+                              ),
+                            ),
+                          ],
+                        ),
+                        const Padding(
+                          padding: EdgeInsets.symmetric(vertical: 8.0),
+                        ),
+                        TextFormField(
+                          controller: place,
+                          decoration: const InputDecoration(labelText: 'place'),
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please enter some text';
+                            }
+                            return null;
+                          },
+                          onSaved: (value) {
+                            place.text = value.toString();
+                          },
+                        ),
+                        const Padding(
+                          padding: EdgeInsets.symmetric(vertical: 8.0),
+                        ),
+                        TextFormField(
+                          controller: message,
+                          maxLines: 2,
+                          decoration: const InputDecoration(
+                            border: OutlineInputBorder(),
+                            labelText: 'message',
                           ),
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please enter some text';
+                            }
+                            return null;
+                          },
+                          onSaved: (value) {
+                            message.text = value.toString();
+                          },
+                        ),
+                        const Padding(
+                          padding: EdgeInsets.symmetric(vertical: 8.0),
                         ),
                       ],
                     ),
-                    const Padding(
-                      padding: EdgeInsets.symmetric(vertical: 8.0),
-                    ),
-                    TextFormField(
-                      controller: place,
-                      decoration: const InputDecoration(labelText: 'place'),
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Please enter some text';
-                        }
-                        return null;
-                      },
-                      onSaved: (value) {
-                        place.text = value.toString();
-                      },
-                    ),
-                    const Padding(
-                      padding: EdgeInsets.symmetric(vertical: 8.0),
-                    ),
-                    TextFormField(
-                      controller: message,
-                      maxLines: 2,
-                      decoration: const InputDecoration(
-                        border: OutlineInputBorder(),
-                        labelText: 'message',
-                      ),
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Please enter some text';
-                        }
-                        return null;
-                      },
-                      onSaved: (value) {
-                        message.text = value.toString();
-                      },
-                    ),
-                    const Padding(
-                      padding: EdgeInsets.symmetric(vertical: 8.0),
-                    ),
-                  ],
+                  ),
                 ),
               ),
             ),
