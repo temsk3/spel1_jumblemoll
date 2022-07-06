@@ -90,12 +90,13 @@ class CustomDrawer extends HookConsumerWidget {
                         appRoute.replaceAll([const AuthRoute()]);
                       },
               ),
-              ListTile(
-                title: const Text('Profile'),
-                onTap: () {
-                  appRoute.push(const AccountRoute());
-                },
-              ),
+              if (type == Status.login)
+                ListTile(
+                  title: const Text('Profile'),
+                  onTap: () {
+                    appRoute.push(const AccountRoute());
+                  },
+                ),
               ListTile(
                 title: const Text('terms'),
                 onTap: () {
