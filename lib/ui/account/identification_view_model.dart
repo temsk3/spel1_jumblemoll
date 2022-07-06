@@ -13,14 +13,14 @@ import '../../data/repository/stripe/stripe_repository.dart';
 import '../../data/repository/user/user_repository.dart';
 import '../../utils/validation_utils.dart';
 
-final identificationViewModelProvider =
-    StateNotifierProvider.autoDispose<IdentificationModel, AsyncValue<void>>(
-  (ref) => IdentificationModel(ref: ref),
+final identificationViewModelProvider = StateNotifierProvider.autoDispose<
+    IdentificationViewModel, AsyncValue<void>>(
+  (ref) => IdentificationViewModel(ref: ref),
 );
 
-class IdentificationModel extends StateNotifier<AsyncValue<void>> {
+class IdentificationViewModel extends StateNotifier<AsyncValue<void>> {
   final AutoDisposeStateNotifierProviderRef _ref;
-  IdentificationModel({required AutoDisposeStateNotifierProviderRef ref})
+  IdentificationViewModel({required AutoDisposeStateNotifierProviderRef ref})
       : _ref = ref,
         super(const AsyncLoading()) {
     // fetch();
@@ -53,7 +53,7 @@ class IdentificationModel extends StateNotifier<AsyncValue<void>> {
 ''';
 
   late final _userRepo = _ref.watch(userRepositoryProvider);
-  final _stripeRepo = StripeRepository();
+  late final _stripeRepo = _ref.watch(stripeRepositoryProvider);
 
   bool isAcceptTerm = false;
   StripeIndividual? individual;

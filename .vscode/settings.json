@@ -1,16 +1,18 @@
 {
-    "files.exclude": {
-      ".dart_tool": true,
-      ".idea": true,
-      "build": true,
-      "node_modules": true,
-      ".flutter-plugins": true,
-      ".flutter-plugins-dependencies": true,
-      ".metadata": true,
-      ".packages": true,
-      "yarn.lock": true,
-      "pubspec.lock": true,
-      "**/*.freezed.dart": true,
-      "**/*.g.dart": true,
-    }
-  }
+  "files.exclude": {
+    ".dart_tool": true,
+    ".idea": true,
+    "build": true,
+    "node_modules": true,
+    ".flutter-plugins": true,
+    ".flutter-plugins-dependencies": true,
+    ".metadata": true,
+    ".packages": true,
+    "yarn.lock": true,
+    "pubspec.lock": true,
+    "**/*.freezed.dart": true,
+    "**/*.g.dart": true
+  },
+  "editor.defaultFormatter": null,
+  "cSpell.ignoreWords": ["Fimber", "Firestore"]
+}

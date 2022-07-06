@@ -5,13 +5,13 @@ import '../../data/model/user/user_model.dart';
 import '../../data/repository/user/user_repository.dart';
 
 final userViewModelProvider =
-    StateNotifierProvider.autoDispose<AccountModel, AsyncValue<User>>(
-  (ref) => AccountModel(ref: ref),
+    StateNotifierProvider.autoDispose<AccountViewModel, AsyncValue<User>>(
+  (ref) => AccountViewModel(ref: ref),
 );
 
-class AccountModel extends StateNotifier<AsyncValue<User>> {
+class AccountViewModel extends StateNotifier<AsyncValue<User>> {
   final AutoDisposeStateNotifierProviderRef _ref;
-  AccountModel({required AutoDisposeStateNotifierProviderRef ref})
+  AccountViewModel({required AutoDisposeStateNotifierProviderRef ref})
       : _ref = ref,
         super(const AsyncLoading()) {
     fetch();
@@ -30,6 +30,7 @@ class AccountModel extends StateNotifier<AsyncValue<User>> {
   //   await auth.FirebaseAuth.instance.signOut();
   // }
   late final UserRepository userRepository = _ref.watch(userRepositoryProvider);
+
   Future<void> createUser(
     auth.User? user,
     String customerId,

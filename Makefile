@@ -98,3 +98,8 @@ build-ios-dev:
 .PHONY: build-ios-prod
 build-ios-prod:
 	fvm flutter build ios --release --dart-define=FLAVOR=$(PROD_FLAVOR) --target lib/main.dart
+
+# run emu
+.PHONY: run-emu
+run-emu:
+	fvm flutter run --dart-define=IS_EMULATOR=true --target lib/main.dart

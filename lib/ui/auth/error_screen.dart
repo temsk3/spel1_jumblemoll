@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:logger/logger.dart';
+
+final logger = Logger();
 
 class ErrorScreen extends StatelessWidget {
   final Object e;
@@ -11,6 +14,8 @@ class ErrorScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    logger.e(e);
+    logger.e(trace);
     return Scaffold(
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,

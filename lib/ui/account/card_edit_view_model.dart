@@ -9,13 +9,13 @@ import '../../data/repository/stripe/stripe_repository.dart';
 import '../../data/repository/user/user_repository.dart';
 
 final editCardViewModelProvider =
-    StateNotifierProvider.autoDispose<EditCardModel, AsyncValue<void>>(
-  (ref) => EditCardModel(ref: ref),
+    StateNotifierProvider.autoDispose<EditCardViewModel, AsyncValue<void>>(
+  (ref) => EditCardViewModel(ref: ref),
 );
 
-class EditCardModel extends StateNotifier<AsyncValue<void>> {
+class EditCardViewModel extends StateNotifier<AsyncValue<void>> {
   final AutoDisposeStateNotifierProviderRef _ref;
-  EditCardModel({required AutoDisposeStateNotifierProviderRef ref})
+  EditCardViewModel({required AutoDisposeStateNotifierProviderRef ref})
       : _ref = ref,
         super(const AsyncLoading()) {
     fetch();
@@ -29,7 +29,7 @@ class EditCardModel extends StateNotifier<AsyncValue<void>> {
   CreditCard newCreditCard = CreditCard();
 
   late final userRepo = _ref.watch(userRepositoryProvider);
-  final stripeRepo = StripeRepository();
+  late final stripeRepo = _ref.watch(stripeRepositoryProvider);
 
   final numberNode = FocusNode();
   final expNode = FocusNode();

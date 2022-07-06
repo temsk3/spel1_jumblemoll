@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
+import '/utils/verification_status.dart';
 import '../../data/repository/auth/auth_repository.dart';
-import '../../utils/verification_status.dart';
 import '../auth/error_screen.dart';
 import '../auth/loading_screen.dart';
-import 'account_model.dart';
+import 'account_view_model.dart';
 import 'card_edit_page.dart';
 import 'identification_page.dart';
 

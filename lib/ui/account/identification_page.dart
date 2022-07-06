@@ -5,7 +5,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../data/model/stripe/stripe_individual.dart';
 import '../../utils/show_dialog.dart';
 import '../../utils/verification_status.dart';
-import 'identification_model.dart';
+import 'identification_view_model.dart';
 
 class IdentificationPage extends HookConsumerWidget {
   const IdentificationPage({Key? key}) : super(key: key);
@@ -30,7 +30,7 @@ class IdentificationPage extends HookConsumerWidget {
     // );
   }
 
-  Widget _body(BuildContext context, IdentificationModel model) {
+  Widget _body(BuildContext context, IdentificationViewModel model) {
     if (model.individual == null || model.user == null) {
       return const Center(
         child: CircularProgressIndicator(),
@@ -50,7 +50,7 @@ class IdentificationPage extends HookConsumerWidget {
   }
 
   /// 本人情報の入力画面
-  Widget _unverifiedBody(BuildContext context, IdentificationModel model) {
+  Widget _unverifiedBody(BuildContext context, IdentificationViewModel model) {
     final individual = model.individual;
 
     return Column(
@@ -473,7 +473,7 @@ class IdentificationPage extends HookConsumerWidget {
   }
 
   /// 本人確認完了画面
-  Widget _verifiedBody(BuildContext context, IdentificationModel model) {
+  Widget _verifiedBody(BuildContext context, IdentificationViewModel model) {
     final individual = model.individual;
     return Container(
       constraints: BoxConstraints(

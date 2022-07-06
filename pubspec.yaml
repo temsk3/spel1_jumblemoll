@@ -51,6 +51,8 @@ dependencies:
   http: ^0.13.4
   # horizontal_data_table: ^4.0.0
   enum_to_string: ^2.0.1
+  # logger: ^1.1.0
+  logger: ^1.1.0
 
 dev_dependencies:
   flutter_test:
@@ -61,7 +63,7 @@ dev_dependencies:
   auto_route_generator: ^4.0.0
   json_serializable: ^6.1.5
   freezed: ^2.0.3+1
-  fimber: ^0.6.6
+  # fimber: ^0.6.6
 
 flutter:
   generate: true

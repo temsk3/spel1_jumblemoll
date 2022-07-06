@@ -1,16 +1,25 @@
 import 'package:cloud_functions/cloud_functions.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:logger/logger.dart';
 import 'package:uuid/uuid.dart';
 
 import '../../model/stripe/stripe_individual.dart';
 import '../../model/user/user_model.dart';
 
+final logger = Logger();
+
+final stripeRepositoryProvider =
+    Provider<StripeRepository>((ref) => StripeRepository(ref.read));
+
 class StripeRepository {
-  static final StripeRepository _instance = StripeRepository._internal();
-  StripeRepository._internal();
-  factory StripeRepository() {
-    return _instance;
-  }
+  // static final StripeRepository _instance = StripeRepository._internal();
+  // StripeRepository._internal();
+  // factory StripeRepository() {
+  //   return _instance;
+  // }
+  StripeRepository(this._reader);
+  final Reader _reader;
 
   ///
   /// Customer（お金を払うアカウント ≒ 購入者）
@@ -19,6 +28,7 @@ class StripeRepository {
 
   /// customer を作成し、customerId を返す
   Future<String> createCustomer(String email) async {
+    logger.d(email);
     final callable = FirebaseFunctions.instanceFor(
       app: Firebase.app(),
       region: 'asia-northeast1',
@@ -29,6 +39,7 @@ class StripeRepository {
     });
     final data = functionResult.data;
     final String customerId = data['customerId'];
+    logger.d(customerId);
     return customerId;
   }
 

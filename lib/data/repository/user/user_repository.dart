@@ -16,6 +16,7 @@ class UserRepository {
   // }
   UserRepository(this._reader);
   final Reader _reader;
+
   User? _user;
   final _firestore = FirebaseFirestore.instance;
 

@@ -3,7 +3,7 @@ import 'package:flutter_multi_formatter/flutter_multi_formatter.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../utils/show_dialog.dart';
-import 'card_edit_model.dart';
+import 'card_edit_view_model.dart';
 
 class EditCardPage extends HookConsumerWidget {
   const EditCardPage({Key? key}) : super(key: key);
@@ -78,7 +78,7 @@ class EditCardPage extends HookConsumerWidget {
   }
 
   /// カード部分
-  Widget _cardInfoBody(BuildContext context, EditCardModel model) {
+  Widget _cardInfoBody(BuildContext context, EditCardViewModel model) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
