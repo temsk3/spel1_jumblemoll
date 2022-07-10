@@ -7,6 +7,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 
 import '../../data/model/bazaar/bazaar_model.dart';
+import '../../data/repository/auth/auth_repository.dart';
 import '../common/image_crop_controller.dart';
 import '../hooks/use_l10n.dart';
 import '../hooks/use_media_query.dart';
@@ -29,11 +30,15 @@ class BazaarAddPage extends HookConsumerWidget {
     final themeMode = ref.watch(appThemeModeProvider);
     // final state = ref.watch(bazzarViewModelProvider);
     final viewModel = ref.watch(bazzarViewModelProvider.notifier);
+    // String uid = 'test';
+    String uid = '';
+    ref.watch(authStateProvider).whenData((user) {
+      uid = user!.uid;
+    });
     final bazaar = Bazaar.empty();
     //
     final form = GlobalKey<FormState>();
     DateTime now = DateTime.now();
-    String uid = 'test';
 
     final name = useTextEditingController(text: bazaar.name);
     final message = useTextEditingController(text: bazaar.message);
