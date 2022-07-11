@@ -11,6 +11,7 @@ import 'package:logger/logger.dart';
 import '../../data/model/bazaar/bazaar_model.dart';
 import '../../data/model/product/product_model.dart';
 import '../../data/repository/auth/auth_repository.dart';
+import '../../data/repository/bazaar/bazaar_repository_impal.dart';
 import '../../data/repository/product/product_repository_impal.dart';
 import '../../data/repository/user/user_repository.dart';
 import '../../ui/order/order_view_model.dart';
@@ -56,6 +57,8 @@ class ProductDetailsPage extends HookConsumerWidget {
     Bazaar bazaar;
     final owner = useState<bool>(false);
     final supporter = useState<bool>(false);
+    final authState = ref.watch(authStateProvider);
+
     final order = useState<bool>(false);
     final edit = useState<bool>(false);
     final update = useState<bool>(false);
@@ -65,9 +68,40 @@ class ProductDetailsPage extends HookConsumerWidget {
     DateTime now = DateTime.now();
     bool isOpened = false;
 
+    String? organizer;
+    String? bazaarId;
     if (bazaarEvent == null) {
+      bazaar = Bazaar.empty();
       order.value = true;
     } else {
+      bazaar = bazaarEvent;
+      organizer = bazaar.organizer;
+      bazaarId = bazaar.id;
+      final supported =
+          ref.watch(supporterListStreamProvider(bazaar.id.toString()));
+      authState.whenData(
+        (data) {
+          if (data != null) {
+            if (data.uid == bazaar.organizer) {
+              owner.value = true;
+            } else {
+              supported.whenData(
+                (values) {
+                  // supporter.value = value.contains(data.uid);
+                  for (var value in values) {
+                    if (value.uid == data.uid && value.isActive == true) {
+                      supporter.value = true;
+                    }
+                  }
+                },
+              );
+            }
+          } else {
+            owner.value = false;
+            supporter.value = false;
+          }
+        },
+      );
       if (owner.value == false || supporter.value == false) {
         order.value = true;
       }
@@ -91,15 +125,6 @@ class ProductDetailsPage extends HookConsumerWidget {
           now.compareTo(product.salesEnd as DateTime) < 0);
     }
 
-    String? organizer;
-    String? bazaarId;
-    if (bazaarEvent == null) {
-      bazaar = Bazaar.empty();
-    } else {
-      bazaar = bazaarEvent;
-      organizer = bazaar.organizer;
-      bazaarId = bazaar.id;
-    }
     //
 
     String uid = '';
@@ -128,7 +153,6 @@ class ProductDetailsPage extends HookConsumerWidget {
     var uint8List = useState<Uint8List?>(null);
 
     final user = ref.watch(userRepositoryProvider);
-    final authState = ref.watch(authStateProvider);
     final verified = useState<bool>(false);
     authState.whenData(
       (data) async {

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
+import 'package:logger/logger.dart';
 
 import '../../data/repository/auth/auth_repository.dart';
 import '../../data/repository/transaction/purchase/order_repository_impal.dart';
@@ -12,6 +13,8 @@ import '../hooks/use_media_query.dart';
 import '../hooks/use_router.dart';
 import '../theme/app_theme.dart';
 import 'order_view_model.dart';
+
+final logger = Logger();
 
 class PurchasePage extends HookConsumerWidget {
   const PurchasePage({Key? key}) : super(key: key);
@@ -39,6 +42,7 @@ class PurchasePage extends HookConsumerWidget {
     ref.watch(authStateProvider).whenData((user) {
       uid = user!.uid;
     });
+    logger.d(uid);
     return asyncValue.when(
       data: (order) {
         final data = order.where((data) => data.userId == uid).toList();

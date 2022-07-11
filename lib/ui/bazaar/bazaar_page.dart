@@ -48,23 +48,20 @@ class BazaarListPage extends HookConsumerWidget {
         return Scaffold(
           // backgroundColor: theme.appColors.background,
           // appBar: TopHeader(title: 'All Event'),
-          body: data.isNotEmpty
-              ? SafeArea(
-                  child: Row(
-                    children: [
-                      appMQ.size.width > 768
-                          ? const CustomDrawer()
-                          : Container(),
-                      Expanded(
-                        child: Center(
-                          child: SizedBox(
-                            width: appMQ.size.width >= 768 ? 600 : null,
-                            child: RefreshIndicator(
-                              onRefresh: () async {
-                                // ref.refresh(bazzarViewModelProvider);
-                                viewModel.readBazaar();
-                              },
-                              child: ListView.builder(
+          body: SafeArea(
+            child: Row(
+              children: [
+                appMQ.size.width > 768 ? const CustomDrawer() : Container(),
+                Expanded(
+                  child: Center(
+                    child: SizedBox(
+                      width: appMQ.size.width >= 768 ? 600 : null,
+                      child: RefreshIndicator(
+                        onRefresh: () async {
+                          viewModel.readBazaar();
+                        },
+                        child: data.isNotEmpty
+                            ? ListView.builder(
                                 physics: const AlwaysScrollableScrollPhysics(),
                                 // itemExtent: 100,
                                 itemCount: data.length,
@@ -73,15 +70,15 @@ class BazaarListPage extends HookConsumerWidget {
                                   return EventCard(
                                       index: index, bazaar: bazaar);
                                 },
-                              ),
-                            ),
-                          ),
-                        ),
+                              )
+                            : Container(),
                       ),
-                    ],
+                    ),
                   ),
-                )
-              : null,
+                ),
+              ],
+            ),
+          ),
           floatingActionButton: Visibility(
             visible: organizer.value,
             child: FloatingActionButton(
