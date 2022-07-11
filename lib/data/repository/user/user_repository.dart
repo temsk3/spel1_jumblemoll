@@ -14,8 +14,8 @@ class UserRepository {
   // factory UserRepository() {
   //   return _instance;
   // }
-  UserRepository(this._reader);
   final Reader _reader;
+  UserRepository(this._reader);
 
   User? _user;
   final _firestore = FirebaseFirestore.instance;

@@ -48,35 +48,40 @@ class BazaarListPage extends HookConsumerWidget {
         return Scaffold(
           // backgroundColor: theme.appColors.background,
           // appBar: TopHeader(title: 'All Event'),
-          body: SafeArea(
-            child: Row(
-              children: [
-                appMQ.size.width > 768 ? const CustomDrawer() : Container(),
-                Expanded(
-                  child: Center(
-                    child: SizedBox(
-                      width: appMQ.size.width >= 768 ? 600 : null,
-                      child: RefreshIndicator(
-                        onRefresh: () async {
-                          // ref.refresh(bazzarViewModelProvider);
-                          viewModel.readBazaar();
-                        },
-                        child: ListView.builder(
-                          physics: const AlwaysScrollableScrollPhysics(),
-                          // itemExtent: 100,
-                          itemCount: data.length,
-                          itemBuilder: (_, index) {
-                            final bazaar = data[index];
-                            return EventCard(index: index, bazaar: bazaar);
-                          },
+          body: data.isNotEmpty
+              ? SafeArea(
+                  child: Row(
+                    children: [
+                      appMQ.size.width > 768
+                          ? const CustomDrawer()
+                          : Container(),
+                      Expanded(
+                        child: Center(
+                          child: SizedBox(
+                            width: appMQ.size.width >= 768 ? 600 : null,
+                            child: RefreshIndicator(
+                              onRefresh: () async {
+                                // ref.refresh(bazzarViewModelProvider);
+                                viewModel.readBazaar();
+                              },
+                              child: ListView.builder(
+                                physics: const AlwaysScrollableScrollPhysics(),
+                                // itemExtent: 100,
+                                itemCount: data.length,
+                                itemBuilder: (_, index) {
+                                  final bazaar = data[index];
+                                  return EventCard(
+                                      index: index, bazaar: bazaar);
+                                },
+                              ),
+                            ),
+                          ),
                         ),
                       ),
-                    ),
+                    ],
                   ),
-                ),
-              ],
-            ),
-          ),
+                )
+              : null,
           floatingActionButton: Visibility(
             visible: organizer.value,
             child: FloatingActionButton(
