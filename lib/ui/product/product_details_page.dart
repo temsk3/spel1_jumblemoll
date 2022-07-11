@@ -6,6 +6,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
+import 'package:logger/logger.dart';
 
 import '../../data/model/bazaar/bazaar_model.dart';
 import '../../data/model/product/product_model.dart';
@@ -21,6 +22,8 @@ import '../hooks/use_router.dart';
 import '../theme/app_theme.dart';
 import 'product_view_model.dart';
 import 'widget/picture.dart';
+
+final logger = Logger();
 
 class ProductDetailsPage extends HookConsumerWidget {
   const ProductDetailsPage({
@@ -69,7 +72,9 @@ class ProductDetailsPage extends HookConsumerWidget {
         order.value = true;
       }
       if (productItem != null) {
-        update.value = true;
+        if (owner.value == true || supporter.value == true) {
+          update.value = true;
+        }
       } else {
         update.value = true;
         add.value = true;
@@ -97,8 +102,9 @@ class ProductDetailsPage extends HookConsumerWidget {
     }
     //
 
-    String uid = 'test';
-    bool saporter = false;
+    String uid = '';
+    String userName = '';
+    // bool supporter = false;
     //
     final quantity = useState<int>(1);
 
@@ -129,6 +135,7 @@ class ProductDetailsPage extends HookConsumerWidget {
         // print(data!.uid);
         final result = (await user.fetchStatus(data!.uid));
         uid = data.uid;
+        userName = data.displayName.toString();
         if (result == 'verified') {
           verified.value = true;
         } else {
@@ -136,6 +143,8 @@ class ProductDetailsPage extends HookConsumerWidget {
         }
       },
     );
+    logger.d(uid);
+    logger.d(userName);
 
     return asyncValue.when(
       data: (data) {
@@ -653,7 +662,7 @@ class ProductDetailsPage extends HookConsumerWidget {
                                                     .notifier)
                                                 .addOrder(
                                                   userId: uid,
-                                                  userName: '',
+                                                  userName: userName,
                                                   organizer: product.organizer,
                                                   bazaarId: product.bazaarId,
                                                   bazaarName:
