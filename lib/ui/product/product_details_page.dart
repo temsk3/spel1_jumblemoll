@@ -97,7 +97,7 @@ class ProductDetailsPage extends HookConsumerWidget {
     }
     //
 
-    const uid = 'test';
+    String uid = 'test';
     bool saporter = false;
     //
     final quantity = useState<int>(1);
@@ -128,6 +128,7 @@ class ProductDetailsPage extends HookConsumerWidget {
       (data) async {
         // print(data!.uid);
         final result = (await user.fetchStatus(data!.uid));
+        uid = data.uid;
         if (result == 'verified') {
           verified.value = true;
         } else {

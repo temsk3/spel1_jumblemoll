@@ -21,7 +21,7 @@ class EventCard extends HookConsumerWidget {
     final theme = ref.watch(appThemeProvider);
     final l10n = useL10n();
     final appRoute = useRouter();
-    final viewModel = ref.watch(bazzarViewModelProvider.notifier);
+    final viewModel = ref.watch(bazaarViewModelProvider.notifier);
 
     //
     var uid = 'test';

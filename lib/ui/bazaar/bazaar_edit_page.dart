@@ -6,6 +6,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 
+import '../../data/repository/auth/auth_repository.dart';
 import '../common/drawer.dart';
 import '../common/image_crop_controller.dart';
 import '../hooks/use_l10n.dart';
@@ -25,12 +26,16 @@ class BazaarEditPage extends HookConsumerWidget {
     final l10n = useL10n();
     final appRoute = useRouter();
     final appMQ = useMediaQuery();
-    final state = ref.watch(bazzarViewModelProvider);
-    final viewModel = ref.watch(bazzarViewModelProvider.notifier);
+    final state = ref.watch(bazaarViewModelProvider);
+    final viewModel = ref.watch(bazaarViewModelProvider.notifier);
     //
     final form = GlobalKey<FormState>();
     DateTime now = DateTime.now();
-    String uid = 'test';
+    // String uid = 'test';
+    String uid = '';
+    ref.watch(authStateProvider).whenData((user) {
+      uid = user!.uid;
+    });
 
     //
     final ImagePicker picker = ImagePicker();

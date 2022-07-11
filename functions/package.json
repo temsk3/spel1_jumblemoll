@@ -1,8 +1,5 @@
 {
   "name": "functions",
-  "functions": {
-    "predeploy": "npm --prefix functions run build"
-  },
   "scripts": {
     "lint": "eslint --ext .js,.ts .",
     "build": "tsc",
@@ -18,8 +15,8 @@
   },
   "main": "lib/index.js",
   "dependencies": {
-    "firebase-admin": "^10.0.2",
-    "firebase-functions": "^3.18.0",
+    "firebase-admin": "^11.0.0",
+    "firebase-functions": "^3.22.0",
     "stripe": "^9.11.0"
   },
   "devDependencies": {

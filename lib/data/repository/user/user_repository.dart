@@ -27,7 +27,7 @@ class UserRepository {
     String accountId,
   ) async {
     await _firestore.collection('users').doc(user?.uid).set({
-      'id': user?.uid,
+      'userId': user?.uid,
       'displayName': user?.displayName,
       'email': user?.email,
       'customerId': customerId,
@@ -35,6 +35,8 @@ class UserRepository {
       'status': Status.unverified.toEnumString,
       'bankStatus': Status.unverified.toEnumString,
       'chargesEnabled': false,
+      'createdAt': FieldValue.serverTimestamp(),
+      'updatedAt': FieldValue.serverTimestamp(),
     });
   }
 

@@ -10,7 +10,7 @@ import '../../data/repository/iamge/image_repository.dart';
 import '../../data/repository/iamge/image_repository_impal.dart';
 import 'bazaar_state.dart';
 
-final bazzarViewModelProvider =
+final bazaarViewModelProvider =
     StateNotifierProvider.autoDispose<BazaarViewModel, AsyncValue<BazaarState>>(
   (ref) => BazaarViewModel(ref: ref),
 );

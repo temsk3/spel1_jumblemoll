@@ -27,8 +27,8 @@ class BazaarDetailsPage extends HookConsumerWidget {
     final theme = ref.watch(appThemeProvider);
     final l10n = useL10n();
     final appRoute = useRouter();
-    final state = ref.watch(bazzarViewModelProvider);
-    final viewModel = ref.watch(bazzarViewModelProvider.notifier);
+    final state = ref.watch(bazaarViewModelProvider);
+    final viewModel = ref.watch(bazaarViewModelProvider.notifier);
     final asyncValue = ref.watch(productListStreamProvider);
 
     final bazaar = bazaarEvent;

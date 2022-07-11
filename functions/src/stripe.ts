@@ -2,6 +2,7 @@ import * as firebaseAdmin from "firebase-admin";
 import * as functions from "firebase-functions";
 
 // Stripe の SecretKey（sk_〇〇〇〇） を環境変数に保存
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 const stripe = require("stripe")(functions.config().stripe.secret, {
   typescript: true,
 });

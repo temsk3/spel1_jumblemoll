@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
 
+import '../../data/repository/auth/auth_repository.dart';
 import '../../data/repository/transaction/purchase/order_repository_impal.dart';
 import '../../ui/theme/app_text_theme.dart';
 import '../common/drawer.dart';
@@ -33,7 +34,11 @@ class PurchasePage extends HookConsumerWidget {
     var horizontalScrollController = ScrollController();
     final localizations = MaterialLocalizations.of(context);
     //
-    const uid = 'test';
+    // String uid = 'test';
+    String uid = '';
+    ref.watch(authStateProvider).whenData((user) {
+      uid = user!.uid;
+    });
     return asyncValue.when(
       data: (order) {
         final data = order.where((data) => data.userId == uid).toList();

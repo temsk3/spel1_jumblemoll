@@ -29,7 +29,7 @@ class BazaarAddPage extends HookConsumerWidget {
     final mode = ref.watch(appThemeModeProvider);
     final themeMode = ref.watch(appThemeModeProvider);
     // final state = ref.watch(bazzarViewModelProvider);
-    final viewModel = ref.watch(bazzarViewModelProvider.notifier);
+    final viewModel = ref.watch(bazaarViewModelProvider.notifier);
     // String uid = 'test';
     String uid = '';
     ref.watch(authStateProvider).whenData((user) {
