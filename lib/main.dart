@@ -19,7 +19,7 @@ final logger = Logger();
 
 // Future<void> main() async {
 void main() async {
-  // await DotEnv().load(fileName: '.env');
+  await DotEnv().load(fileName: '.env');
   const isEmulator = bool.fromEnvironment('IS_EMULATOR');
   logger.d('start(isEmulator: $isEmulator)');
   //Fimber

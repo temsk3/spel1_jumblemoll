@@ -14,5 +14,6 @@
     "**/*.g.dart": true
   },
   "editor.defaultFormatter": null,
-  "cSpell.ignoreWords": ["Fimber", "Firestore"]
+  "cSpell.ignoreWords": ["Fimber", "Firestore"],
+  "cSpell.words": ["nullsafety"]
 }
