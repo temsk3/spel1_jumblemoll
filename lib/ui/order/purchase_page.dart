@@ -29,6 +29,8 @@ class PurchasePage extends HookConsumerWidget {
     final state = ref.watch(orderViewModelProvider);
     final viewModel = ref.watch(orderViewModelProvider.notifier);
     final asyncValue = ref.watch(orderListStreamProvider);
+    final NumberFormat formatter = NumberFormat.simpleCurrency(
+        locale: Localizations.localeOf(context).toString());
     final NumberFormat numFormatter = NumberFormat.simpleCurrency(
         locale: Localizations.localeOf(context).toString());
     final DateFormat dateFormatter =
@@ -132,20 +134,40 @@ class PurchasePage extends HookConsumerWidget {
                                               MainAxisAlignment.spaceBetween,
                                           // crossAxisAlignment: CrossAxisAlignment.center,
                                           children: [
-                                            Text(ticket.code.toString(),
-                                                style:
-                                                    theme.textTheme.h30.bold()
-                                                //     .copyWith(
-                                                //         color:
-                                                //             theme.appColors.onBackground),
-                                                ),
-                                            Text(ticket.name.toString(),
-                                                style:
-                                                    theme.textTheme.h30.bold()
-                                                //     .copyWith(
-                                                //         color:
-                                                //             theme.appColors.onBackground),
-                                                ),
+                                            Column(
+                                              children: [
+                                                Text(ticket.code.toString(),
+                                                    style: theme.textTheme.h30
+                                                        .bold()
+                                                    //     .copyWith(
+                                                    //         color:
+                                                    //             theme.appColors.onBackground),
+                                                    ),
+                                                const Text(''),
+                                              ],
+                                            ),
+                                            Column(
+                                              children: [
+                                                Text(ticket.name.toString(),
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
+                                                    style: theme.textTheme.h30
+                                                        .bold()
+                                                    //     .copyWith(
+                                                    //         color:
+                                                    //             theme.appColors.onBackground),
+                                                    ),
+                                                Text(
+                                                    formatter
+                                                        .format(ticket.price),
+                                                    style: theme.textTheme.h30
+                                                        .bold()
+                                                    //     .copyWith(
+                                                    //         color:
+                                                    //             theme.appColors.onBackground),
+                                                    ),
+                                              ],
+                                            ),
                                             // const Padding(
                                             //   padding: EdgeInsets.symmetric(horizontal: 20.0),
                                             // ),
