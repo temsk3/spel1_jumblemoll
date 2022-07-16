@@ -171,109 +171,106 @@ class BazaarDetailsPage extends HookConsumerWidget {
                 : null,
           ),
           body: SafeArea(
-            child: SingleChildScrollView(
-              // padding: const EdgeInsets.all(20.0),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Padding(
-                    padding: EdgeInsets.symmetric(vertical: 5.0),
-                  ),
-                  Visibility(
-                    visible: owner.value || supporter.value,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        const Spacer(),
-                        Text('status:', style: theme.textTheme.h30
-                            // .copyWith(color: theme.appColors.onBackground),
-                            ),
-                        const Spacer(),
-                        Visibility(
-                          visible: owner.value,
-                          child: ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                                // primary: theme.appColors.primary,
-                                // onPrimary: theme.appColors.onPrimary,
-                                ),
-                            onPressed: () {
-                              appRoute
-                                  .push(SupporterRoute(bazaarId: bazaar.id));
-                            },
-                            child: Text('supporter', style: theme.textTheme.h30
-                                // .copyWith(color: theme.appColors.onPrimary),
-                                ),
+            //   child: SingleChildScrollView(
+            // padding: const EdgeInsets.all(20.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Padding(
+                  padding: EdgeInsets.symmetric(vertical: 5.0),
+                ),
+                Visibility(
+                  visible: owner.value || supporter.value,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      const Spacer(),
+                      Text('status:', style: theme.textTheme.h30
+                          // .copyWith(color: theme.appColors.onBackground),
                           ),
-                        ),
-                        const Spacer(),
-                        ElevatedButton(
+                      const Spacer(),
+                      Visibility(
+                        visible: owner.value,
+                        child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
                               // primary: theme.appColors.primary,
                               // onPrimary: theme.appColors.onPrimary,
                               ),
                           onPressed: () {
-                            appRoute.push(OrderRoute(bazaar: bazaar.id));
+                            appRoute.push(SupporterRoute(bazaarId: bazaar.id));
                           },
-                          child: Text('order', style: theme.textTheme.h30
+                          child: Text('supporter', style: theme.textTheme.h30
                               // .copyWith(color: theme.appColors.onPrimary),
                               ),
                         ),
-                        const Spacer(),
-                        ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                              // primary: theme.appColors.primary,
-                              // onPrimary: theme.appColors.onPrimary,
-                              ),
-                          onPressed: () {
-                            appRoute.push(SalesStatusRoute(bazaar: bazaar.id));
-                          },
-                          child: Text('sales', style: theme.textTheme.h30
-                              // .copyWith(color: theme.appColors.onPrimary),
-                              ),
-                        ),
-                        const Spacer(),
-                        ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                              // primary: theme.appColors.primary,
-                              // onPrimary: theme.appColors.onPrimary,
-                              ),
-                          onPressed: () {
-                            appRoute
-                                .push(ProductStatusRoute(bazaar: bazaar.id));
-                          },
-                          child: Text('product', style: theme.textTheme.h30
-                              // .copyWith(color: theme.appColors.onPrimary),
-                              ),
-                        ),
-                        const Spacer(),
-                      ],
-                    ),
+                      ),
+                      const Spacer(),
+                      ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                            // primary: theme.appColors.primary,
+                            // onPrimary: theme.appColors.onPrimary,
+                            ),
+                        onPressed: () {
+                          appRoute.push(OrderRoute(bazaar: bazaar.id));
+                        },
+                        child: Text('order', style: theme.textTheme.h30
+                            // .copyWith(color: theme.appColors.onPrimary),
+                            ),
+                      ),
+                      const Spacer(),
+                      ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                            // primary: theme.appColors.primary,
+                            // onPrimary: theme.appColors.onPrimary,
+                            ),
+                        onPressed: () {
+                          appRoute.push(SalesStatusRoute(bazaar: bazaar.id));
+                        },
+                        child: Text('sales', style: theme.textTheme.h30
+                            // .copyWith(color: theme.appColors.onPrimary),
+                            ),
+                      ),
+                      const Spacer(),
+                      ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                            // primary: theme.appColors.primary,
+                            // onPrimary: theme.appColors.onPrimary,
+                            ),
+                        onPressed: () {
+                          appRoute.push(ProductStatusRoute(bazaar: bazaar.id));
+                        },
+                        child: Text('product', style: theme.textTheme.h30
+                            // .copyWith(color: theme.appColors.onPrimary),
+                            ),
+                      ),
+                      const Spacer(),
+                    ],
                   ),
-                  const Padding(
-                    padding: EdgeInsets.symmetric(vertical: 5.0),
+                ),
+                const Padding(
+                  padding: EdgeInsets.symmetric(vertical: 5.0),
+                ),
+                Text('Place:${bazaar.place}'),
+                const Padding(
+                  padding: EdgeInsets.symmetric(vertical: 5.0),
+                ),
+                GridView.builder(
+                  shrinkWrap: true,
+                  gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+                    maxCrossAxisExtent: 200,
+                    childAspectRatio: 0.8,
                   ),
-                  Text('Place:${bazaar.place}'),
-                  const Padding(
-                    padding: EdgeInsets.symmetric(vertical: 5.0),
-                  ),
-                  GridView.builder(
-                    shrinkWrap: true,
-                    gridDelegate:
-                        const SliverGridDelegateWithMaxCrossAxisExtent(
-                      maxCrossAxisExtent: 200,
-                      childAspectRatio: 0.8,
-                    ),
-                    padding: const EdgeInsets.all(16.0),
-                    itemCount: data.length,
-                    itemBuilder: (_, index) {
-                      final product = data[index];
-                      return ProductCard(
-                          index: index, product: product, bazaar: bazaar);
-                    },
-                  ),
-                ],
-              ),
+                  padding: const EdgeInsets.all(16.0),
+                  itemCount: data.length,
+                  itemBuilder: (_, index) {
+                    final product = data[index];
+                    return ProductCard(
+                        index: index, product: product, bazaar: bazaar);
+                  },
+                ),
+              ],
             ),
+            // ),
           ),
           floatingActionButton: Visibility(
             visible: owner.value || supporter.value,
