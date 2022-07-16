@@ -21,33 +21,35 @@ class SupporterPage extends HookConsumerWidget {
     final active = useState<bool>(false);
     return asyncValue.when(
       data: (data) {
-        return Scaffold(
-          // appBar: AppBar(
-          //   automaticallyImplyLeading: false,
-          //   actions: const [],
-          // ),
-          body: SafeArea(
-              child: Center(
-            child: ListView.builder(
-              itemCount: data.length,
-              itemBuilder: (_, index) {
-                active.value = data[index].isActive as bool;
-                return SwitchListTile(
-                  value: active.value,
-                  title: Text(data[index].name.toString()),
-                  onChanged: (value) async {
-                    active.value = value;
-                    await viewModel.updateSupporter(
-                        bazaarId: bazaarId,
-                        uid: data[index].uid.toString(),
-                        name: data[index].name.toString(),
-                        isActive: active.value);
-                  },
-                );
-              },
-            ),
-          )),
-        );
+        return data != null
+            ? Scaffold(
+                // appBar: AppBar(
+                //   automaticallyImplyLeading: false,
+                //   actions: const [],
+                // ),
+                body: SafeArea(
+                    child: Center(
+                  child: ListView.builder(
+                    itemCount: data.length,
+                    itemBuilder: (_, index) {
+                      active.value = data[index].isActive as bool;
+                      return SwitchListTile(
+                        value: active.value,
+                        title: Text(data[index].name.toString()),
+                        onChanged: (value) async {
+                          active.value = value;
+                          await viewModel.updateSupporter(
+                              bazaarId: bazaarId,
+                              uid: data[index].uid.toString(),
+                              name: data[index].name.toString(),
+                              isActive: active.value);
+                        },
+                      );
+                    },
+                  ),
+                )),
+              )
+            : Container();
       },
       error: (e, msg) => Scaffold(
         body: SafeArea(

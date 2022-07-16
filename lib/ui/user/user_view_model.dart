@@ -110,3 +110,23 @@
 //   //   );
 //   // }
 // }
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+
+import '../../data/model/user/user_model.dart';
+import '../../data/repository/user/user_repository.dart';
+
+final userViewModelProvider =
+    StateNotifierProvider.autoDispose<UserViewModel, AsyncValue<User?>>(
+  (ref) => UserViewModel(ref.read),
+);
+
+class UserViewModel extends StateNotifier<AsyncValue<User?>> {
+  final Reader _read;
+  UserViewModel(this._read) : super(const AsyncValue.loading()) {
+    fetch();
+  }
+
+  Future<User?> fetch() async {
+    return await _read(userRepositoryProvider).fetch();
+  }
+}

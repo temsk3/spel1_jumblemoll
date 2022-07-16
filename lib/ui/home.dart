@@ -57,7 +57,7 @@ class HomePage extends HookConsumerWidget {
         routes: const [
           ProductRouter(),
           BazaarListRouter(),
-          FavoriteRoute(),
+          // FavoriteRoute(),
           PurchaseRoute(),
         ],
         bottomNavigationBuilder: (_, tabsRouter) {
@@ -106,11 +106,11 @@ class HomePage extends HookConsumerWidget {
                 icon: Icon(Icons.event_outlined),
                 label: 'Event List',
               ),
-              NavigationDestination(
-                selectedIcon: Icon(Icons.bookmark),
-                icon: Icon(Icons.bookmark_border),
-                label: 'Favorite',
-              ),
+              // NavigationDestination(
+              //   selectedIcon: Icon(Icons.bookmark),
+              //   icon: Icon(Icons.bookmark_border),
+              //   label: 'Favorite',
+              // ),
               NavigationDestination(
                 selectedIcon: FaIcon(FontAwesomeIcons.ticketSimple),
                 icon: FaIcon(FontAwesomeIcons.ticket),

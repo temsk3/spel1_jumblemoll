@@ -102,6 +102,7 @@ class StripeRepository {
     });
     final data = functionResult.data;
     final String accountId = data['id'];
+    logger.d(accountId);
     return accountId;
   }
 

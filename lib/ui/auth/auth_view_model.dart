@@ -6,8 +6,8 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:jumblemoll/data/repository/stripe/stripe_repository.dart';
 import 'package:logger/logger.dart';
 
-import '../../../ui/account/account_view_model.dart';
-import '../../../ui/account/stripe_view_model.dart';
+import '../account/account_view_model.dart';
+import '../account/stripe_view_model.dart';
 
 final logger = Logger();
 
@@ -33,7 +33,10 @@ class Authentication {
 
   //  SigIn the user using Email and Password
   Future<void> signInWithEmailAndPassword(
-      String email, String password, BuildContext context) async {
+    String email,
+    String password,
+    BuildContext context,
+  ) async {
     final localizations = MaterialLocalizations.of(context);
     try {
       await _auth.signInWithEmailAndPassword(email: email, password: password);
@@ -57,8 +60,12 @@ class Authentication {
   }
 
   // SignUp the user using Email and Password
-  Future<void> signUpWithEmailAndPassword(String email, String password,
-      BuildContext context, WidgetRef ref) async {
+  Future<void> signUpWithEmailAndPassword(
+    String email,
+    String password,
+    BuildContext context,
+    WidgetRef ref,
+  ) async {
     final localizations = MaterialLocalizations.of(context);
     try {
       await _auth
@@ -69,14 +76,12 @@ class Authentication {
           .then(
         (credential) async {
           logger.d(credential.user!.uid);
-          final customerId =
-              await ref.read(stripeRepositoryProvider).createCustomer(email);
-          logger.d(customerId);
-
-          final accountId = await ref
-              .read(stripeRepositoryProvider)
-              .createConnectAccount(email);
+          final stripe = ref.watch(stripeRepositoryProvider);
+          final accountId = await stripe.createConnectAccount(email);
           logger.d(accountId);
+
+          final customerId = await stripe.createCustomer(email);
+          logger.d(customerId);
 
           await ref.watch(userViewModelProvider.notifier).createUser(
                 credential.user,
@@ -84,7 +89,7 @@ class Authentication {
                 accountId,
               );
         },
-      ).catchError((e) => logger.e(e));
+      );
       // UserCredential result = await _auth.createUserWithEmailAndPassword(
       //   email: email,
       //   password: password,
@@ -141,7 +146,10 @@ class Authentication {
   }
 
   //  SignIn the user Google
-  Future<void> signInWithGoogle(BuildContext context, WidgetRef ref) async {
+  Future<void> signInWithGoogle(
+    BuildContext context,
+    WidgetRef ref,
+  ) async {
     final localizations = MaterialLocalizations.of(context);
     // Trigger the authentication flow
     final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();

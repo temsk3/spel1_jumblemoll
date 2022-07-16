@@ -9,17 +9,23 @@ import '../../data/repository/stripe/stripe_repository.dart';
 import '../../data/repository/user/user_repository.dart';
 
 final editCardViewModelProvider =
-    StateNotifierProvider.autoDispose<EditCardViewModel, AsyncValue<void>>(
-  (ref) => EditCardViewModel(ref: ref),
-);
+//     StateNotifierProvider.autoDispose<EditCardViewModel, AsyncValue<void>>(
+//   (ref) => EditCardViewModel(ref: ref),
+// );
+    ChangeNotifierProvider((ref) => EditCardViewModel(ref.read));
 
-class EditCardViewModel extends StateNotifier<AsyncValue<void>> {
-  final AutoDisposeStateNotifierProviderRef _ref;
-  EditCardViewModel({required AutoDisposeStateNotifierProviderRef ref})
-      : _ref = ref,
-        super(const AsyncLoading()) {
+class EditCardViewModel extends ChangeNotifier {
+  final Reader _read;
+  EditCardViewModel(this._read) : super() {
     fetch();
   }
+// class EditCardViewModel extends StateNotifier<AsyncValue<void>> {
+//   final AutoDisposeStateNotifierProviderRef _ref;
+//   EditCardViewModel({required AutoDisposeStateNotifierProviderRef ref})
+//       : _ref = ref,
+//         super(const AsyncLoading()) {
+//     fetch();
+//   }
 
   User? user;
   bool isCardRegister = false;
@@ -28,8 +34,8 @@ class EditCardViewModel extends StateNotifier<AsyncValue<void>> {
   late CreditCard creditCardNow;
   CreditCard newCreditCard = CreditCard();
 
-  late final userRepo = _ref.watch(userRepositoryProvider);
-  late final stripeRepo = _ref.watch(stripeRepositoryProvider);
+  late final userRepo = _read(userRepositoryProvider);
+  late final stripeRepo = _read(stripeRepositoryProvider);
 
   final numberNode = FocusNode();
   final expNode = FocusNode();
@@ -49,7 +55,7 @@ class EditCardViewModel extends StateNotifier<AsyncValue<void>> {
     isCardRegister = sourceId != null;
     if (!isCardRegister) {
       // カードが登録されてなければ何もしない
-      // notifyListeners();
+      notifyListeners();
       return;
     }
 
@@ -73,21 +79,21 @@ class EditCardViewModel extends StateNotifier<AsyncValue<void>> {
   void clearCardCache() {
     creditCardNow = newCreditCard;
     isCardRegister = false;
-    // notifyListeners();
+    notifyListeners();
   }
 
   /// カード番号
   void changeCreditNumber(text) {
     newCreditCard.cardNumber = text;
     checkIsFilled();
-    // notifyListeners();
+    notifyListeners();
   }
 
   /// 有効期限
   void changeExp(text) {
     newCreditCard.exp = text;
     checkIsFilled();
-    // notifyListeners();
+    notifyListeners();
   }
 
   /// CVC
@@ -95,7 +101,7 @@ class EditCardViewModel extends StateNotifier<AsyncValue<void>> {
     //AMEX: 4桁、それ以外が3桁
     newCreditCard.cvc = text;
     checkIsFilled();
-    // notifyListeners();
+    notifyListeners();
   }
 
   /// 入力されているかチェックする
@@ -103,7 +109,7 @@ class EditCardViewModel extends StateNotifier<AsyncValue<void>> {
     isFilledAll = newCreditCard.cardNumber.isNotEmpty &&
         newCreditCard.exp.isNotEmpty &&
         newCreditCard.cvc.isNotEmpty;
-    // notifyListeners();
+    notifyListeners();
   }
 
   /// フォーカスを解く
@@ -111,7 +117,7 @@ class EditCardViewModel extends StateNotifier<AsyncValue<void>> {
     numberNode.unfocus();
     expNode.unfocus();
     cvcNode.unfocus();
-    // notifyListeners();
+    notifyListeners();
   }
 
   /// カード情報の保存
@@ -129,7 +135,7 @@ class EditCardViewModel extends StateNotifier<AsyncValue<void>> {
     }
 
     try {
-      _startLoading();
+      // _startLoading();
 
       // stripeのcardTokenを取得
       final cardToken = await _fetchCardTokenFromStripeAPI();
@@ -147,7 +153,7 @@ class EditCardViewModel extends StateNotifier<AsyncValue<void>> {
     } catch (e) {
       throw ('カード情報の保存に失敗しました');
     } finally {
-      _endLoading();
+      // _endLoading();
     }
   }
 
@@ -179,11 +185,11 @@ class EditCardViewModel extends StateNotifier<AsyncValue<void>> {
 
   void _startLoading() {
     isLoading = true;
-    //   notifyListeners();
+    notifyListeners();
   }
 
   void _endLoading() {
     isLoading = false;
-    //   notifyListeners();
+    notifyListeners();
   }
 }

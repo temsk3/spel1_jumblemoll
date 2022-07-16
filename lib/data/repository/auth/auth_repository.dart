@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../data/model/auth/auth_model.dart';
+import '../../../ui/auth/auth_view_model.dart';
 
 //  This is how you create a provider in Riverpod. Note the syntax may change in near future.
 //  This is a provider which provides all the features of Authentication class we have created

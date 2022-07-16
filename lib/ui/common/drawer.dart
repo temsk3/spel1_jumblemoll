@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
+import '../../data/model/user/user_model.dart';
 import '../../data/repository/auth/auth_repository.dart';
+import '../../data/repository/user/user_repository.dart';
 import '../auth/error_screen.dart';
 import '../auth/loading_screen.dart';
 import '../hooks/use_router.dart';
@@ -25,7 +27,17 @@ class CustomDrawer extends HookConsumerWidget {
     final data = ref.watch(fireBaseAuthProvider);
     final auth = ref.watch(authenticationProvider);
     final authState = ref.watch(authStateProvider);
-
+    final userStream = ref.watch(userStreamProvider);
+    String uid = 'non';
+    String name = 'non';
+    String email = 'non';
+    User? user;
+    userStream.whenData((value) => user = value);
+    if (user != null) {
+      uid = user!.id.toString();
+      name = user!.displayName.toString();
+      email = user!.email.toString();
+    }
     authState.when(
       data: (data) {
         if (data != null) {
@@ -51,7 +63,8 @@ class CustomDrawer extends HookConsumerWidget {
                 // decoration:
                 //     BoxDecoration(color: theme.appColors.onInverseSurface),
                 accountName: type == Status.login
-                    ? Text(data.currentUser!.displayName.toString())
+                    // ? Text(data.currentUser!.displayName.toString())
+                    ? Text(name)
                     : const Text('non'),
                 // style: theme.textTheme.h30
                 // .copyWith(
@@ -59,7 +72,9 @@ class CustomDrawer extends HookConsumerWidget {
                 // ),
                 // ),
                 accountEmail: type == Status.login
-                    ? Text(data.currentUser!.email.toString())
+                    // ? Text(data.currentUser!.email.toString())
+
+                    ? Text(email)
                     : const Text('non'),
                 // style: theme.textTheme.h30
                 // .copyWith(

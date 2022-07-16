@@ -80,13 +80,13 @@ export const createStripeCharge = fucRegion.https.onCall(async (data, context) =
 export const createConnectAccount = fucRegion.https.onCall(async (data, context) => {
   return await stripe.accounts.create(
     {
-      type: "custom", // 必須
+      type: "express", // 必須
       country: "JP",
       email: data.email,
       business_type: "individual",
       business_profile: {
-        mcc: "5734", // 業種コード（5834 → Computer Software Stores）
-        url: "https://github.com/DaigoWakabayashi/stripe-platform-example", // 事業のウェブサイト
+        mcc: "5818", // 業種コード（5834 → Computer Software Stores）
+        url: "https://spel1.com", // 事業のウェブサイト
         product_description: "プラットフォーム型サービスのテストアカウントです", // 事業の内容
       },
       capabilities: {

@@ -2,9 +2,11 @@ import 'dart:convert';
 import 'dart:developer';
 
 import 'package:file_picker/file_picker.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:http/http.dart' as http;
+import 'package:logger/logger.dart';
 import 'package:stripe_sdk/stripe_sdk.dart';
 
 import '../../data/model/stripe/stripe_individual.dart';
@@ -13,18 +15,27 @@ import '../../data/repository/stripe/stripe_repository.dart';
 import '../../data/repository/user/user_repository.dart';
 import '../../utils/validation_utils.dart';
 
-final identificationViewModelProvider = StateNotifierProvider.autoDispose<
-    IdentificationViewModel, AsyncValue<void>>(
-  (ref) => IdentificationViewModel(ref: ref),
-);
+final logger = Logger();
 
-class IdentificationViewModel extends StateNotifier<AsyncValue<void>> {
-  final AutoDisposeStateNotifierProviderRef _ref;
-  IdentificationViewModel({required AutoDisposeStateNotifierProviderRef ref})
-      : _ref = ref,
-        super(const AsyncLoading()) {
-    // fetch();
+final identificationViewModelProvider =
+// StateNotifierProvider.autoDispose<
+//     IdentificationViewModel, AsyncValue<void>>(
+//   (ref) => IdentificationViewModel(ref: ref),
+// );
+    ChangeNotifierProvider((ref) => IdentificationViewModel(ref.read));
+
+class IdentificationViewModel extends ChangeNotifier {
+  final Reader _read;
+  IdentificationViewModel(this._read) : super() {
+    fetchIndividual();
   }
+// class IdentificationViewModel extends StateNotifier<AsyncValue<void>> {
+//   final AutoDisposeStateNotifierProviderRef _ref;
+//   IdentificationViewModel({required AutoDisposeStateNotifierProviderRef ref})
+//       : _ref = ref,
+//         super(const AsyncLoading()) {
+//     // fetch();
+//   }
   bool isLoading = false;
 
   void startLoading() {
@@ -52,8 +63,8 @@ class IdentificationViewModel extends StateNotifier<AsyncValue<void>> {
 - .pngもしくは.jpgの形式
 ''';
 
-  late final _userRepo = _ref.watch(userRepositoryProvider);
-  late final _stripeRepo = _ref.watch(stripeRepositoryProvider);
+  late final _userRepo = _read(userRepositoryProvider);
+  late final _stripeRepo = _read(stripeRepositoryProvider);
 
   bool isAcceptTerm = false;
   StripeIndividual? individual;
@@ -68,8 +79,10 @@ class IdentificationViewModel extends StateNotifier<AsyncValue<void>> {
   Future fetchIndividual() async {
     try {
       user = await _fetchUser();
+      logger.d(user);
       final json = await _stripeRepo.retrieveConnectAccount(user);
       individual = StripeIndividual.fromJson(json);
+      logger.d(individual);
     } catch (e) {
       log(e.toString());
       // 新しいの入れる
@@ -156,6 +169,7 @@ class IdentificationViewModel extends StateNotifier<AsyncValue<void>> {
   /// user ドキュメントを返す
   Future<User?> _fetchUser() async {
     final user = await _userRepo.fetch();
+    logger.d(user!.id);
     return user;
   }
 

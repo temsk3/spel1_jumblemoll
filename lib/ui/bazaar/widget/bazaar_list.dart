@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../data/model/bazaar/bazaar_model.dart';
-import '../../../data/repository/auth/auth_repository.dart';
+import '../../../data/model/user/user_model.dart';
+import '../../../data/repository/user/user_repository.dart';
 import '../../common/show_dialog.dart';
 import '../../hooks/use_l10n.dart';
 import '../../hooks/use_router.dart';
@@ -22,22 +23,28 @@ class EventCard extends HookConsumerWidget {
     final l10n = useL10n();
     final appRoute = useRouter();
     final viewModel = ref.watch(bazaarViewModelProvider.notifier);
+    final userStream = ref.watch(userStreamProvider);
 
     //
+    var supporter = false;
     var uid = 'test';
     var name = '名無し';
-    var supporter = false;
-    final authState = ref.watch(authStateProvider);
-    authState.whenData(
+    var email = '';
+    User? user;
+    userStream.whenData(
+      // if (user != null) {
+      //   uid = user!.id.toString();
+      //   name = user!.displayName.toString();
+      // }
+      // final authState = ref.watch(authStateProvider);
+      // authState.whenData(
       (data) {
-        if (data != null) {
-          uid = data.uid;
-          if (data.displayName != null) {
-            name = data.displayName!;
-          }
-          name = data.email!;
-          supporter = true;
+        uid = data.id!;
+        if (data.displayName != null) {
+          name = data.displayName!;
         }
+        name = data.email!;
+        supporter = true;
       },
     );
     return Card(

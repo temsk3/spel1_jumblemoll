@@ -35,25 +35,26 @@ class SalesStatusPage extends HookConsumerWidget {
           sum = (sum + e.sum!);
         }
 
-        return Scaffold(
-          // appBar: AppBar(
-          //   backgroundColor: theme.appColors.primary,
-          //   foregroundColor: theme.appColors.onPrimary,
-          //   leading: const AutoLeadingButton(),
-          //   title: Text('sum:${numFormatter.format(sum)}'),
-          //   centerTitle: true,
-          // ),
-          body: SafeArea(
-            child: Column(
-              children: [
-                Text('sum:${numFormatter.format(sum)}',
-                    style: theme.textTheme.h50
-                    // .copyWith(color: theme.appColors.onPrimary),
-                    ),
-                // Flexible(child: salesDataTable(data: data))
-              ],
-            ),
+        return
+            // Scaffold(
+            // appBar: AppBar(
+            //   backgroundColor: theme.appColors.primary,
+            //   foregroundColor: theme.appColors.onPrimary,
+            //   leading: const AutoLeadingButton(),
+            //   title: Text('sum:${numFormatter.format(sum)}'),
+            //   centerTitle: true,
+            // ),
+            // body:
+            SafeArea(
+          child: Column(
+            children: [
+              Text('sum:${numFormatter.format(sum)}', style: theme.textTheme.h50
+                  // .copyWith(color: theme.appColors.onPrimary),
+                  ),
+              // Flexible(child: salesDataTable(data: data))
+            ],
           ),
+          // ),
           // ),
         );
       },

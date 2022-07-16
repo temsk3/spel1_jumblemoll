@@ -7,6 +7,6 @@
 // @freezed
 // class UserState with _$UserState {
 //   const factory UserState({
-//     @Default(<User>[]) List<User> userList,
+//     @Default(<User>) <User> user,
 //   }) = _UserState;
 // }

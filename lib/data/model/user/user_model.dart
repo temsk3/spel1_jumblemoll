@@ -69,7 +69,7 @@ class User {
     accountId = json['accountId'];
     sourceId = json['sourceId'];
     status = StatusExtension.parseUserStatus(json['status'] as String);
-    status = StatusExtension.parseUserStatus(json['bankStatus'] as String);
+    bankStatus = StatusExtension.parseUserStatus(json['bankStatus'] as String);
     chargesEnabled = json['chargesEnabled'];
   }
 }
