@@ -254,19 +254,22 @@ class BazaarDetailsPage extends HookConsumerWidget {
                 const Padding(
                   padding: EdgeInsets.symmetric(vertical: 5.0),
                 ),
-                GridView.builder(
-                  shrinkWrap: true,
-                  gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-                    maxCrossAxisExtent: 200,
-                    childAspectRatio: 0.8,
+                SafeArea(
+                  child: GridView.builder(
+                    shrinkWrap: true,
+                    gridDelegate:
+                        const SliverGridDelegateWithMaxCrossAxisExtent(
+                      maxCrossAxisExtent: 200,
+                      childAspectRatio: 0.8,
+                    ),
+                    padding: const EdgeInsets.all(16.0),
+                    itemCount: data.length,
+                    itemBuilder: (_, index) {
+                      final product = data[index];
+                      return ProductCard(
+                          index: index, product: product, bazaar: bazaar);
+                    },
                   ),
-                  padding: const EdgeInsets.all(16.0),
-                  itemCount: data.length,
-                  itemBuilder: (_, index) {
-                    final product = data[index];
-                    return ProductCard(
-                        index: index, product: product, bazaar: bazaar);
-                  },
                 ),
               ],
             ),
