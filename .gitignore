@@ -49,4 +49,4 @@ app.*.map.json
 node_modules
 
 # .env
-*.env
+# *.env
