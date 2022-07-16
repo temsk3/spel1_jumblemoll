@@ -1,5 +1,5 @@
 name: jumblemoll
-description: A new Flutter project.
+description: A new project.
 
 publish_to: 'none'
 
@@ -37,11 +37,11 @@ dependencies:
   crop_your_image:
   image: ^3.1.3
   font_awesome_flutter: ^10.1.0
-  uuid:
+  uuid: ^3.0.6
   cloud_functions: ^3.2.16
   firebase_analytics: ^9.1.9
   firebase_app_check: ^0.0.6+13
-  firebase_messaging: ^11.4.1
+  firebase_messaging: ^12.0.0
   firebase_performance: ^0.8.0+13
   # flutter_signin_button: ^2.0.0
   stripe_sdk: ^5.0.0-nullsafety.1
