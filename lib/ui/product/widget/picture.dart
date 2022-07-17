@@ -1,5 +1,6 @@
 import 'dart:typed_data';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
@@ -24,7 +25,12 @@ class PictureCover extends HookConsumerWidget {
                 // .copyWith(color: theme.appColors.onPrimary),
                 )
             : SizedBox.expand(
-                child: Image.network(picture.toString()),
+                child: CachedNetworkImage(
+                  imageUrl: picture.toString(),
+                  placeholder: (context, url) =>
+                      const CircularProgressIndicator(),
+                  errorWidget: (context, url, error) => const Icon(Icons.error),
+                ),
               ),
       ),
     );
@@ -49,7 +55,13 @@ class PictureDetail extends HookConsumerWidget {
       child: (picture == null)
           ? (oldPicture == '' || oldPicture == null)
               ? const Icon(Icons.add_photo_alternate)
-              : SizedBox.expand(child: Image.network(oldPicture as String))
+              : SizedBox.expand(
+                  child: CachedNetworkImage(
+                  imageUrl: oldPicture as String,
+                  placeholder: (context, url) =>
+                      const CircularProgressIndicator(),
+                  errorWidget: (context, url, error) => const Icon(Icons.error),
+                ))
           : SizedBox.expand(
               child: Image.memory(picture as Uint8List),
             ),
