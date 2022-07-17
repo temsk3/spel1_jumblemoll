@@ -19,10 +19,10 @@ class SupporterPage extends HookConsumerWidget {
     final viewModel = ref.watch(bazaarViewModelProvider.notifier);
     final asyncValue = ref.watch(supporterListStreamProvider(bazaarId));
     final active = useState<bool>(false);
-    return asyncValue.when(
-      data: (data) {
-        return data != null
-            ? Scaffold(
+    return asyncValue != null
+        ? asyncValue.when(
+            data: (data) {
+              return Scaffold(
                 // appBar: AppBar(
                 //   automaticallyImplyLeading: false,
                 //   actions: const [],
@@ -48,30 +48,30 @@ class SupporterPage extends HookConsumerWidget {
                     },
                   ),
                 )),
-              )
-            : Container();
-      },
-      error: (e, msg) => Scaffold(
-        body: SafeArea(
-          child: Center(
-            child: Text(
-              e.toString(),
-              style: theme.textTheme.h30,
-            ),
-          ),
-        ),
-      ),
-      loading: () {
-        return const Scaffold(
-          body: SafeArea(
-            child: Center(
-              child: CircularProgressIndicator(
-                  // color: theme.appColors.primary,
+              );
+            },
+            error: (e, msg) => Scaffold(
+              body: SafeArea(
+                child: Center(
+                  child: Text(
+                    e.toString(),
+                    style: theme.textTheme.h30,
                   ),
+                ),
+              ),
             ),
-          ),
-        );
-      },
-    );
+            loading: () {
+              return const Scaffold(
+                body: SafeArea(
+                  child: Center(
+                    child: CircularProgressIndicator(
+                        // color: theme.appColors.primary,
+                        ),
+                  ),
+                ),
+              );
+            },
+          )
+        : Container();
   }
 }

@@ -282,7 +282,8 @@ class BazaarDetailsPage extends HookConsumerWidget {
                             decoration: BoxDecoration(
                               image: DecorationImage(
                                   image: CachedNetworkImageProvider(
-                                      bazaar.pictureURL as String),
+                                    bazaar.pictureURL as String,
+                                  ),
                                   fit: BoxFit.cover),
                             ),
                             child: Container(

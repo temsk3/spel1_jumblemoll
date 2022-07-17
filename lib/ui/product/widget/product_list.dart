@@ -57,7 +57,7 @@ class ProductCard extends HookConsumerWidget {
                         flex: 1,
                         child: Text(
                           product.name.toString(),
-                          style: theme.textTheme.h50.bold(),
+                          style: theme.textTheme.h40.bold(),
                           // .copyWith(color: theme.appColors.onBackground),
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
