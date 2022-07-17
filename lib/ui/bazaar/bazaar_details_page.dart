@@ -2,12 +2,14 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:intl/intl.dart';
 
 import '../../data/repository/auth/auth_repository.dart';
 import '../../data/repository/bazaar/bazaar_repository_impal.dart';
 import '../../data/repository/product/product_repository_impal.dart';
 import '../common/alertdialog.dart';
 import '../hooks/use_l10n.dart';
+import '../hooks/use_media_query.dart';
 import '../hooks/use_router.dart';
 import '../product/widget/product_list.dart';
 import '../routes/app_route.gr.dart';
@@ -27,9 +29,12 @@ class BazaarDetailsPage extends HookConsumerWidget {
     final theme = ref.watch(appThemeProvider);
     final l10n = useL10n();
     final appRoute = useRouter();
+    final appMQ = useMediaQuery();
     final state = ref.watch(bazaarViewModelProvider);
     final viewModel = ref.watch(bazaarViewModelProvider.notifier);
     final asyncValue = ref.watch(productListStreamProvider);
+
+    final DateFormat dateFormatter = DateFormat('yyyy-MM-dd');
 
     final bazaar = bazaarEvent;
     final supported = ref.watch(supporterListStreamProvider(bazaar.id));
@@ -67,122 +72,245 @@ class BazaarDetailsPage extends HookConsumerWidget {
 
         return Scaffold(
           // backgroundColor: theme.appColors.background,
-          appBar: AppBar(
-            // backgroundColor: theme.appColors.primary,
-            // foregroundColor: theme.appColors.onPrimary,
-            // leading: const AutoLeadingButton(),
-            automaticallyImplyLeading: false,
-            actions: [
-              Visibility(
-                visible: owner.value,
-                child: IconButton(
-                    onPressed: () async {
-                      // appRoute.pop();
-                      var result = await customShowDialog(
-                        context,
-                        'delete',
-                        'Do you want to delete it?',
-                      );
-                      if (result) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            // backgroundColor: theme.appColors.error,
-                            content: Text('Processing Data',
-                                style: theme.textTheme.h30
-                                // .copyWith(color: theme.appColors.onError),
-                                ),
-                          ),
-                        );
-                        viewModel.deleteBazaar(
-                          bazaarId: bazaar.id.toString(),
-                        );
-                        appRoute.popUntilRoot();
-                      } else {}
-                    },
-                    icon: const Icon(
-                      Icons.delete,
-                      shadows: [
-                        BoxShadow(
-                          color: Color.fromARGB(255, 0, 0, 0),
-                          blurRadius: 10,
-                          spreadRadius: 30.0,
-                          blurStyle: BlurStyle.solid,
-                        ),
-                      ],
-                    )),
-              ),
-              Visibility(
-                visible: owner.value,
-                child: IconButton(
-                    onPressed: () async {
-                      appRoute.push(BazaarEditRoute(index: index));
-                    },
-                    icon: const Icon(
-                      Icons.edit,
-                      shadows: [
-                        BoxShadow(
-                          color: Color.fromARGB(255, 0, 0, 0),
-                          blurRadius: 10,
-                          spreadRadius: 30.0,
-                          blurStyle: BlurStyle.solid,
-                        ),
-                      ],
-                    )),
-              ),
-            ],
-            title: Text(
-              bazaar.name.toString(),
-              // style: theme.textTheme.h50,
-              style: const TextStyle(
-                shadows: [
-                  BoxShadow(
-                    color: Color.fromARGB(255, 0, 0, 0),
-                    blurRadius: 10,
-                    spreadRadius: 30.0,
-                    blurStyle: BlurStyle.solid,
-                  ),
-                ],
-              ),
-            ),
-            centerTitle: true,
-            toolbarHeight: 100,
-            flexibleSpace: bazaar.pictureURL != null
-                ? Container(
-                    decoration: BoxDecoration(
-                      image: DecorationImage(
-                          image: NetworkImage(bazaar.pictureURL as String),
-                          fit: BoxFit.cover),
-                    ),
-                    child: Container(
-                      decoration: const BoxDecoration(
-                        gradient: LinearGradient(
-                          begin: Alignment.topCenter,
-                          end: Alignment.bottomCenter,
-                          stops: [0.5, 0.7, 0.95],
-                          colors: [
-                            Colors.white12,
-                            Colors.white54,
-                            Colors.white70,
-                          ],
-                        ),
-                      ),
-                    ),
-                  )
-                : null,
-          ),
+          // appBar: AppBar(
+          //   // backgroundColor: theme.appColors.primary,
+          //   // foregroundColor: theme.appColors.onPrimary,
+          //   // leading: const AutoLeadingButton(),
+          //   automaticallyImplyLeading: false,
+          //   actions: [
+          //     Visibility(
+          //       visible: owner.value,
+          //       child: IconButton(
+          //           onPressed: () async {
+          //             // appRoute.pop();
+          //             var result = await customShowDialog(
+          //               context,
+          //               'delete',
+          //               'Do you want to delete it?',
+          //             );
+          //             if (result) {
+          //               ScaffoldMessenger.of(context).showSnackBar(
+          //                 SnackBar(
+          //                   // backgroundColor: theme.appColors.error,
+          //                   content: Text('Processing Data',
+          //                       style: theme.textTheme.h30
+          //                       // .copyWith(color: theme.appColors.onError),
+          //                       ),
+          //                 ),
+          //               );
+          //               viewModel.deleteBazaar(
+          //                 bazaarId: bazaar.id.toString(),
+          //               );
+          //               appRoute.popUntilRoot();
+          //             } else {}
+          //           },
+          //           icon: const Icon(
+          //             Icons.delete,
+          //             shadows: [
+          //               BoxShadow(
+          //                 color: Color.fromARGB(255, 0, 0, 0),
+          //                 blurRadius: 10,
+          //                 spreadRadius: 30.0,
+          //                 blurStyle: BlurStyle.solid,
+          //               ),
+          //             ],
+          //           )),
+          //     ),
+          //     Visibility(
+          //       visible: owner.value,
+          //       child: IconButton(
+          //           onPressed: () async {
+          //             appRoute.push(BazaarEditRoute(index: index));
+          //           },
+          //           icon: const Icon(
+          //             Icons.edit,
+          //             shadows: [
+          //               BoxShadow(
+          //                 color: Color.fromARGB(255, 0, 0, 0),
+          //                 blurRadius: 10,
+          //                 spreadRadius: 30.0,
+          //                 blurStyle: BlurStyle.solid,
+          //               ),
+          //             ],
+          //           )),
+          //     ),
+          //   ],
+          //   title: Text(
+          //     bazaar.name.toString(),
+          //     // style: theme.textTheme.h50,
+          //     style: const TextStyle(
+          //       shadows: [
+          //         BoxShadow(
+          //           color: Color.fromARGB(255, 0, 0, 0),
+          //           blurRadius: 10,
+          //           spreadRadius: 30.0,
+          //           blurStyle: BlurStyle.solid,
+          //         ),
+          //       ],
+          //     ),
+          //   ),
+          //   centerTitle: true,
+          //   toolbarHeight: 100,
+          //   flexibleSpace: bazaar.pictureURL != null
+          //       ? Container(
+          //           decoration: BoxDecoration(
+          //             image: DecorationImage(
+          //                 image: NetworkImage(bazaar.pictureURL as String),
+          //                 fit: BoxFit.cover),
+          //           ),
+          //           child: Container(
+          //             decoration: const BoxDecoration(
+          //               gradient: LinearGradient(
+          //                 begin: Alignment.topCenter,
+          //                 end: Alignment.bottomCenter,
+          //                 stops: [0.5, 0.7, 0.95],
+          //                 colors: [
+          //                   Colors.white12,
+          //                   Colors.white54,
+          //                   Colors.white70,
+          //                 ],
+          //               ),
+          //             ),
+          //           ),
+          //         )
+          //       : null,
+          // ),
           body: SafeArea(
             // child: SingleChildScrollView(
             child: CustomScrollView(
               slivers: [
+                SliverAppBar(
+                  automaticallyImplyLeading: false,
+                  actions: [
+                    Visibility(
+                      visible: owner.value,
+                      child: IconButton(
+                          onPressed: () async {
+                            // appRoute.pop();
+                            var result = await customShowDialog(
+                              context,
+                              'delete',
+                              'Do you want to delete it?',
+                            );
+                            if (result) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  // backgroundColor: theme.appColors.error,
+                                  content: Text('Processing Data',
+                                      style: theme.textTheme.h30
+                                      // .copyWith(color: theme.appColors.onError),
+                                      ),
+                                ),
+                              );
+                              viewModel.deleteBazaar(
+                                bazaarId: bazaar.id.toString(),
+                              );
+                              appRoute.popUntilRoot();
+                            } else {}
+                          },
+                          icon: const Icon(
+                            Icons.delete,
+                            shadows: [
+                              BoxShadow(
+                                color: Color.fromARGB(255, 0, 0, 0),
+                                blurRadius: 10,
+                                spreadRadius: 30.0,
+                                blurStyle: BlurStyle.solid,
+                              ),
+                            ],
+                          )),
+                    ),
+                    Visibility(
+                      visible: owner.value,
+                      child: IconButton(
+                          onPressed: () async {
+                            appRoute.push(BazaarEditRoute(index: index));
+                          },
+                          icon: const Icon(
+                            Icons.edit,
+                            shadows: [
+                              BoxShadow(
+                                color: Color.fromARGB(255, 0, 0, 0),
+                                blurRadius: 10,
+                                spreadRadius: 30.0,
+                                blurStyle: BlurStyle.solid,
+                              ),
+                            ],
+                          )),
+                    ),
+                  ],
+                  // title: Text(
+                  //   bazaar.name.toString(),
+                  //   // style: theme.textTheme.h50,
+                  //   style: const TextStyle(
+                  //     shadows: [
+                  //       BoxShadow(
+                  //         color: Color.fromARGB(255, 0, 0, 0),
+                  //         blurRadius: 10,
+                  //         spreadRadius: 30.0,
+                  //         blurStyle: BlurStyle.solid,
+                  //       ),
+                  //     ],
+                  //   ),
+                  // ),
+                  centerTitle: true,
+                  toolbarHeight: bazaar.pictureURL != null
+                      ? 100 + kToolbarHeight
+                      : kToolbarHeight,
+                  pinned: true,
+                  elevation: 2,
+                  flexibleSpace: FlexibleSpaceBar(
+                    title: Text(
+                      bazaar.name.toString(),
+                      style: const TextStyle(
+                        shadows: [
+                          BoxShadow(
+                            color: Color.fromARGB(255, 0, 0, 0),
+                            blurRadius: 10,
+                            spreadRadius: 30.0,
+                            blurStyle: BlurStyle.solid,
+                          ),
+                        ],
+                      ),
+                    ),
+                    titlePadding: const EdgeInsets.all(8),
+                    collapseMode: CollapseMode.pin,
+                    centerTitle: true,
+                    background: bazaar.pictureURL != null
+                        ? Container(
+                            decoration: BoxDecoration(
+                              image: DecorationImage(
+                                  image:
+                                      NetworkImage(bazaar.pictureURL as String),
+                                  fit: BoxFit.cover),
+                            ),
+                            child: Container(
+                              decoration: const BoxDecoration(
+                                gradient: LinearGradient(
+                                  begin: Alignment.topCenter,
+                                  end: Alignment.bottomCenter,
+                                  stops: [0.5, 0.7, 0.95],
+                                  colors: [
+                                    Colors.white12,
+                                    Colors.white54,
+                                    Colors.white70,
+                                  ],
+                                ),
+                              ),
+                            ),
+                          )
+                        : null,
+                  ),
+                ),
                 SliverToBoxAdapter(
                   child: Container(
                     // padding: const EdgeInsets.all(20.0),
                     child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
+                      //   mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        const Padding(
-                          padding: EdgeInsets.symmetric(vertical: 5.0),
-                        ),
+                        // const Padding(
+                        //   padding: EdgeInsets.symmetric(vertical: 5.0),
+                        // ),
                         Visibility(
                           visible: owner.value || supporter.value,
                           child: Row(
@@ -259,29 +387,59 @@ class BazaarDetailsPage extends HookConsumerWidget {
                         const Padding(
                           padding: EdgeInsets.symmetric(vertical: 5.0),
                         ),
-                        Text('Place:${bazaar.place}'),
+                        Text(
+                            'date:${dateFormatter.format(bazaar.eventFrom)}〜${dateFormatter.format(bazaar.eventTo)}'),
                         const Padding(
                           padding: EdgeInsets.symmetric(vertical: 5.0),
                         ),
-                        GridView.builder(
-                          shrinkWrap: true,
-                          gridDelegate:
-                              const SliverGridDelegateWithMaxCrossAxisExtent(
-                            maxCrossAxisExtent: 200,
-                            childAspectRatio: 0.8,
-                          ),
-                          padding: const EdgeInsets.all(16.0),
-                          itemCount: data.length,
-                          itemBuilder: (_, index) {
-                            final product = data[index];
-                            return ProductCard(
-                                index: index, product: product, bazaar: bazaar);
-                          },
+                        Text('Place:${bazaar.place}'),
+                        const Padding(
+                          padding: EdgeInsets.symmetric(vertical: 5.0),
                         ),
                       ],
                     ),
                   ),
                 ),
+                // const Padding(
+                //   padding: EdgeInsets.symmetric(vertical: 5.0),
+                // ),
+                // Text('Place:${bazaar.place}'),
+                // const Padding(
+                //   padding: EdgeInsets.symmetric(vertical: 5.0),
+                // ),
+                SliverGrid(
+                  gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+                    maxCrossAxisExtent: 200,
+                    mainAxisSpacing: 16.0,
+                    crossAxisSpacing: 16.0,
+                    childAspectRatio: 0.8,
+                  ),
+                  delegate: SliverChildBuilderDelegate(
+                    (context, index) {
+                      final product = data[index];
+                      return ProductCard(
+                          index: index, product: product, bazaar: bazaar);
+                    },
+                    childCount: data.length,
+                  ),
+                ),
+                // GridView.builder(
+                //   shrinkWrap: true,
+                //   gridDelegate:
+                //       const SliverGridDelegateWithMaxCrossAxisExtent(
+                //     maxCrossAxisExtent: 200,
+                //     childAspectRatio: 0.8,
+                //   ),
+                //   padding: const EdgeInsets.all(16.0),
+                //   itemCount: data.length,
+                //   itemBuilder: (_, index) {
+                //     final product = data[index];
+                //     return ProductCard(
+                //         index: index, product: product, bazaar: bazaar);
+                //   },
+                // ),
+                //   ],
+                // ),
               ],
             ),
           ),
