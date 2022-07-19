@@ -2,6 +2,7 @@ import * as firebaseAdmin from "firebase-admin";
 import * as functions from "firebase-functions";
 
 import * as stripe from "./stripe";
+import * as user from "./user";
 
 // // Start writing Firebase Functions
 // // https://firebase.google.com/docs/functions/typescript
@@ -13,4 +14,4 @@ import * as stripe from "./stripe";
 
 firebaseAdmin.initializeApp(functions.config().firebase);
 
-export { stripe };
+export { stripe, user };

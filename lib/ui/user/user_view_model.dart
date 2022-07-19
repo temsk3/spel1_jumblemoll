@@ -90,6 +90,7 @@
 //   //   );
 //   // }
 
+import 'package:firebase_auth/firebase_auth.dart' as auth;
 //   // //削除
 //   // Future<void> deleteBazaarEvent({required String eventId}) async {
 //   //   final result =
@@ -128,5 +129,29 @@ class UserViewModel extends StateNotifier<AsyncValue<User?>> {
 
   Future<User?> fetch() async {
     return await _read(userRepositoryProvider).fetch();
+  }
+
+  Future<void> createUser(
+    auth.User? user,
+    String customerId,
+    String accountId,
+  ) async {
+    await _read(userRepositoryProvider).createUser(user, customerId, accountId);
+  }
+
+  Future<String> fetchStatus(String id) async {
+    return await _read(userRepositoryProvider).fetchStatus(id);
+  }
+
+  Future<String> fetchBankStatus(String id) async {
+    return await _read(userRepositoryProvider).fetchBankStatus(id);
+  }
+
+  void deleteLocalCache() {
+    _read(userRepositoryProvider).deleteLocalCache();
+  }
+
+  Future updatePaymentMethod({required String sourceId}) async {
+    await _read(userRepositoryProvider).updatePaymentMethod(sourceId: sourceId);
   }
 }

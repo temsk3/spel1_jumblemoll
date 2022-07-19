@@ -34,11 +34,13 @@ class BazaarListPage extends HookConsumerWidget {
     authState.whenData(
       (data) async {
         // print(data!.uid);
-        final result = (await user.fetchBankStatus(data!.uid));
-        if (result == 'verified') {
-          organizer.value = true;
-        } else {
-          organizer.value = false;
+        if (data != null) {
+          final result = (await user.fetchBankStatus(data.uid));
+          if (result == 'verified') {
+            organizer.value = true;
+          } else {
+            organizer.value = false;
+          }
         }
       },
     );

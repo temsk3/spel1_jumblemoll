@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -7,7 +6,6 @@ import 'package:jumblemoll/data/repository/stripe/stripe_repository.dart';
 import 'package:logger/logger.dart';
 
 import '../account/account_view_model.dart';
-import '../account/stripe_view_model.dart';
 
 final logger = Logger();
 
@@ -75,19 +73,21 @@ class Authentication {
       )
           .then(
         (credential) async {
-          logger.d(credential.user!.uid);
+          logger.d('SignUp');
           final stripe = ref.watch(stripeRepositoryProvider);
+          final userViewModel = ref.watch(userViewModelProvider.notifier);
+
           final accountId = await stripe.createConnectAccount(email);
           logger.d(accountId);
 
           final customerId = await stripe.createCustomer(email);
           logger.d(customerId);
 
-          await ref.watch(userViewModelProvider.notifier).createUser(
-                credential.user,
-                customerId,
-                accountId,
-              );
+          await userViewModel.createUser(
+            credential.user,
+            customerId,
+            accountId,
+          );
         },
       );
       // UserCredential result = await _auth.createUserWithEmailAndPassword(
@@ -159,39 +159,61 @@ class Authentication {
         await googleUser!.authentication;
 
     // Create a new credential
-    final credential1 = GoogleAuthProvider.credential(
+    final credential = GoogleAuthProvider.credential(
       accessToken: googleAuth.accessToken,
       idToken: googleAuth.idToken,
     );
 
     try {
-      final credential = await _auth.signInWithCredential(credential1);
-      // user ドキュメントがあるか確認
-      final userId = credential.user?.uid;
-      final doc = await FirebaseFirestore.instance
-          .collection('users')
-          .doc(userId)
-          .get();
+      await _auth.signInWithCredential(credential).then(
+        (credential) async {
+          final email = credential.user!.email.toString();
 
-      // user ドキュメントがない場合は作成
-      if (!doc.exists) {
-        /// Stripe の customer（お金を払う側のアカウント）を作成
-        final customerId = await ref
-            .watch(stripeViewModelProvider.notifier)
-            .createCustomer(credential.user?.email ?? '');
+          logger.d('SignUp');
+          final stripe = ref.watch(stripeRepositoryProvider);
+          final userViewModel = ref.watch(userViewModelProvider.notifier);
 
-        /// Stripe の connectAccount (お金を受け取る側のアカウント）を作成
-        final accountId = await ref
-            .watch(stripeViewModelProvider.notifier)
-            .createConnectAccount(credential.user?.email ?? '');
+          final accountId = await stripe.createConnectAccount(email);
+          logger.d(accountId);
 
-        // user ドキュメントを作成
-        await ref.watch(userViewModelProvider.notifier).createUser(
-              credential.user,
-              customerId,
-              accountId,
-            );
-      }
+          final customerId = await stripe.createCustomer(email);
+          logger.d(customerId);
+
+          await userViewModel.createUser(
+            credential.user,
+            customerId,
+            accountId,
+          );
+        },
+      );
+
+      // final credential = await _auth.signInWithCredential(credential1);
+      // // user ドキュメントがあるか確認
+      // final userId = credential.user?.uid;
+      // final doc = await FirebaseFirestore.instance
+      //     .collection('users')
+      //     .doc(userId)
+      //     .get();
+
+      // // user ドキュメントがない場合は作成
+      // if (!doc.exists) {
+      //   /// Stripe の customer（お金を払う側のアカウント）を作成
+      //   final customerId = await ref
+      //       .watch(stripeViewModelProvider.notifier)
+      //       .createCustomer(credential.user?.email ?? '');
+
+      //   /// Stripe の connectAccount (お金を受け取る側のアカウント）を作成
+      //   final accountId = await ref
+      //       .watch(stripeViewModelProvider.notifier)
+      //       .createConnectAccount(credential.user?.email ?? '');
+
+      //   // user ドキュメントを作成
+      //   await ref.watch(userViewModelProvider.notifier).createUser(
+      //         credential.user,
+      //         customerId,
+      //         accountId,
+      //       );
+      // }
     } on FirebaseAuthException catch (e) {
       await showDialog(
         context: context,

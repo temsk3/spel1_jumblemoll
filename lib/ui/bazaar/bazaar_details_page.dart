@@ -183,9 +183,11 @@ class BazaarDetailsPage extends HookConsumerWidget {
                 SliverAppBar(
                   automaticallyImplyLeading: false,
                   actions: [
-                    Visibility(
-                      visible: owner.value,
-                      child: IconButton(
+                    // Visibility(
+                    //   visible: owner.value,
+                    // child:
+                    if (owner.value)
+                      IconButton(
                           onPressed: () async {
                             // appRoute.pop();
                             var result = await customShowDialog(
@@ -220,10 +222,12 @@ class BazaarDetailsPage extends HookConsumerWidget {
                               ),
                             ],
                           )),
-                    ),
-                    Visibility(
-                      visible: owner.value,
-                      child: IconButton(
+                    // ),
+                    // Visibility(
+                    //   visible: owner.value,
+                    // child:
+                    if (owner.value)
+                      IconButton(
                           onPressed: () async {
                             appRoute.push(BazaarEditRoute(index: index));
                           },
@@ -238,7 +242,7 @@ class BazaarDetailsPage extends HookConsumerWidget {
                               ),
                             ],
                           )),
-                    ),
+                    // ),
                   ],
                   // title: Text(
                   //   bazaar.name.toString(),
@@ -255,10 +259,10 @@ class BazaarDetailsPage extends HookConsumerWidget {
                   //   ),
                   // ),
                   centerTitle: true,
-                  toolbarHeight: bazaar.pictureURL != null
+                  expandedHeight: bazaar.pictureURL != null
                       ? 100 + kToolbarHeight
                       : kToolbarHeight,
-                  pinned: true,
+                  floating: false, pinned: true, snap: false,
                   elevation: 2,
                   flexibleSpace: FlexibleSpaceBar(
                     title: Text(
@@ -301,6 +305,12 @@ class BazaarDetailsPage extends HookConsumerWidget {
                               ),
                             ),
                           )
+                        // ? Image(
+                        //     fit: BoxFit.cover,
+                        //     image: CachedNetworkImageProvider(
+                        //       bazaar.pictureURL as String,
+                        //     ),
+                        //   )
                         : null,
                   ),
                 ),
