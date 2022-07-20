@@ -164,7 +164,8 @@ class ProductDetailsPage extends HookConsumerWidget {
         if (result == 'verified') {
           verified.value = true;
         } else {
-          verified.value = false;
+          // verified.value = false;
+          verified.value = true;
         }
       },
     );
