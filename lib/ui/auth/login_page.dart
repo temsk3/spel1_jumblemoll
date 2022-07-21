@@ -191,9 +191,8 @@ class _LoginPageState extends State<LoginPage> {
                                     ),
                                     validator: type == Status.signUp
                                         ? (value) {
-                                            if (value!.isEmpty ||
-                                                !value.contains('@')) {
-                                              return 'Invalid email!';
+                                            if (value!.isEmpty) {
+                                              return 'invalid! please try another one!';
                                             }
                                             return null;
                                           }
@@ -225,8 +224,9 @@ class _LoginPageState extends State<LoginPage> {
                                     // border: InputBorder.none,
                                   ),
                                   validator: (value) {
-                                    if (value!.isEmpty) {
-                                      return 'invalid! please try another one!';
+                                    if (value!.isEmpty ||
+                                        !value.contains('@')) {
+                                      return 'Invalid email!';
                                     }
                                     return null;
                                   },
