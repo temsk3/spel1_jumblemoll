@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import '../../data/repository/auth/auth_repository.dart';
 
@@ -307,48 +306,48 @@ class _LoginPageState extends State<LoginPage> {
                                         ),
                                       ),
                               ),
-                              Container(
-                                padding: const EdgeInsets.only(top: 32.0),
-                                margin:
-                                    const EdgeInsets.symmetric(horizontal: 16),
-                                width: double.infinity,
-                                child: _isLoading2
-                                    ? const Center(
-                                        child: CircularProgressIndicator())
-                                    : MaterialButton(
-                                        onPressed: _loginWithGoogle,
-                                        // textColor: Colors.blue.shade700,
-                                        textTheme: ButtonTextTheme.primary,
-                                        minWidth: 100,
-                                        padding: const EdgeInsets.all(18),
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(25),
-                                          // side: const BorderSide(
-                                          // color: Colors.blue.shade700,
-                                          // ),
-                                          side: BorderSide(
-                                            color: Theme.of(context)
-                                                .unselectedWidgetColor,
-                                          ),
-                                        ),
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: const [
-                                            //  A google icon here
-                                            //  an External Package used here
-                                            //  Font_awesome_flutter package used
-                                            FaIcon(FontAwesomeIcons.google),
-                                            Text(
-                                              ' Login with Google',
-                                              style: TextStyle(
-                                                  fontWeight: FontWeight.w600),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                              ),
+                              // Container(
+                              //   padding: const EdgeInsets.only(top: 32.0),
+                              //   margin:
+                              //       const EdgeInsets.symmetric(horizontal: 16),
+                              //   width: double.infinity,
+                              //   child: _isLoading2
+                              //       ? const Center(
+                              //           child: CircularProgressIndicator())
+                              //       : MaterialButton(
+                              //           onPressed: _loginWithGoogle,
+                              //           // textColor: Colors.blue.shade700,
+                              //           textTheme: ButtonTextTheme.primary,
+                              //           minWidth: 100,
+                              //           padding: const EdgeInsets.all(18),
+                              //           shape: RoundedRectangleBorder(
+                              //             borderRadius:
+                              //                 BorderRadius.circular(25),
+                              //             // side: const BorderSide(
+                              //             // color: Colors.blue.shade700,
+                              //             // ),
+                              //             side: BorderSide(
+                              //               color: Theme.of(context)
+                              //                   .unselectedWidgetColor,
+                              //             ),
+                              //           ),
+                              //           child: Row(
+                              //             mainAxisAlignment:
+                              //                 MainAxisAlignment.center,
+                              //             children: const [
+                              //               //  A google icon here
+                              //               //  an External Package used here
+                              //               //  Font_awesome_flutter package used
+                              //               FaIcon(FontAwesomeIcons.google),
+                              //               Text(
+                              //                 ' Login with Google',
+                              //                 style: TextStyle(
+                              //                     fontWeight: FontWeight.w600),
+                              //               ),
+                              //             ],
+                              //           ),
+                              //         ),
+                              // ),
                               const Spacer(),
                               Padding(
                                 padding: const EdgeInsets.only(bottom: 24.0),
