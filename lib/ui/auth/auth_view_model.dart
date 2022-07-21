@@ -61,12 +61,15 @@ class Authentication {
 
   // SignUp the user using Email and Password
   Future<void> signUpWithEmailAndPassword(
+    String name,
     String email,
     String password,
     BuildContext context,
     WidgetRef ref,
   ) async {
     final localizations = MaterialLocalizations.of(context);
+    final stripe = ref.watch(stripeRepositoryProvider);
+    final userViewModel = ref.watch(userRepositoryProvider);
     try {
       await _auth
           .createUserWithEmailAndPassword(
@@ -76,8 +79,6 @@ class Authentication {
           .then(
         (credential) async {
           logger.d('SignUp');
-          final stripe = ref.watch(stripeRepositoryProvider);
-          final userViewModel = ref.watch(userRepositoryProvider);
 
           final accountId = await stripe.createConnectAccount(email);
           logger.d(accountId);
@@ -91,6 +92,7 @@ class Authentication {
             credential.user,
             customerId,
             accountId,
+            name,
           );
         },
       );
@@ -185,10 +187,13 @@ class Authentication {
             final customerId = await stripe.createCustomer(email);
             logger.d(customerId);
 
+            final name = credential.user!.displayName ?? '';
+
             await userViewModel.createUser(
               credential.user,
               customerId,
               accountId,
+              name,
             );
           },
         );
@@ -209,10 +214,13 @@ class Authentication {
             final customerId = await stripe.createCustomer(email);
             logger.d(customerId);
 
+            final name = credential.user!.displayName ?? '';
+
             await userViewModel.createUser(
               credential.user,
               customerId,
               accountId,
+              name,
             );
           },
         );

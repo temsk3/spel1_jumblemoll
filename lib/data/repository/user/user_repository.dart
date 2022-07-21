@@ -36,6 +36,7 @@ class UserRepository {
     auth.User? user,
     String customerId,
     String accountId,
+    String name,
   ) async {
     // await _firestore.collection('users').doc(user?.uid).set({
     await _reader(firebaseFirestoreProvider)
@@ -43,7 +44,8 @@ class UserRepository {
         .doc(user?.uid)
         .set({
       'id': user?.uid,
-      'displayName': user?.displayName,
+      // 'displayName': user?.displayName,
+      'displayName': name,
       'email': user?.email,
       'customerId': customerId,
       'accountId': accountId,

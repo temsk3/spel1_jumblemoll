@@ -45,6 +45,8 @@ class _LoginPageState extends State<LoginPage> {
   final _email = TextEditingController();
   final _password = TextEditingController();
 
+  final _name = TextEditingController();
+
   //  A loading variable to show the loading animation when you a function is ongoing
   bool _isLoading = false;
   bool _isLoading2 = false;
@@ -114,7 +116,7 @@ class _LoginPageState extends State<LoginPage> {
                 loading();
                 await auth
                     .signUpWithEmailAndPassword(
-                        _email.text, _password.text, context, ref)
+                        _name.text, _email.text, _password.text, context, ref)
                     .whenComplete(
                         () => auth.authStateChange.listen((event) async {
                               if (event == null) {
@@ -161,6 +163,43 @@ class _LoginPageState extends State<LoginPage> {
                                       child: Text(''))), //'jumble moll'))),
                               // const Center(child: FlutterLogo(size: 81)),
                               const Spacer(flex: 1),
+                              if (type == Status.signUp)
+                                AnimatedContainer(
+                                  duration: const Duration(milliseconds: 600),
+                                  margin: const EdgeInsets.symmetric(
+                                      horizontal: 24, vertical: 8),
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 16, vertical: 4),
+                                  decoration: BoxDecoration(
+                                      // color: Colors.white,
+                                      borderRadius: BorderRadius.circular(25)),
+                                  child: TextFormField(
+                                    controller: _name,
+                                    autocorrect: true,
+                                    enableSuggestions: true,
+                                    keyboardType: TextInputType.emailAddress,
+                                    onSaved: (value) {},
+                                    decoration: const InputDecoration(
+                                      hintText: 'Full Name',
+                                      // hintStyle: const TextStyle(color: Colors.black54),
+                                      icon: Icon(
+                                        Icons.person,
+                                        // color: Colors.blue.shade700, size: 24,
+                                      ),
+                                      alignLabelWithHint: true,
+                                      // border: InputBorder.none,
+                                    ),
+                                    validator: type == Status.signUp
+                                        ? (value) {
+                                            if (value!.isEmpty ||
+                                                !value.contains('@')) {
+                                              return 'Invalid email!';
+                                            }
+                                            return null;
+                                          }
+                                        : null,
+                                  ),
+                                ),
                               Container(
                                 margin: const EdgeInsets.symmetric(
                                     horizontal: 24, vertical: 16),
@@ -186,9 +225,8 @@ class _LoginPageState extends State<LoginPage> {
                                     // border: InputBorder.none,
                                   ),
                                   validator: (value) {
-                                    if (value!.isEmpty ||
-                                        !value.contains('@')) {
-                                      return 'Invalid email!';
+                                    if (value!.isEmpty) {
+                                      return 'invalid! please try another one!';
                                     }
                                     return null;
                                   },

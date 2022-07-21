@@ -35,8 +35,9 @@ class AccountViewModel extends StateNotifier<AsyncValue<User>> {
     auth.User? user,
     String customerId,
     String accountId,
+    String name,
   ) async {
-    await userRepository.createUser(user, customerId, accountId);
+    await userRepository.createUser(user, customerId, accountId, name);
   }
 
   Future<User?> fetch() async {

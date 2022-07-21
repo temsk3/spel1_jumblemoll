@@ -135,8 +135,14 @@ class UserViewModel extends StateNotifier<AsyncValue<User?>> {
     auth.User? user,
     String customerId,
     String accountId,
+    String name,
   ) async {
-    await _read(userRepositoryProvider).createUser(user, customerId, accountId);
+    await _read(userRepositoryProvider).createUser(
+      user,
+      customerId,
+      accountId,
+      name,
+    );
   }
 
   Future<String> fetchStatus(String id) async {
