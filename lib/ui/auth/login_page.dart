@@ -177,7 +177,7 @@ class _LoginPageState extends State<LoginPage> {
                                     controller: _name,
                                     autocorrect: true,
                                     enableSuggestions: true,
-                                    keyboardType: TextInputType.emailAddress,
+                                    // keyboardType: TextInputType.emailAddress,
                                     onSaved: (value) {},
                                     decoration: const InputDecoration(
                                       hintText: 'Full Name',
