@@ -1,10 +1,12 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:jumblemoll/data/repository/stripe/stripe_repository.dart';
 import 'package:logger/logger.dart';
 
+import '../../data/repository/user/user_repository.dart';
 import '../account/account_view_model.dart';
 
 final logger = Logger();
@@ -75,7 +77,7 @@ class Authentication {
         (credential) async {
           logger.d('SignUp');
           final stripe = ref.watch(stripeRepositoryProvider);
-          final userViewModel = ref.watch(userViewModelProvider.notifier);
+          final userViewModel = ref.watch(userRepositoryProvider);
 
           final accountId = await stripe.createConnectAccount(email);
           logger.d(accountId);
@@ -83,6 +85,8 @@ class Authentication {
           final customerId = await stripe.createCustomer(email);
           logger.d(customerId);
 
+          // const accountId = 'test';
+          // const customerId = 'test';
           await userViewModel.createUser(
             credential.user,
             customerId,
@@ -151,6 +155,8 @@ class Authentication {
     WidgetRef ref,
   ) async {
     final localizations = MaterialLocalizations.of(context);
+    final stripe = ref.watch(stripeRepositoryProvider);
+    final userViewModel = ref.watch(userViewModelProvider.notifier);
     // Trigger the authentication flow
     final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
 
@@ -164,76 +170,115 @@ class Authentication {
       idToken: googleAuth.idToken,
     );
 
-    try {
-      await _auth.signInWithCredential(credential).then(
-        (credential) async {
-          final email = credential.user!.email.toString();
+    if (kIsWeb) {
+      GoogleAuthProvider authProvider = GoogleAuthProvider();
+      try {
+        await _auth.signInWithPopup(authProvider).then(
+          (credential) async {
+            final email = credential.user!.email.toString();
 
-          logger.d('SignUp');
-          final stripe = ref.watch(stripeRepositoryProvider);
-          final userViewModel = ref.watch(userViewModelProvider.notifier);
+            logger.d('SignUp');
 
-          final accountId = await stripe.createConnectAccount(email);
-          logger.d(accountId);
+            final accountId = await stripe.createConnectAccount(email);
+            logger.d(accountId);
 
-          final customerId = await stripe.createCustomer(email);
-          logger.d(customerId);
+            final customerId = await stripe.createCustomer(email);
+            logger.d(customerId);
 
-          await userViewModel.createUser(
-            credential.user,
-            customerId,
-            accountId,
-          );
-        },
-      );
+            await userViewModel.createUser(
+              credential.user,
+              customerId,
+              accountId,
+            );
+          },
+        );
+      } catch (e) {
+        logger.d(e);
+      }
+    } else {
+      try {
+        await _auth.signInWithCredential(credential).then(
+          (credential) async {
+            final email = credential.user!.email.toString();
 
-      // final credential = await _auth.signInWithCredential(credential1);
-      // // user ドキュメントがあるか確認
-      // final userId = credential.user?.uid;
-      // final doc = await FirebaseFirestore.instance
-      //     .collection('users')
-      //     .doc(userId)
-      //     .get();
+            logger.d('SignUp');
 
-      // // user ドキュメントがない場合は作成
-      // if (!doc.exists) {
-      //   /// Stripe の customer（お金を払う側のアカウント）を作成
-      //   final customerId = await ref
-      //       .watch(stripeViewModelProvider.notifier)
-      //       .createCustomer(credential.user?.email ?? '');
+            final accountId = await stripe.createConnectAccount(email);
+            logger.d(accountId);
 
-      //   /// Stripe の connectAccount (お金を受け取る側のアカウント）を作成
-      //   final accountId = await ref
-      //       .watch(stripeViewModelProvider.notifier)
-      //       .createConnectAccount(credential.user?.email ?? '');
+            final customerId = await stripe.createCustomer(email);
+            logger.d(customerId);
 
-      //   // user ドキュメントを作成
-      //   await ref.watch(userViewModelProvider.notifier).createUser(
-      //         credential.user,
-      //         customerId,
-      //         accountId,
-      //       );
-      // }
-    } on FirebaseAuthException catch (e) {
-      await showDialog(
-        context: context,
-        builder: (ctx) => AlertDialog(
-          title: const Text('Error Occurred'),
-          content: Text(e.toString()),
-          actions: [
-            TextButton(
-                onPressed: () {
-                  Navigator.of(ctx).pop();
-                },
-                child: Text(localizations.okButtonLabel))
-          ],
-        ),
-      );
+            await userViewModel.createUser(
+              credential.user,
+              customerId,
+              accountId,
+            );
+          },
+        );
+
+        // final credential = await _auth.signInWithCredential(credential1);
+        // // user ドキュメントがあるか確認
+        // final userId = credential.user?.uid;
+        // final doc = await FirebaseFirestore.instance
+        //     .collection('users')
+        //     .doc(userId)
+        //     .get();
+
+        // // user ドキュメントがない場合は作成
+        // if (!doc.exists) {
+        //   /// Stripe の customer（お金を払う側のアカウント）を作成
+        //   final customerId = await ref
+        //       .watch(stripeViewModelProvider.notifier)
+        //       .createCustomer(credential.user?.email ?? '');
+
+        //   /// Stripe の connectAccount (お金を受け取る側のアカウント）を作成
+        //   final accountId = await ref
+        //       .watch(stripeViewModelProvider.notifier)
+        //       .createConnectAccount(credential.user?.email ?? '');
+
+        //   // user ドキュメントを作成
+        //   await ref.watch(userViewModelProvider.notifier).createUser(
+        //         credential.user,
+        //         customerId,
+        //         accountId,
+        //       );
+        // }
+      } on FirebaseAuthException catch (e) {
+        logger.d(e);
+        await showDialog(
+          context: context,
+          builder: (ctx) => AlertDialog(
+            title: const Text('Error Occurred'),
+            content: Text(e.toString()),
+            actions: [
+              TextButton(
+                  onPressed: () {
+                    Navigator.of(ctx).pop();
+                  },
+                  child: Text(localizations.okButtonLabel))
+            ],
+          ),
+        );
+      }
     }
   }
 
   //  SignOut the current user
   Future<void> signOut() async {
     await _auth.signOut();
+    try {
+      if (!kIsWeb) {
+        await GoogleSignIn().signOut();
+      }
+      await FirebaseAuth.instance.signOut();
+    } catch (e) {
+      logger.e(e);
+      // ScaffoldMessenger.of(context).showSnackBar(
+      //   Authentication.customSnackBar(
+      //     content: 'Error signing out. Try again.',
+      //   ),
+      // );
+    }
   }
 }
