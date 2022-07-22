@@ -143,128 +143,103 @@ class _LoginPageState extends State<LoginPage> {
                       }));
             }
 
-            return Center(
-              child: SizedBox(
-                width: MediaQuery.of(context).size.width >= 768 ? 400 : null,
-                child: Form(
-                  key: _formKey,
-                  child: Column(
-                    children: [
-                      Expanded(
-                        flex: 3,
-                        child: Container(
-                          margin: const EdgeInsets.only(top: 48),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Container(
-                                  child: const Center(
-                                      child: Text(''))), //'jumble moll'))),
-                              // const Center(child: FlutterLogo(size: 81)),
-                              const Spacer(flex: 1),
-                              if (type == Status.signUp)
-                                AnimatedContainer(
-                                  duration: const Duration(milliseconds: 600),
+            return SingleChildScrollView(
+              child: Center(
+                child: SizedBox(
+                  // width: MediaQuery.of(context).size.width >= 768 ? 400 : null,
+                  width: 400,
+                  // height: MediaQuery.of(context).size.width >= 768 ? null : 768,
+                  height: 768,
+                  child: Form(
+                    key: _formKey,
+                    child: Column(
+                      children: [
+                        Expanded(
+                          flex: 3,
+                          child: Container(
+                            margin: const EdgeInsets.only(top: 48),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Container(
+                                    child: const Center(
+                                        child: Text(''))), //'jumble moll'))),
+                                // const Center(child: FlutterLogo(size: 81)),
+                                const Spacer(flex: 1),
+                                if (type == Status.signUp)
+                                  AnimatedContainer(
+                                    duration: const Duration(milliseconds: 600),
+                                    margin: const EdgeInsets.symmetric(
+                                        horizontal: 24, vertical: 8),
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 16, vertical: 4),
+                                    decoration: BoxDecoration(
+                                        // color: Colors.white,
+                                        borderRadius:
+                                            BorderRadius.circular(25)),
+                                    child: TextFormField(
+                                      textInputAction: TextInputAction.next,
+                                      controller: _name,
+                                      autocorrect: true,
+                                      enableSuggestions: true,
+                                      keyboardType: TextInputType.name,
+                                      onSaved: (value) {},
+                                      decoration: const InputDecoration(
+                                        hintText: 'Full Name',
+                                        // hintStyle: const TextStyle(color: Colors.black54),
+                                        icon: Icon(
+                                          Icons.person,
+                                          // color: Colors.blue.shade700, size: 24,
+                                        ),
+                                        alignLabelWithHint: true,
+                                        // border: InputBorder.none,
+                                      ),
+                                      validator: type == Status.signUp
+                                          ? (value) {
+                                              if (value!.isEmpty) {
+                                                return 'invalid! please try another one!';
+                                              }
+                                              return null;
+                                            }
+                                          : null,
+                                    ),
+                                  ),
+                                Container(
                                   margin: const EdgeInsets.symmetric(
-                                      horizontal: 24, vertical: 8),
+                                      horizontal: 24, vertical: 16),
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 16, vertical: 4),
                                   decoration: BoxDecoration(
                                       // color: Colors.white,
                                       borderRadius: BorderRadius.circular(25)),
                                   child: TextFormField(
-                                    controller: _name,
+                                    textInputAction: TextInputAction.next,
+                                    controller: _email,
                                     autocorrect: true,
                                     enableSuggestions: true,
-                                    keyboardType: TextInputType.name,
+                                    keyboardType: TextInputType.emailAddress,
                                     onSaved: (value) {},
                                     decoration: const InputDecoration(
-                                      hintText: 'Full Name',
+                                      hintText: 'Email address',
                                       // hintStyle: const TextStyle(color: Colors.black54),
                                       icon: Icon(
-                                        Icons.person,
+                                        Icons.email_outlined,
                                         // color: Colors.blue.shade700, size: 24,
                                       ),
                                       alignLabelWithHint: true,
                                       // border: InputBorder.none,
                                     ),
-                                    validator: type == Status.signUp
-                                        ? (value) {
-                                            if (value!.isEmpty) {
-                                              return 'invalid! please try another one!';
-                                            }
-                                            return null;
-                                          }
-                                        : null,
+                                    validator: (value) {
+                                      if (value!.isEmpty ||
+                                          !value.contains('@')) {
+                                        return 'Invalid email!';
+                                      }
+                                      return null;
+                                    },
                                   ),
                                 ),
-                              Container(
-                                margin: const EdgeInsets.symmetric(
-                                    horizontal: 24, vertical: 16),
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 16, vertical: 4),
-                                decoration: BoxDecoration(
-                                    // color: Colors.white,
-                                    borderRadius: BorderRadius.circular(25)),
-                                child: TextFormField(
-                                  controller: _email,
-                                  autocorrect: true,
-                                  enableSuggestions: true,
-                                  keyboardType: TextInputType.emailAddress,
-                                  onSaved: (value) {},
-                                  decoration: const InputDecoration(
-                                    hintText: 'Email address',
-                                    // hintStyle: const TextStyle(color: Colors.black54),
-                                    icon: Icon(
-                                      Icons.email_outlined,
-                                      // color: Colors.blue.shade700, size: 24,
-                                    ),
-                                    alignLabelWithHint: true,
-                                    // border: InputBorder.none,
-                                  ),
-                                  validator: (value) {
-                                    if (value!.isEmpty ||
-                                        !value.contains('@')) {
-                                      return 'Invalid email!';
-                                    }
-                                    return null;
-                                  },
-                                ),
-                              ),
-                              Container(
-                                margin: const EdgeInsets.symmetric(
-                                    horizontal: 24, vertical: 8),
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 16, vertical: 4),
-                                decoration: BoxDecoration(
-                                    // color: Colors.white,
-                                    borderRadius: BorderRadius.circular(25)),
-                                child: TextFormField(
-                                  controller: _password,
-                                  obscureText: true,
-                                  validator: (value) {
-                                    if (value!.isEmpty || value.length < 8) {
-                                      return 'Password is too short!';
-                                    }
-                                    return null;
-                                  },
-                                  decoration: const InputDecoration(
-                                    hintText: 'Password',
-                                    // hintStyle: const TextStyle(color: Colors.black54),
-                                    icon: Icon(
-                                      CupertinoIcons.lock_circle,
-                                      // color: Colors.blue.shade700,
-                                      size: 24,
-                                    ),
-                                    alignLabelWithHint: true,
-                                    // border: InputBorder.none,
-                                  ),
-                                ),
-                              ),
-                              if (type == Status.signUp)
-                                AnimatedContainer(
-                                  duration: const Duration(milliseconds: 600),
+                                Container(
                                   margin: const EdgeInsets.symmetric(
                                       horizontal: 24, vertical: 8),
                                   padding: const EdgeInsets.symmetric(
@@ -273,11 +248,18 @@ class _LoginPageState extends State<LoginPage> {
                                       // color: Colors.white,
                                       borderRadius: BorderRadius.circular(25)),
                                   child: TextFormField(
+                                    textInputAction: TextInputAction.next,
+                                    controller: _password,
                                     obscureText: true,
+                                    validator: (value) {
+                                      if (value!.isEmpty || value.length < 8) {
+                                        return 'Password is too short!';
+                                      }
+                                      return null;
+                                    },
                                     decoration: const InputDecoration(
-                                      hintText: 'Confirm password',
-                                      // hintStyle:
-                                      //     const TextStyle(color: Colors.black54),
+                                      hintText: 'Password',
+                                      // hintStyle: const TextStyle(color: Colors.black54),
                                       icon: Icon(
                                         CupertinoIcons.lock_circle,
                                         // color: Colors.blue.shade700,
@@ -286,141 +268,170 @@ class _LoginPageState extends State<LoginPage> {
                                       alignLabelWithHint: true,
                                       // border: InputBorder.none,
                                     ),
-                                    validator: type == Status.signUp
-                                        ? (value) {
-                                            if (value != _password.text) {
-                                              return 'Passwords do not match!';
-                                            }
-                                            return null;
-                                          }
-                                        : null,
                                   ),
                                 ),
-                              const Spacer()
-                            ],
+                                if (type == Status.signUp)
+                                  AnimatedContainer(
+                                    duration: const Duration(milliseconds: 600),
+                                    margin: const EdgeInsets.symmetric(
+                                        horizontal: 24, vertical: 8),
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 16, vertical: 4),
+                                    decoration: BoxDecoration(
+                                        // color: Colors.white,
+                                        borderRadius:
+                                            BorderRadius.circular(25)),
+                                    child: TextFormField(
+                                      textInputAction: TextInputAction.done,
+                                      obscureText: true,
+                                      decoration: const InputDecoration(
+                                        hintText: 'Confirm password',
+                                        // hintStyle:
+                                        //     const TextStyle(color: Colors.black54),
+                                        icon: Icon(
+                                          CupertinoIcons.lock_circle,
+                                          // color: Colors.blue.shade700,
+                                          size: 24,
+                                        ),
+                                        alignLabelWithHint: true,
+                                        // border: InputBorder.none,
+                                      ),
+                                      validator: type == Status.signUp
+                                          ? (value) {
+                                              if (value != _password.text) {
+                                                return 'Passwords do not match!';
+                                              }
+                                              return null;
+                                            }
+                                          : null,
+                                    ),
+                                  ),
+                                const Spacer()
+                              ],
+                            ),
                           ),
                         ),
-                      ),
-                      Expanded(
-                        flex: 2,
-                        child: SizedBox(
-                          width: double.infinity,
-                          // decoration: const BoxDecoration(color: Colors.white),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Container(
-                                padding: const EdgeInsets.only(top: 32.0),
-                                margin:
-                                    const EdgeInsets.symmetric(horizontal: 16),
-                                width: double.infinity,
-                                child: _isLoading
-                                    ? const Center(
-                                        child: CircularProgressIndicator())
-                                    : MaterialButton(
-                                        onPressed: _onPressedFunction,
-                                        // textColor: Colors.blue.shade700,
-                                        textTheme: ButtonTextTheme.primary,
-                                        minWidth: 100,
-                                        padding: const EdgeInsets.all(18),
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(25),
-                                          // side: const BorderSide(
-                                          //     color: Colors.blue.shade700,
-                                          //     ),
-                                          side: BorderSide(
-                                            color: Theme.of(context)
-                                                .unselectedWidgetColor,
+                        Expanded(
+                          // flex: 2,
+                          child: SizedBox(
+                            width: double.infinity,
+                            // decoration: const BoxDecoration(color: Colors.white),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Container(
+                                  padding: const EdgeInsets.only(top: 32.0),
+                                  margin: const EdgeInsets.symmetric(
+                                      horizontal: 16),
+                                  width: double.infinity,
+                                  child: _isLoading
+                                      ? const Center(
+                                          child: CircularProgressIndicator())
+                                      : MaterialButton(
+                                          onPressed: _onPressedFunction,
+                                          // textColor: Colors.blue.shade700,
+                                          textTheme: ButtonTextTheme.primary,
+                                          minWidth: 100,
+                                          padding: const EdgeInsets.all(18),
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(25),
+                                            // side: const BorderSide(
+                                            //     color: Colors.blue.shade700,
+                                            //     ),
+                                            side: BorderSide(
+                                              color: Theme.of(context)
+                                                  .unselectedWidgetColor,
+                                            ),
+                                          ),
+                                          child: Text(
+                                            type == Status.login
+                                                ? 'Log in'
+                                                : 'Sign up',
+                                            style: const TextStyle(
+                                                fontWeight: FontWeight.w600),
                                           ),
                                         ),
-                                        child: Text(
-                                          type == Status.login
-                                              ? 'Log in'
-                                              : 'Sign up',
-                                          style: const TextStyle(
-                                              fontWeight: FontWeight.w600),
-                                        ),
-                                      ),
-                              ),
-                              // Container(
-                              //   padding: const EdgeInsets.only(top: 32.0),
-                              //   margin:
-                              //       const EdgeInsets.symmetric(horizontal: 16),
-                              //   width: double.infinity,
-                              //   child: _isLoading2
-                              //       ? const Center(
-                              //           child: CircularProgressIndicator())
-                              //       : MaterialButton(
-                              //           onPressed: _loginWithGoogle,
-                              //           // textColor: Colors.blue.shade700,
-                              //           textTheme: ButtonTextTheme.primary,
-                              //           minWidth: 100,
-                              //           padding: const EdgeInsets.all(18),
-                              //           shape: RoundedRectangleBorder(
-                              //             borderRadius:
-                              //                 BorderRadius.circular(25),
-                              //             // side: const BorderSide(
-                              //             // color: Colors.blue.shade700,
-                              //             // ),
-                              //             side: BorderSide(
-                              //               color: Theme.of(context)
-                              //                   .unselectedWidgetColor,
-                              //             ),
-                              //           ),
-                              //           child: Row(
-                              //             mainAxisAlignment:
-                              //                 MainAxisAlignment.center,
-                              //             children: const [
-                              //               //  A google icon here
-                              //               //  an External Package used here
-                              //               //  Font_awesome_flutter package used
-                              //               FaIcon(FontAwesomeIcons.google),
-                              //               Text(
-                              //                 ' Login with Google',
-                              //                 style: TextStyle(
-                              //                     fontWeight: FontWeight.w600),
-                              //               ),
-                              //             ],
-                              //           ),
-                              //         ),
-                              // ),
-                              const Spacer(),
-                              Padding(
-                                padding: const EdgeInsets.only(bottom: 24.0),
-                                child: RichText(
-                                  text: TextSpan(
-                                    text: type == Status.login
-                                        ? 'Don\'t have an account? '
-                                        : 'Already have an account? ',
-                                    // style: const TextStyle(
-                                    // color: Colors.black,
-                                    // ),
-                                    style:
-                                        Theme.of(context).textTheme.headline6,
-                                    children: [
-                                      TextSpan(
-                                          text: type == Status.login
-                                              ? 'Sign up now'
-                                              : 'Log in',
-                                          style: TextStyle(
-                                              //     color: Colors.blue.shade700,
-                                              color: Theme.of(context)
-                                                  .primaryColor),
-                                          recognizer: TapGestureRecognizer()
-                                            ..onTap = () {
-                                              _switchType();
-                                            })
-                                    ],
+                                ),
+                                // Container(
+                                //   padding: const EdgeInsets.only(top: 32.0),
+                                //   margin:
+                                //       const EdgeInsets.symmetric(horizontal: 16),
+                                //   width: double.infinity,
+                                //   child: _isLoading2
+                                //       ? const Center(
+                                //           child: CircularProgressIndicator())
+                                //       : MaterialButton(
+                                //           onPressed: _loginWithGoogle,
+                                //           // textColor: Colors.blue.shade700,
+                                //           textTheme: ButtonTextTheme.primary,
+                                //           minWidth: 100,
+                                //           padding: const EdgeInsets.all(18),
+                                //           shape: RoundedRectangleBorder(
+                                //             borderRadius:
+                                //                 BorderRadius.circular(25),
+                                //             // side: const BorderSide(
+                                //             // color: Colors.blue.shade700,
+                                //             // ),
+                                //             side: BorderSide(
+                                //               color: Theme.of(context)
+                                //                   .unselectedWidgetColor,
+                                //             ),
+                                //           ),
+                                //           child: Row(
+                                //             mainAxisAlignment:
+                                //                 MainAxisAlignment.center,
+                                //             children: const [
+                                //               //  A google icon here
+                                //               //  an External Package used here
+                                //               //  Font_awesome_flutter package used
+                                //               FaIcon(FontAwesomeIcons.google),
+                                //               Text(
+                                //                 ' Login with Google',
+                                //                 style: TextStyle(
+                                //                     fontWeight: FontWeight.w600),
+                                //               ),
+                                //             ],
+                                //           ),
+                                //         ),
+                                // ),
+                                const Spacer(),
+                                Padding(
+                                  padding: const EdgeInsets.only(bottom: 24.0),
+                                  child: RichText(
+                                    text: TextSpan(
+                                      text: type == Status.login
+                                          ? 'Don\'t have an account? '
+                                          : 'Already have an account? ',
+                                      // style: const TextStyle(
+                                      // color: Colors.black,
+                                      // ),
+                                      style:
+                                          Theme.of(context).textTheme.headline6,
+                                      children: [
+                                        TextSpan(
+                                            text: type == Status.login
+                                                ? 'Sign up now'
+                                                : 'Log in',
+                                            style: TextStyle(
+                                                //     color: Colors.blue.shade700,
+                                                color: Theme.of(context)
+                                                    .primaryColor),
+                                            recognizer: TapGestureRecognizer()
+                                              ..onTap = () {
+                                                _switchType();
+                                              })
+                                      ],
+                                    ),
                                   ),
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
-                        ),
-                      )
-                    ],
+                        )
+                      ],
+                    ),
                   ),
                 ),
               ),
