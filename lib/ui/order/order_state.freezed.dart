@@ -127,7 +127,7 @@ abstract class _OrderState implements OrderState {
   const factory _OrderState({final List<Order> orderList}) = _$_OrderState;
 
   @override
-  List<Order> get orderList => throw _privateConstructorUsedError;
+  List<Order> get orderList;
   @override
   @JsonKey(ignore: true)
   _$$_OrderStateCopyWith<_$_OrderState> get copyWith =>

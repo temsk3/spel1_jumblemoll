@@ -127,7 +127,7 @@ abstract class _BazaarState implements BazaarState {
   const factory _BazaarState({final List<Bazaar> bazaarList}) = _$_BazaarState;
 
   @override
-  List<Bazaar> get bazaarList => throw _privateConstructorUsedError;
+  List<Bazaar> get bazaarList;
   @override
   @JsonKey(ignore: true)
   _$$_BazaarStateCopyWith<_$_BazaarState> get copyWith =>

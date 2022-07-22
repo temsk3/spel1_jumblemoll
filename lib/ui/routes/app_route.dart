@@ -15,9 +15,7 @@ import '../order/order_page.dart';
 import '../order/product_status_page.dart';
 import '../order/purchase_page.dart';
 import '../order/sales_status_page.dart';
-import '../product/product_add_page.dart';
 import '../product/product_details_page.dart';
-import '../product/product_edit_page.dart';
 import '../product/product_list_all.dart';
 import '../product/product_list_foods.dart';
 import '../product/product_list_goods.dart';
@@ -88,14 +86,6 @@ import '../product/product_page.dart';
               path: RoutePath.appRouteProductDetails,
               page: ProductDetailsPage,
             ),
-            AutoRoute(
-              path: RoutePath.appRouteProductEdit,
-              page: ProductEditPage,
-            ),
-            AutoRoute(
-              path: RoutePath.appRouteProductAdd,
-              page: ProductAddPage,
-            ),
             //
             AutoRoute(
               path: RoutePath.appRouteSupporter,
@@ -151,14 +141,6 @@ import '../product/product_page.dart';
             AutoRoute(
               path: RoutePath.appRouteProductDetails,
               page: ProductDetailsPage,
-            ),
-            AutoRoute(
-              path: RoutePath.appRouteProductEdit,
-              page: ProductEditPage,
-            ),
-            AutoRoute(
-              path: RoutePath.appRouteProductAdd,
-              page: ProductAddPage,
             ),
           ],
         ),

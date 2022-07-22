@@ -11,14 +11,14 @@
 // ignore_for_file: type=lint
 
 import 'package:auto_route/auto_route.dart' as _i4;
-import 'package:flutter/material.dart' as _i24;
+import 'package:flutter/material.dart' as _i22;
 import 'package:jumblemoll/ui/account/account_page.dart' as _i2;
 import 'package:jumblemoll/ui/auth/auth.dart' as _i1;
 import 'package:jumblemoll/ui/bazaar/bazaar_add_page.dart' as _i13;
 import 'package:jumblemoll/ui/bazaar/bazaar_details_page.dart' as _i11;
 import 'package:jumblemoll/ui/bazaar/bazaar_edit_page.dart' as _i12;
 import 'package:jumblemoll/ui/bazaar/bazaar_page.dart' as _i10;
-import 'package:jumblemoll/ui/bazaar/supporter_page.dart' as _i18;
+import 'package:jumblemoll/ui/bazaar/supporter_page.dart' as _i16;
 import 'package:jumblemoll/ui/common/image_crop.dart' as _i14;
 import 'package:jumblemoll/ui/favorite/favorite_page.dart' as _i9;
 import 'package:jumblemoll/ui/home.dart' as _i3;
@@ -26,17 +26,15 @@ import 'package:jumblemoll/ui/order/order_page.dart' as _i6;
 import 'package:jumblemoll/ui/order/product_status_page.dart' as _i8;
 import 'package:jumblemoll/ui/order/purchase_page.dart' as _i5;
 import 'package:jumblemoll/ui/order/sales_status_page.dart' as _i7;
-import 'package:jumblemoll/ui/product/product_add_page.dart' as _i17;
 import 'package:jumblemoll/ui/product/product_details_page.dart' as _i15;
-import 'package:jumblemoll/ui/product/product_edit_page.dart' as _i16;
-import 'package:jumblemoll/ui/product/product_list_all.dart' as _i20;
-import 'package:jumblemoll/ui/product/product_list_foods.dart' as _i21;
-import 'package:jumblemoll/ui/product/product_list_goods.dart' as _i22;
-import 'package:jumblemoll/ui/product/product_list_others.dart' as _i23;
-import 'package:jumblemoll/ui/product/product_page.dart' as _i19;
+import 'package:jumblemoll/ui/product/product_list_all.dart' as _i18;
+import 'package:jumblemoll/ui/product/product_list_foods.dart' as _i19;
+import 'package:jumblemoll/ui/product/product_list_goods.dart' as _i20;
+import 'package:jumblemoll/ui/product/product_list_others.dart' as _i21;
+import 'package:jumblemoll/ui/product/product_page.dart' as _i17;
 
 class AppRouter extends _i4.RootStackRouter {
-  AppRouter([_i24.GlobalKey<_i24.NavigatorState>? navigatorKey])
+  AppRouter([_i22.GlobalKey<_i22.NavigatorState>? navigatorKey])
       : super(navigatorKey);
 
   @override
@@ -99,7 +97,7 @@ class AppRouter extends _i4.RootStackRouter {
       final pathParams = routeData.inheritedPathParams;
       final args = routeData.argsAs<BazaarDetailsRouteArgs>(
           orElse: () =>
-              BazaarDetailsRouteArgs(index: pathParams.getInt('index')));
+              BazaarDetailsRouteArgs(index: pathParams.getInt('bazaarId')));
       return _i4.AdaptivePage<dynamic>(
           routeData: routeData,
           child: _i11.BazaarDetailsPage(
@@ -122,10 +120,8 @@ class AppRouter extends _i4.RootStackRouter {
     ProductDetailsRoute.name: (routeData) {
       final pathParams = routeData.inheritedPathParams;
       final args = routeData.argsAs<ProductDetailsRouteArgs>(
-          orElse: () => ProductDetailsRouteArgs(
-              index: pathParams.get('index'),
-              bazaarEvent: pathParams.get('bazaar'),
-              productItem: pathParams.get('product')));
+          orElse: () =>
+              ProductDetailsRouteArgs(index: pathParams.get('productId')));
       return _i4.AdaptivePage<dynamic>(
           routeData: routeData,
           child: _i15.ProductDetailsPage(
@@ -134,45 +130,31 @@ class AppRouter extends _i4.RootStackRouter {
               bazaarEvent: args.bazaarEvent,
               productItem: args.productItem));
     },
-    ProductEditRoute.name: (routeData) {
-      final args = routeData.argsAs<ProductEditRouteArgs>();
-      return _i4.AdaptivePage<dynamic>(
-          routeData: routeData,
-          child: _i16.ProductEditPage(key: args.key, index: args.index));
-    },
-    ProductAddRoute.name: (routeData) {
-      final pathParams = routeData.inheritedPathParams;
-      final args = routeData.argsAs<ProductAddRouteArgs>(
-          orElse: () => ProductAddRouteArgs(bazaar: pathParams.get('bazaar')));
-      return _i4.AdaptivePage<dynamic>(
-          routeData: routeData,
-          child: _i17.ProductAddPage(key: args.key, bazaar: args.bazaar));
-    },
     SupporterRoute.name: (routeData) {
       final args = routeData.argsAs<SupporterRouteArgs>();
       return _i4.AdaptivePage<dynamic>(
           routeData: routeData,
-          child: _i18.SupporterPage(key: args.key, bazaarId: args.bazaarId));
+          child: _i16.SupporterPage(key: args.key, bazaarId: args.bazaarId));
     },
     ProductRoute.name: (routeData) {
       return _i4.AdaptivePage<dynamic>(
-          routeData: routeData, child: const _i19.ProductPage());
+          routeData: routeData, child: const _i17.ProductPage());
     },
     ProductAllRoute.name: (routeData) {
       return _i4.AdaptivePage<dynamic>(
-          routeData: routeData, child: const _i20.ProductAllPage());
+          routeData: routeData, child: const _i18.ProductAllPage());
     },
     ProductFoodsRoute.name: (routeData) {
       return _i4.AdaptivePage<dynamic>(
-          routeData: routeData, child: const _i21.ProductFoodsPage());
+          routeData: routeData, child: const _i19.ProductFoodsPage());
     },
     ProductGoodsRoute.name: (routeData) {
       return _i4.AdaptivePage<dynamic>(
-          routeData: routeData, child: const _i22.ProductGoodsPage());
+          routeData: routeData, child: const _i20.ProductGoodsPage());
     },
     ProductOthersRoute.name: (routeData) {
       return _i4.AdaptivePage<dynamic>(
-          routeData: routeData, child: const _i23.ProductOthersPage());
+          routeData: routeData, child: const _i21.ProductOthersPage());
     }
   };
 
@@ -202,10 +184,6 @@ class AppRouter extends _i4.RootStackRouter {
                     path: 'crop', parent: BazaarListRouter.name),
                 _i4.RouteConfig(ProductDetailsRoute.name,
                     path: ':productId', parent: BazaarListRouter.name),
-                _i4.RouteConfig(ProductEditRoute.name,
-                    path: 'productEdit', parent: BazaarListRouter.name),
-                _i4.RouteConfig(ProductAddRoute.name,
-                    path: 'productAdd', parent: BazaarListRouter.name),
                 _i4.RouteConfig(SupporterRoute.name,
                     path: 'bazaarSupport', parent: BazaarListRouter.name),
                 _i4.RouteConfig(OrderRoute.name,
@@ -238,11 +216,7 @@ class AppRouter extends _i4.RootStackRouter {
                           path: 'productOthers', parent: ProductRoute.name)
                     ]),
                 _i4.RouteConfig(ProductDetailsRoute.name,
-                    path: ':productId', parent: ProductRouter.name),
-                _i4.RouteConfig(ProductEditRoute.name,
-                    path: 'productEdit', parent: ProductRouter.name),
-                _i4.RouteConfig(ProductAddRoute.name,
-                    path: 'productAdd', parent: ProductRouter.name)
+                    path: ':productId', parent: ProductRouter.name)
               ]),
           _i4.RouteConfig(PurchaseRoute.name,
               path: 'purchase', parent: HomeRoute.name),
@@ -312,7 +286,7 @@ class PurchaseRoute extends _i4.PageRouteInfo<void> {
 /// generated route for
 /// [_i6.OrderPage]
 class OrderRoute extends _i4.PageRouteInfo<OrderRouteArgs> {
-  OrderRoute({_i24.Key? key, required String? bazaar})
+  OrderRoute({_i22.Key? key, required String? bazaar})
       : super(OrderRoute.name,
             path: 'order', args: OrderRouteArgs(key: key, bazaar: bazaar));
 
@@ -322,7 +296,7 @@ class OrderRoute extends _i4.PageRouteInfo<OrderRouteArgs> {
 class OrderRouteArgs {
   const OrderRouteArgs({this.key, required this.bazaar});
 
-  final _i24.Key? key;
+  final _i22.Key? key;
 
   final String? bazaar;
 
@@ -335,7 +309,7 @@ class OrderRouteArgs {
 /// generated route for
 /// [_i7.SalesStatusPage]
 class SalesStatusRoute extends _i4.PageRouteInfo<SalesStatusRouteArgs> {
-  SalesStatusRoute({_i24.Key? key, required dynamic bazaar})
+  SalesStatusRoute({_i22.Key? key, required dynamic bazaar})
       : super(SalesStatusRoute.name,
             path: 'salesStatus',
             args: SalesStatusRouteArgs(key: key, bazaar: bazaar));
@@ -346,7 +320,7 @@ class SalesStatusRoute extends _i4.PageRouteInfo<SalesStatusRouteArgs> {
 class SalesStatusRouteArgs {
   const SalesStatusRouteArgs({this.key, required this.bazaar});
 
-  final _i24.Key? key;
+  final _i22.Key? key;
 
   final dynamic bazaar;
 
@@ -359,7 +333,7 @@ class SalesStatusRouteArgs {
 /// generated route for
 /// [_i8.ProductStatusPage]
 class ProductStatusRoute extends _i4.PageRouteInfo<ProductStatusRouteArgs> {
-  ProductStatusRoute({_i24.Key? key, required dynamic bazaar})
+  ProductStatusRoute({_i22.Key? key, required dynamic bazaar})
       : super(ProductStatusRoute.name,
             path: 'productStatus',
             args: ProductStatusRouteArgs(key: key, bazaar: bazaar));
@@ -370,7 +344,7 @@ class ProductStatusRoute extends _i4.PageRouteInfo<ProductStatusRouteArgs> {
 class ProductStatusRouteArgs {
   const ProductStatusRouteArgs({this.key, required this.bazaar});
 
-  final _i24.Key? key;
+  final _i22.Key? key;
 
   final dynamic bazaar;
 
@@ -399,12 +373,12 @@ class BazaarListRoute extends _i4.PageRouteInfo<void> {
 /// generated route for
 /// [_i11.BazaarDetailsPage]
 class BazaarDetailsRoute extends _i4.PageRouteInfo<BazaarDetailsRouteArgs> {
-  BazaarDetailsRoute({_i24.Key? key, required int index, dynamic bazaarEvent})
+  BazaarDetailsRoute({_i22.Key? key, required int index, dynamic bazaarEvent})
       : super(BazaarDetailsRoute.name,
             path: ':bazaarId',
             args: BazaarDetailsRouteArgs(
                 key: key, index: index, bazaarEvent: bazaarEvent),
-            rawPathParams: {'index': index});
+            rawPathParams: {'bazaarId': index});
 
   static const String name = 'BazaarDetailsRoute';
 }
@@ -413,7 +387,7 @@ class BazaarDetailsRouteArgs {
   const BazaarDetailsRouteArgs(
       {this.key, required this.index, this.bazaarEvent});
 
-  final _i24.Key? key;
+  final _i22.Key? key;
 
   final int index;
 
@@ -428,7 +402,7 @@ class BazaarDetailsRouteArgs {
 /// generated route for
 /// [_i12.BazaarEditPage]
 class BazaarEditRoute extends _i4.PageRouteInfo<BazaarEditRouteArgs> {
-  BazaarEditRoute({_i24.Key? key, required int index})
+  BazaarEditRoute({_i22.Key? key, required int index})
       : super(BazaarEditRoute.name,
             path: 'bazaarEdit',
             args: BazaarEditRouteArgs(key: key, index: index));
@@ -439,7 +413,7 @@ class BazaarEditRoute extends _i4.PageRouteInfo<BazaarEditRouteArgs> {
 class BazaarEditRouteArgs {
   const BazaarEditRouteArgs({this.key, required this.index});
 
-  final _i24.Key? key;
+  final _i22.Key? key;
 
   final int index;
 
@@ -469,7 +443,7 @@ class ImageCropRoute extends _i4.PageRouteInfo<void> {
 /// [_i15.ProductDetailsPage]
 class ProductDetailsRoute extends _i4.PageRouteInfo<ProductDetailsRouteArgs> {
   ProductDetailsRoute(
-      {_i24.Key? key, dynamic index, dynamic bazaarEvent, dynamic productItem})
+      {_i22.Key? key, dynamic index, dynamic bazaarEvent, dynamic productItem})
       : super(ProductDetailsRoute.name,
             path: ':productId',
             args: ProductDetailsRouteArgs(
@@ -477,11 +451,7 @@ class ProductDetailsRoute extends _i4.PageRouteInfo<ProductDetailsRouteArgs> {
                 index: index,
                 bazaarEvent: bazaarEvent,
                 productItem: productItem),
-            rawPathParams: {
-              'index': index,
-              'bazaar': bazaarEvent,
-              'product': productItem
-            });
+            rawPathParams: {'productId': index});
 
   static const String name = 'ProductDetailsRoute';
 }
@@ -490,7 +460,7 @@ class ProductDetailsRouteArgs {
   const ProductDetailsRouteArgs(
       {this.key, this.index, this.bazaarEvent, this.productItem});
 
-  final _i24.Key? key;
+  final _i22.Key? key;
 
   final dynamic index;
 
@@ -505,58 +475,9 @@ class ProductDetailsRouteArgs {
 }
 
 /// generated route for
-/// [_i16.ProductEditPage]
-class ProductEditRoute extends _i4.PageRouteInfo<ProductEditRouteArgs> {
-  ProductEditRoute({_i24.Key? key, required int index})
-      : super(ProductEditRoute.name,
-            path: 'productEdit',
-            args: ProductEditRouteArgs(key: key, index: index));
-
-  static const String name = 'ProductEditRoute';
-}
-
-class ProductEditRouteArgs {
-  const ProductEditRouteArgs({this.key, required this.index});
-
-  final _i24.Key? key;
-
-  final int index;
-
-  @override
-  String toString() {
-    return 'ProductEditRouteArgs{key: $key, index: $index}';
-  }
-}
-
-/// generated route for
-/// [_i17.ProductAddPage]
-class ProductAddRoute extends _i4.PageRouteInfo<ProductAddRouteArgs> {
-  ProductAddRoute({_i24.Key? key, dynamic bazaar})
-      : super(ProductAddRoute.name,
-            path: 'productAdd',
-            args: ProductAddRouteArgs(key: key, bazaar: bazaar),
-            rawPathParams: {'bazaar': bazaar});
-
-  static const String name = 'ProductAddRoute';
-}
-
-class ProductAddRouteArgs {
-  const ProductAddRouteArgs({this.key, this.bazaar});
-
-  final _i24.Key? key;
-
-  final dynamic bazaar;
-
-  @override
-  String toString() {
-    return 'ProductAddRouteArgs{key: $key, bazaar: $bazaar}';
-  }
-}
-
-/// generated route for
-/// [_i18.SupporterPage]
+/// [_i16.SupporterPage]
 class SupporterRoute extends _i4.PageRouteInfo<SupporterRouteArgs> {
-  SupporterRoute({_i24.Key? key, required dynamic bazaarId})
+  SupporterRoute({_i22.Key? key, required dynamic bazaarId})
       : super(SupporterRoute.name,
             path: 'bazaarSupport',
             args: SupporterRouteArgs(key: key, bazaarId: bazaarId));
@@ -567,7 +488,7 @@ class SupporterRoute extends _i4.PageRouteInfo<SupporterRouteArgs> {
 class SupporterRouteArgs {
   const SupporterRouteArgs({this.key, required this.bazaarId});
 
-  final _i24.Key? key;
+  final _i22.Key? key;
 
   final dynamic bazaarId;
 
@@ -578,7 +499,7 @@ class SupporterRouteArgs {
 }
 
 /// generated route for
-/// [_i19.ProductPage]
+/// [_i17.ProductPage]
 class ProductRoute extends _i4.PageRouteInfo<void> {
   const ProductRoute({List<_i4.PageRouteInfo>? children})
       : super(ProductRoute.name, path: '', initialChildren: children);
@@ -587,7 +508,7 @@ class ProductRoute extends _i4.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i20.ProductAllPage]
+/// [_i18.ProductAllPage]
 class ProductAllRoute extends _i4.PageRouteInfo<void> {
   const ProductAllRoute() : super(ProductAllRoute.name, path: 'productAll');
 
@@ -595,7 +516,7 @@ class ProductAllRoute extends _i4.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i21.ProductFoodsPage]
+/// [_i19.ProductFoodsPage]
 class ProductFoodsRoute extends _i4.PageRouteInfo<void> {
   const ProductFoodsRoute()
       : super(ProductFoodsRoute.name, path: 'productFoods');
@@ -604,7 +525,7 @@ class ProductFoodsRoute extends _i4.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i22.ProductGoodsPage]
+/// [_i20.ProductGoodsPage]
 class ProductGoodsRoute extends _i4.PageRouteInfo<void> {
   const ProductGoodsRoute()
       : super(ProductGoodsRoute.name, path: 'productGoods');
@@ -613,7 +534,7 @@ class ProductGoodsRoute extends _i4.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i23.ProductOthersPage]
+/// [_i21.ProductOthersPage]
 class ProductOthersRoute extends _i4.PageRouteInfo<void> {
   const ProductOthersRoute()
       : super(ProductOthersRoute.name, path: 'productOthers');

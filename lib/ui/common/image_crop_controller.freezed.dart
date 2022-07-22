@@ -185,13 +185,13 @@ abstract class _ImageCropState implements ImageCropState {
       final Uint8List? uint8list}) = _$_ImageCropState;
 
   @override // Image? cropImage,
-  Uint8List? get imageFile => throw _privateConstructorUsedError;
+  Uint8List? get imageFile;
   @override
-  bool? get isProcessing => throw _privateConstructorUsedError;
+  bool? get isProcessing;
   @override
-  Uint8List? get croppedData => throw _privateConstructorUsedError;
+  Uint8List? get croppedData;
   @override
-  Uint8List? get uint8list => throw _privateConstructorUsedError;
+  Uint8List? get uint8list;
   @override
   @JsonKey(ignore: true)
   _$$_ImageCropStateCopyWith<_$_ImageCropState> get copyWith =>

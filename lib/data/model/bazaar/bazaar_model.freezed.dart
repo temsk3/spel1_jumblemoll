@@ -395,7 +395,9 @@ class _$_Bazaar extends _Bazaar {
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_BazaarToJson(this);
+    return _$$_BazaarToJson(
+      this,
+    );
   }
 }
 
@@ -421,42 +423,42 @@ abstract class _Bazaar extends Bazaar {
   factory _Bazaar.fromJson(Map<String, dynamic> json) = _$_Bazaar.fromJson;
 
   @override
-  String? get id => throw _privateConstructorUsedError;
+  String? get id;
   @override
-  String? get organizer => throw _privateConstructorUsedError;
+  String? get organizer;
   @override
-  String? get name => throw _privateConstructorUsedError;
+  String? get name;
   @override
-  String? get message => throw _privateConstructorUsedError;
-  @override
-  @timestampkey
-  DateTime? get salesStart => throw _privateConstructorUsedError;
+  String? get message;
   @override
   @timestampkey
-  DateTime? get salesEnd => throw _privateConstructorUsedError;
+  DateTime? get salesStart;
   @override
   @timestampkey
-  DateTime? get eventFrom => throw _privateConstructorUsedError;
+  DateTime? get salesEnd;
   @override
   @timestampkey
-  DateTime? get eventTo => throw _privateConstructorUsedError;
-  @override
-  String? get place => throw _privateConstructorUsedError;
-  @override
-  String? get pictureName => throw _privateConstructorUsedError;
-  @override
-  String? get pictureURL => throw _privateConstructorUsedError;
+  DateTime? get eventFrom;
   @override
   @timestampkey
-  DateTime? get createdAt => throw _privateConstructorUsedError;
+  DateTime? get eventTo;
+  @override
+  String? get place;
+  @override
+  String? get pictureName;
+  @override
+  String? get pictureURL;
   @override
   @timestampkey
-  DateTime? get updatedAt => throw _privateConstructorUsedError;
+  DateTime? get createdAt;
   @override
   @timestampkey
-  DateTime? get deletedAt => throw _privateConstructorUsedError;
+  DateTime? get updatedAt;
   @override
-  String? get eventId => throw _privateConstructorUsedError;
+  @timestampkey
+  DateTime? get deletedAt;
+  @override
+  String? get eventId;
   @override
   @JsonKey(ignore: true)
   _$$_BazaarCopyWith<_$_Bazaar> get copyWith =>

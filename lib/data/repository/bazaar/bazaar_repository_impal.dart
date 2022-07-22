@@ -4,6 +4,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../model/bazaar/bazaar_model.dart';
 import '../../model/bazaar/supporter_model.dart';
 import '../../model/result/result.dart';
+import '../general_provider.dart';
 import 'bazaar_repository.dart';
 
 const _collectionPath = 'events';
@@ -13,33 +14,35 @@ final bazaarRepositoryProvider =
     Provider<BazaarRepository>((ref) => BazaarRepositoryImpl(ref.read));
 
 final bazaarListStreamProvider = StreamProvider.autoDispose((ref) {
-  CollectionReference ref =
+  CollectionReference collectionRef =
       FirebaseFirestore.instance.collection(_collectionPath);
-  return ref.snapshots().map((snapshot) {
+  final list = collectionRef.snapshots().map((snapshot) {
     return snapshot.docs.map((doc) {
       return Bazaar.fromJson(doc.data() as Map<String, dynamic>)
           .copyWith(id: doc.id);
     }).toList();
   });
+  return list;
 });
 
 final supporterListStreamProvider =
     StreamProvider.autoDispose.family<List<Supporter>, String>((ref, bazaarId) {
-  CollectionReference ref =
+  CollectionReference collectionRef =
       FirebaseFirestore.instance.collection('events/$bazaarId/supporter');
-  return ref.snapshots().map((snapshot) {
+  final list = collectionRef.snapshots().map((snapshot) {
     return snapshot.docs.map((doc) {
       return Supporter.fromJson(doc.data() as Map<String, dynamic>)
           .copyWith(uid: doc.id);
     }).toList();
   });
+  return list;
 });
 
 class BazaarRepositoryImpl implements BazaarRepository {
   BazaarRepositoryImpl(this._reader);
   final Reader _reader;
 
-  final _db = FirebaseFirestore.instance;
+  // final _db = FirebaseFirestore.instance;
 
   @override
   Future<Result<List<Bazaar>>> readBazaar() async {
@@ -50,7 +53,9 @@ class BazaarRepositoryImpl implements BazaarRepository {
         //     _db.collection(_collectionPath);
         // final QuerySnapshot querySnapshot = await collectionRef.get();
         final QuerySnapshot querySnapshot =
-            await _db.collection(_collectionPath).get();
+            await _reader(firebaseFirestoreProvider)
+                .collection(_collectionPath)
+                .get();
         final List<QueryDocumentSnapshot> queryDocSnapshot = querySnapshot.docs;
         return queryDocSnapshot.map((doc) {
           final Map<String, dynamic> map = doc.data()! as Map<String, dynamic>;
@@ -72,7 +77,7 @@ class BazaarRepositoryImpl implements BazaarRepository {
     return Result.guardFuture(
       () async {
         // 登録
-        final docRef = await _db
+        final docRef = await _reader(firebaseFirestoreProvider)
             .collection(_collectionPath)
             .add(bazaar.toJson()..remove('id'));
         await docRef.set({
@@ -89,7 +94,9 @@ class BazaarRepositoryImpl implements BazaarRepository {
     return Result.guardFuture(
       () async {
         // アイテムを更新
-        _db.collection(_collectionPath).doc(bazaar.id)
+        _reader(firebaseFirestoreProvider)
+            .collection(_collectionPath)
+            .doc(bazaar.id)
           ..update(bazaar.toJson())
           ..set({
             'updatedAt': FieldValue.serverTimestamp(),
@@ -103,7 +110,10 @@ class BazaarRepositoryImpl implements BazaarRepository {
     return Result.guardFuture(
       () async {
         // アイテムを削除
-        await _db.collection(_collectionPath).doc(bazaarId).delete();
+        await _reader(firebaseFirestoreProvider)
+            .collection(_collectionPath)
+            .doc(bazaarId)
+            .delete();
       },
     );
   }
@@ -114,7 +124,7 @@ class BazaarRepositoryImpl implements BazaarRepository {
       {required String bazaarId, required Supporter supporter}) async {
     return Result.guardFuture(
       () async {
-        final docRef = _db
+        final docRef = _reader(firebaseFirestoreProvider)
             .collection(_collectionPath)
             .doc(bazaarId)
             .collection(_subCollectionPath)
@@ -142,7 +152,7 @@ class BazaarRepositoryImpl implements BazaarRepository {
     return Result.guardFuture(
       () async {
         // アイテムを更新
-        final docRef = _db
+        final docRef = _reader(firebaseFirestoreProvider)
             .collection(_collectionPath)
             .doc(bazaarId.toString())
             .collection(_subCollectionPath)

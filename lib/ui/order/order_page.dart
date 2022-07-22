@@ -3,11 +3,11 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
 
 import '../../data/repository/transaction/purchase/order_repository_impal.dart';
-import '../common/drawer.dart';
 import '../hooks/use_l10n.dart';
 import '../hooks/use_router.dart';
 import '../theme/app_theme.dart';
 import 'order_view_model.dart';
+import 'widget/order_datatable.dart';
 // import 'widget/order_datatable.dart';
 
 class OrderPage extends HookConsumerWidget {
@@ -104,15 +104,18 @@ class OrderPage extends HookConsumerWidget {
           //     ),
           //   ),
           body: SafeArea(
-            child: Row(
-              children: [
-                MediaQuery.of(context).size.width > 768
-                    ? const CustomDrawer()
-                    : Container(),
-                // Expanded(
-                // child: orderDataTable(data: data),
-                // ),
-              ],
+            // child: Row(
+            //   children: [
+            // MediaQuery.of(context).size.width > 768
+            //     ? const CustomDrawer()
+            //     : Container(),
+            // Expanded(
+            // child: orderDataTable(data: data),
+            // ),
+            //   ],
+            // ),
+            child: Center(
+              child: orderDataTable(data: data),
             ),
           ),
         );

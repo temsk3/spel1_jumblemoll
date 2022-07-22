@@ -605,7 +605,9 @@ class _$_Product extends _Product {
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_ProductToJson(this);
+    return _$$_ProductToJson(
+      this,
+    );
   }
 }
 
@@ -642,64 +644,64 @@ abstract class _Product extends Product {
   factory _Product.fromJson(Map<String, dynamic> json) = _$_Product.fromJson;
 
   @override
-  String? get id => throw _privateConstructorUsedError;
+  String? get id;
   @override
-  String? get organizer => throw _privateConstructorUsedError;
+  String? get organizer;
   @override
-  String? get bazaarId => throw _privateConstructorUsedError;
+  String? get bazaarId;
   @override
-  String? get bazaarName => throw _privateConstructorUsedError;
-  @override
-  @timestampkey
-  DateTime? get salesStart => throw _privateConstructorUsedError;
+  String? get bazaarName;
   @override
   @timestampkey
-  DateTime? get salesEnd => throw _privateConstructorUsedError;
+  DateTime? get salesStart;
   @override
-  String? get register => throw _privateConstructorUsedError;
+  @timestampkey
+  DateTime? get salesEnd;
   @override
-  int? get exchangeNumber => throw _privateConstructorUsedError;
+  String? get register;
+  @override
+  int? get exchangeNumber;
   @override //不要
-  String? get code => throw _privateConstructorUsedError;
+  String? get code;
   @override
-  String? get name => throw _privateConstructorUsedError;
+  String? get name;
   @override
-  String? get genre => throw _privateConstructorUsedError;
+  String? get genre;
   @override
-  String? get desc => throw _privateConstructorUsedError;
+  String? get desc;
   @override
-  int? get stock => throw _privateConstructorUsedError;
+  int? get stock;
   @override
-  int? get price => throw _privateConstructorUsedError;
+  int? get price;
   @override
-  String? get picture1Name => throw _privateConstructorUsedError;
+  String? get picture1Name;
   @override
-  String? get picture1URL => throw _privateConstructorUsedError;
+  String? get picture1URL;
   @override
-  String? get picture2Name => throw _privateConstructorUsedError;
+  String? get picture2Name;
   @override
-  String? get picture2URL => throw _privateConstructorUsedError;
+  String? get picture2URL;
   @override
-  String? get picture3Name => throw _privateConstructorUsedError;
+  String? get picture3Name;
   @override
-  String? get picture3URL => throw _privateConstructorUsedError;
-  @override
-  @timestampkey
-  DateTime? get expirationFrom => throw _privateConstructorUsedError;
+  String? get picture3URL;
   @override
   @timestampkey
-  DateTime? get expirationTo => throw _privateConstructorUsedError;
-  @override
-  bool? get isPublished => throw _privateConstructorUsedError;
+  DateTime? get expirationFrom;
   @override
   @timestampkey
-  DateTime? get createdAt => throw _privateConstructorUsedError;
+  DateTime? get expirationTo;
+  @override
+  bool? get isPublished;
   @override
   @timestampkey
-  DateTime? get updatedAt => throw _privateConstructorUsedError;
+  DateTime? get createdAt;
   @override
   @timestampkey
-  DateTime? get deletedAt => throw _privateConstructorUsedError;
+  DateTime? get updatedAt;
+  @override
+  @timestampkey
+  DateTime? get deletedAt;
   @override
   @JsonKey(ignore: true)
   _$$_ProductCopyWith<_$_Product> get copyWith =>

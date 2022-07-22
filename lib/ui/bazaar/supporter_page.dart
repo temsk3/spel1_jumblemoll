@@ -2,10 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:jumblemoll/data/repository/bazaar/bazaar_repository_impal.dart';
+import 'package:logger/logger.dart';
 
 import '../hooks/use_l10n.dart';
 import '../theme/app_theme.dart';
 import 'bazaar_view_model.dart';
+
+final logger = Logger();
 
 class SupporterPage extends HookConsumerWidget {
   const SupporterPage({Key? key, required this.bazaarId}) : super(key: key);
@@ -19,10 +22,10 @@ class SupporterPage extends HookConsumerWidget {
     final viewModel = ref.watch(bazaarViewModelProvider.notifier);
     final asyncValue = ref.watch(supporterListStreamProvider(bazaarId));
     final active = useState<bool>(false);
-    return asyncValue != null
-        ? asyncValue.when(
-            data: (data) {
-              return Scaffold(
+    return asyncValue.when(
+      data: (data) {
+        return data != null
+            ? Scaffold(
                 // appBar: AppBar(
                 //   automaticallyImplyLeading: false,
                 //   actions: const [],
@@ -33,6 +36,9 @@ class SupporterPage extends HookConsumerWidget {
                     itemCount: data.length,
                     itemBuilder: (_, index) {
                       active.value = data[index].isActive as bool;
+
+                      logger.d(active.value);
+
                       return SwitchListTile(
                         value: active.value,
                         title: Text(data[index].name.toString()),
@@ -48,30 +54,30 @@ class SupporterPage extends HookConsumerWidget {
                     },
                   ),
                 )),
-              );
-            },
-            error: (e, msg) => Scaffold(
-              body: SafeArea(
-                child: Center(
-                  child: Text(
-                    e.toString(),
-                    style: theme.textTheme.h30,
-                  ),
-                ),
-              ),
+              )
+            : Container();
+      },
+      error: (e, msg) => Scaffold(
+        body: SafeArea(
+          child: Center(
+            child: Text(
+              e.toString(),
+              style: theme.textTheme.h30,
             ),
-            loading: () {
-              return const Scaffold(
-                body: SafeArea(
-                  child: Center(
-                    child: CircularProgressIndicator(
-                        // color: theme.appColors.primary,
-                        ),
+          ),
+        ),
+      ),
+      loading: () {
+        return const Scaffold(
+          body: SafeArea(
+            child: Center(
+              child: CircularProgressIndicator(
+                  // color: theme.appColors.primary,
                   ),
-                ),
-              );
-            },
-          )
-        : Container();
+            ),
+          ),
+        );
+      },
+    );
   }
 }

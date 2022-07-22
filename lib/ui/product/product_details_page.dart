@@ -30,9 +30,9 @@ final logger = Logger();
 class ProductDetailsPage extends HookConsumerWidget {
   const ProductDetailsPage({
     Key? key,
-    @PathParam('index') this.index,
-    @PathParam('bazaar') this.bazaarEvent,
-    @PathParam('product') this.productItem,
+    @PathParam('productId') this.index,
+    this.bazaarEvent,
+    this.productItem,
   }) : super(key: key);
   final index;
   final bazaarEvent;
@@ -164,8 +164,9 @@ class ProductDetailsPage extends HookConsumerWidget {
         if (result == 'verified') {
           verified.value = true;
         } else {
-          // verified.value = false;
-          verified.value = true;
+          // 7/21 22 用
+          // verified.value = true;
+          verified.value = false;
         }
       },
     );

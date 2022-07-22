@@ -5,6 +5,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:uuid/uuid.dart';
 
 import '../../model/result/result.dart';
+import '../general_provider.dart';
 import 'image_repository.dart';
 
 final imageRepositoryProvider =
@@ -14,7 +15,7 @@ class ImageRepositoryImpl implements ImageRepository {
   ImageRepositoryImpl(this._reader);
   final Reader _reader;
 
-  final storage = FirebaseStorage.instance;
+  // final storage = FirebaseStorage.instance;
   final _path = 'events';
 
   // @override
@@ -30,7 +31,7 @@ class ImageRepositoryImpl implements ImageRepository {
     return Result.guardFuture(() async {
       var uuid = const Uuid();
       var newName = uuid.v4();
-      final storageRef = storage.ref();
+      final storageRef = _reader(firebaseStorageProvider).ref();
       final ref = storageRef.child(path);
       final listResult = await ref.listAll();
       while (listResult.items.any((item) => item.name == '$newName.jpg')) {
@@ -49,7 +50,7 @@ class ImageRepositoryImpl implements ImageRepository {
     return Result.guardFuture(
       () async {
         // 登録
-        final storageRef = storage.ref();
+        final storageRef = _reader(firebaseStorageProvider).ref();
         final mountainsRef = storageRef.child(path).child(pictureName);
         try {
           await mountainsRef.putData(
@@ -82,7 +83,7 @@ class ImageRepositoryImpl implements ImageRepository {
       {required String path, required String pictureName}) async {
     return Result.guardFuture(
       () async {
-        final storageRef = storage.ref();
+        final storageRef = _reader(firebaseStorageProvider).ref();
         final mountainsRef = storageRef.child(path);
         final listResult = await mountainsRef.listAll();
         for (var item in listResult.items) {

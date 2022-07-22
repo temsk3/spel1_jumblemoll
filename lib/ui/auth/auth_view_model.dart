@@ -279,7 +279,7 @@ class Authentication {
       if (!kIsWeb) {
         await GoogleSignIn().signOut();
       }
-      await FirebaseAuth.instance.signOut();
+      await _auth.signOut();
     } catch (e) {
       logger.e(e);
       // ScaffoldMessenger.of(context).showSnackBar(

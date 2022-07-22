@@ -199,7 +199,7 @@ abstract class Success<T> extends Result<T> {
   const factory Success({required final T data}) = _$Success<T>;
   const Success._() : super._();
 
-  T get data => throw _privateConstructorUsedError;
+  T get data;
   @JsonKey(ignore: true)
   _$$SuccessCopyWith<T, _$Success<T>> get copyWith =>
       throw _privateConstructorUsedError;
@@ -333,7 +333,7 @@ abstract class Failure<T> extends Result<T> {
   const factory Failure({required final Exception error}) = _$Failure<T>;
   const Failure._() : super._();
 
-  Exception get error => throw _privateConstructorUsedError;
+  Exception get error;
   @JsonKey(ignore: true)
   _$$FailureCopyWith<T, _$Failure<T>> get copyWith =>
       throw _privateConstructorUsedError;

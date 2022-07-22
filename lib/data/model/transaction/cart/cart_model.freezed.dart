@@ -257,7 +257,9 @@ class _$_Cart extends _Cart {
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_CartToJson(this);
+    return _$$_CartToJson(
+      this,
+    );
   }
 }
 
@@ -276,24 +278,24 @@ abstract class _Cart extends Cart {
   factory _Cart.fromJson(Map<String, dynamic> json) = _$_Cart.fromJson;
 
   @override
-  String? get id => throw _privateConstructorUsedError;
+  String? get id;
   @override
-  String? get userRef => throw _privateConstructorUsedError;
+  String? get userRef;
   @override
-  String? get eventRef => throw _privateConstructorUsedError;
+  String? get eventRef;
   @override
-  String? get eventName => throw _privateConstructorUsedError;
+  String? get eventName;
   @override
-  bool? get isActive => throw _privateConstructorUsedError;
-  @override
-  @timestampkey
-  DateTime? get createdAt => throw _privateConstructorUsedError;
+  bool? get isActive;
   @override
   @timestampkey
-  DateTime? get updatedAt => throw _privateConstructorUsedError;
+  DateTime? get createdAt;
   @override
   @timestampkey
-  DateTime? get deletedAt => throw _privateConstructorUsedError;
+  DateTime? get updatedAt;
+  @override
+  @timestampkey
+  DateTime? get deletedAt;
   @override
   @JsonKey(ignore: true)
   _$$_CartCopyWith<_$_Cart> get copyWith => throw _privateConstructorUsedError;

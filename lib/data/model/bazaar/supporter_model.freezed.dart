@@ -243,7 +243,9 @@ class _$_Supporter extends _Supporter {
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_SupporterToJson(this);
+    return _$$_SupporterToJson(
+      this,
+    );
   }
 }
 
@@ -262,22 +264,22 @@ abstract class _Supporter extends Supporter {
       _$_Supporter.fromJson;
 
   @override
-  String? get uid => throw _privateConstructorUsedError;
+  String? get uid;
   @override
-  String? get name => throw _privateConstructorUsedError;
+  String? get name;
   @override
-  bool? get isActive => throw _privateConstructorUsedError;
-  @override
-  @timestampkey
-  DateTime? get createdAt => throw _privateConstructorUsedError;
+  bool? get isActive;
   @override
   @timestampkey
-  DateTime? get updatedAt => throw _privateConstructorUsedError;
+  DateTime? get createdAt;
   @override
   @timestampkey
-  DateTime? get deletedAt => throw _privateConstructorUsedError;
+  DateTime? get updatedAt;
   @override
-  String? get eventId => throw _privateConstructorUsedError;
+  @timestampkey
+  DateTime? get deletedAt;
+  @override
+  String? get eventId;
   @override
   @JsonKey(ignore: true)
   _$$_SupporterCopyWith<_$_Supporter> get copyWith =>

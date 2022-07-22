@@ -20,7 +20,7 @@ import 'bazaar_view_model.dart';
 class BazaarDetailsPage extends HookConsumerWidget {
   const BazaarDetailsPage({
     Key? key,
-    @PathParam('index') required this.index,
+    @PathParam('bazaarId') required this.index,
     this.bazaarEvent,
   }) : super(key: key);
   final int index;

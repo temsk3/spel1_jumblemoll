@@ -129,7 +129,7 @@ abstract class _ProductState implements ProductState {
       _$_ProductState;
 
   @override
-  List<Product> get productList => throw _privateConstructorUsedError;
+  List<Product> get productList;
   @override
   @JsonKey(ignore: true)
   _$$_ProductStateCopyWith<_$_ProductState> get copyWith =>

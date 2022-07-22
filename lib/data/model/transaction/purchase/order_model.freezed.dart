@@ -541,7 +541,9 @@ class _$_Order extends _Order {
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_OrderToJson(this);
+    return _$$_OrderToJson(
+      this,
+    );
   }
 }
 
@@ -575,56 +577,56 @@ abstract class _Order extends Order {
   factory _Order.fromJson(Map<String, dynamic> json) = _$_Order.fromJson;
 
   @override
-  String? get id => throw _privateConstructorUsedError;
+  String? get id;
   @override
-  String? get userId => throw _privateConstructorUsedError;
+  String? get userId;
   @override
-  String? get userName => throw _privateConstructorUsedError;
+  String? get userName;
   @override
-  String? get organizer => throw _privateConstructorUsedError;
+  String? get organizer;
   @override
-  String? get bazaarId => throw _privateConstructorUsedError;
+  String? get bazaarId;
   @override
-  String? get bazaarName => throw _privateConstructorUsedError;
+  String? get bazaarName;
   @override
-  int? get exchangeNumber => throw _privateConstructorUsedError;
+  int? get exchangeNumber;
   @override
-  String? get code => throw _privateConstructorUsedError;
+  String? get code;
   @override
-  String? get name => throw _privateConstructorUsedError;
+  String? get name;
   @override
-  String? get desc => throw _privateConstructorUsedError;
+  String? get desc;
   @override
-  int? get price => throw _privateConstructorUsedError;
+  int? get price;
   @override
-  int? get numberOfUse => throw _privateConstructorUsedError;
+  int? get numberOfUse;
   @override
-  int? get quantity => throw _privateConstructorUsedError;
+  int? get quantity;
   @override
-  int? get sum => throw _privateConstructorUsedError;
+  int? get sum;
   @override
-  String? get picture1URL => throw _privateConstructorUsedError;
+  String? get picture1URL;
   @override
-  String? get picture2URL => throw _privateConstructorUsedError;
+  String? get picture2URL;
   @override
-  String? get picture3URL => throw _privateConstructorUsedError;
-  @override
-  @timestampkey
-  DateTime? get expirationFrom => throw _privateConstructorUsedError;
+  String? get picture3URL;
   @override
   @timestampkey
-  DateTime? get expirationTo => throw _privateConstructorUsedError;
-  @override
-  bool? get isActive => throw _privateConstructorUsedError;
+  DateTime? get expirationFrom;
   @override
   @timestampkey
-  DateTime? get createdAt => throw _privateConstructorUsedError;
+  DateTime? get expirationTo;
+  @override
+  bool? get isActive;
   @override
   @timestampkey
-  DateTime? get updatedAt => throw _privateConstructorUsedError;
+  DateTime? get createdAt;
   @override
   @timestampkey
-  DateTime? get deletedAt => throw _privateConstructorUsedError;
+  DateTime? get updatedAt;
+  @override
+  @timestampkey
+  DateTime? get deletedAt;
   @override
   @JsonKey(ignore: true)
   _$$_OrderCopyWith<_$_Order> get copyWith =>
