@@ -9,8 +9,22 @@
 
 import 'package:flutter/widgets.dart';
 
+class $AssetsImgGen {
+  const $AssetsImgGen();
+
+  /// File path: assets/img/_i_icon_02644_icon_026440_256.png
+  AssetGenImage get iIcon02644Icon026440256 =>
+      const AssetGenImage('assets/img/_i_icon_02644_icon_026440_256.png');
+
+  /// File path: assets/img/icon-32x32.png
+  AssetGenImage get icon32x32 =>
+      const AssetGenImage('assets/img/icon-32x32.png');
+}
+
 class Assets {
   Assets._();
+
+  static const $AssetsImgGen img = $AssetsImgGen();
 }
 
 class AssetGenImage {

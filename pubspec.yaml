@@ -54,7 +54,7 @@ dependencies:
   # logger: ^1.1.0
   logger: ^1.1.0
   cached_network_image: ^3.2.1
-  # package_info_plus: ^1.4.2
+  package_info_plus: ^1.4.2
 
 dev_dependencies:
   flutter_test:
