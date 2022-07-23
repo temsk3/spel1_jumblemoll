@@ -8,6 +8,7 @@ import '../hooks/use_l10n.dart';
 import '../hooks/use_router.dart';
 import '../theme/app_theme.dart';
 import 'order_view_model.dart';
+import 'widget/sales_datatable.dart';
 
 class SalesStatusPage extends HookConsumerWidget {
   const SalesStatusPage({Key? key, required this.bazaar}) : super(key: key);
@@ -51,7 +52,7 @@ class SalesStatusPage extends HookConsumerWidget {
               Text('sum:${numFormatter.format(sum)}', style: theme.textTheme.h50
                   // .copyWith(color: theme.appColors.onPrimary),
                   ),
-              // Flexible(child: salesDataTable(data: data))
+              Flexible(child: salesDataTable(data: data))
             ],
           ),
           // ),

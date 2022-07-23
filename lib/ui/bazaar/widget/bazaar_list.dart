@@ -43,8 +43,9 @@ class EventCard extends HookConsumerWidget {
         uid = data.id!;
         if (data.displayName != null) {
           name = data.displayName!;
+        } else {
+          name = data.email!;
         }
-        name = data.email!;
         supporter = true;
       },
     );

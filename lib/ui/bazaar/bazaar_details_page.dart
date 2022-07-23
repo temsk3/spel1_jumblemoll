@@ -320,9 +320,9 @@ class BazaarDetailsPage extends HookConsumerWidget {
                     child: Column(
                       //   mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        // const Padding(
-                        //   padding: EdgeInsets.symmetric(vertical: 5.0),
-                        // ),
+                        const Padding(
+                          padding: EdgeInsets.symmetric(vertical: 5.0),
+                        ),
                         Visibility(
                           visible: owner.value || supporter.value,
                           child: Row(
