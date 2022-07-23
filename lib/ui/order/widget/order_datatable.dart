@@ -68,7 +68,7 @@ class orderDataTable extends HookConsumerWidget {
       height: 52,
       padding: const EdgeInsets.fromLTRB(5, 0, 0, 0),
       alignment: Alignment.centerLeft,
-      child: Text(data[index].userName.toString()),
+      child: Center(child: Text(data[index].userName.toString())),
     );
   }
 
@@ -83,7 +83,7 @@ class orderDataTable extends HookConsumerWidget {
           width: 100,
           height: 52,
           padding: const EdgeInsets.fromLTRB(5, 0, 0, 0),
-          alignment: Alignment.centerLeft,
+          alignment: Alignment.center,
           child: Row(
             children: <Widget>[
               Icon(
@@ -120,7 +120,7 @@ class orderDataTable extends HookConsumerWidget {
           width: 100,
           height: 52,
           padding: const EdgeInsets.fromLTRB(5, 0, 0, 0),
-          alignment: Alignment.centerLeft,
+          alignment: Alignment.centerRight,
           child: Text(data[index].quantity.toString()),
         ),
         Container(

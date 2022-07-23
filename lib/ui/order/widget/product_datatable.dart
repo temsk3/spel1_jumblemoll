@@ -7,6 +7,7 @@ import '../../theme/app_theme.dart';
 class productDataTable extends HookConsumerWidget {
   productDataTable({Key? key, required this.data}) : super(key: key);
   final data;
+
   var verticalScrollController = ScrollController();
   var horizontalScrollController = ScrollController();
 
@@ -17,17 +18,17 @@ class productDataTable extends HookConsumerWidget {
       leftHandSideColumnWidth: 100,
       rightHandSideColumnWidth: 400,
       isFixedHeader: true,
-      headerWidgets: _getTitleWidget(),
+      headerWidgets: _getTitleWidget(context),
       leftSideItemBuilder: _generateFirstColumnRow,
       rightSideItemBuilder: _generateRightHandSideColumnRow,
       itemCount: data.length,
-      rowSeparatorWidget: const Divider(
-        // color: theme.appColors.onBackground,
+      rowSeparatorWidget: Divider(
+        color: Theme.of(context).colorScheme.onSurface,
         height: 1.0,
         thickness: 0.0,
       ),
-      // leftHandSideColBackgroundColor: theme.appColors.background,
-      // rightHandSideColBackgroundColor: theme.appColors.background,
+      leftHandSideColBackgroundColor: Theme.of(context).colorScheme.surface, //
+      rightHandSideColBackgroundColor: Theme.of(context).colorScheme.surface, //
       onScrollControllerReady: (vertical, horizontal) {
         verticalScrollController = vertical;
         horizontalScrollController = horizontal;
@@ -35,26 +36,32 @@ class productDataTable extends HookConsumerWidget {
     );
   }
 
-  List<Widget> _getTitleWidget() {
+  List<Widget> _getTitleWidget(BuildContext context) {
     return [
-      _getTitleItemWidget('code', 100),
-      _getTitleItemWidget('name', 200),
-      _getTitleItemWidget('stock', 100),
+      _getTitleItemWidget('code', 100, context),
+      _getTitleItemWidget('name', 200, context),
+      _getTitleItemWidget('stock', 100, context),
     ];
   }
 
-  Widget _getTitleItemWidget(String label, double width) {
+  Widget _getTitleItemWidget(String label, double width, BuildContext context) {
     return Container(
+      decoration:
+          BoxDecoration(color: Theme.of(context).colorScheme.surface), //
       width: width,
       height: 56,
       padding: const EdgeInsets.fromLTRB(5, 0, 0, 0),
       alignment: Alignment.centerLeft,
-      child: Text(label, style: const TextStyle(fontWeight: FontWeight.bold)),
+      child: Center(
+          child:
+              Text(label, style: const TextStyle(fontWeight: FontWeight.bold))),
     );
   }
 
   Widget _generateFirstColumnRow(BuildContext context, int index) {
     return Container(
+      decoration:
+          BoxDecoration(color: Theme.of(context).colorScheme.surface), //
       width: 100,
       height: 52,
       padding: const EdgeInsets.fromLTRB(5, 0, 0, 0),
@@ -67,6 +74,8 @@ class productDataTable extends HookConsumerWidget {
     return Row(
       children: <Widget>[
         Container(
+          decoration:
+              BoxDecoration(color: Theme.of(context).colorScheme.surface), //
           width: 200,
           height: 52,
           padding: const EdgeInsets.fromLTRB(5, 0, 0, 0),
@@ -74,10 +83,12 @@ class productDataTable extends HookConsumerWidget {
           child: Text(data[index].name.toString()),
         ),
         Container(
+          decoration:
+              BoxDecoration(color: Theme.of(context).colorScheme.surface), //
           width: 100,
           height: 52,
           padding: const EdgeInsets.fromLTRB(5, 0, 0, 0),
-          alignment: Alignment.centerLeft,
+          alignment: Alignment.centerRight,
           child: Text(data[index].stock.toString()),
         ),
       ],
