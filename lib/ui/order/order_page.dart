@@ -8,11 +8,11 @@ import '../hooks/use_router.dart';
 import '../theme/app_theme.dart';
 import 'order_view_model.dart';
 import 'widget/order_datatable.dart';
-// import 'widget/order_datatable.dart';
 
 class OrderPage extends HookConsumerWidget {
   const OrderPage({Key? key, required this.bazaar}) : super(key: key);
   final String? bazaar;
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = ref.watch(appThemeProvider);
@@ -38,82 +38,7 @@ class OrderPage extends HookConsumerWidget {
         });
 
         return Scaffold(
-          // appBar: AppBar(
-          //   backgroundColor: theme.appColors.primary,
-          //   foregroundColor: theme.appColors.onPrimary,
-          //   title: Text(
-          //     'status',
-          //     style: theme.textTheme.h50,
-          //   ),
-          //   centerTitle: true,
-          //   automaticallyImplyLeading: false,
-          //   // leading: const AutoLeadingButton(),
-          // ),
-          // drawer: const CustomDrawer(),
-          //   body: SafeArea(
-          //     child: Center(
-          //       child: RefreshIndicator(
-          //         onRefresh: () async {
-          //           // ref.refresh(bazzarViewModelProvider);
-          //           viewModel.readOrder();
-          //         },
-          //         child: Scrollbar(
-          //           controller: scrollController,
-          //           child: SingleChildScrollView(
-          //             controller: scrollController,
-          //             scrollDirection: Axis.horizontal,
-          //             child: DataTable(
-          //               columns: const [
-          //                 DataColumn(label: Text('name')),
-          //                 DataColumn(label: Text('product')),
-          //                 DataColumn(label: Text('quantity')),
-          //                 DataColumn(label: Text('price')),
-          //                 DataColumn(label: Text('total')),
-          //                 DataColumn(label: Text('Purchase date')),
-          //                 DataColumn(label: Text('status')),
-          //                 DataColumn(label: Text('Date of use')),
-          //               ],
-          //               rows: List.generate(
-          //                 data.length,
-          //                 ((index) => (DataRow(
-          //                       cells: [
-          //                         DataCell(Text(data[index].userName.toString())),
-          //                         DataCell(Text(data[index].name.toString())),
-          //                         DataCell(Text(data[index].quantity.toString())),
-          //                         DataCell(Text(
-          //                             numFormatter.format(data[index].price))),
-          //                         DataCell(Text(numFormatter.format(
-          //                             (data[index].quantity! *
-          //                                 data[index].price!)))),
-          //                         DataCell(Text(dateFormatter.format(
-          //                             data[index].createdAt as DateTime))),
-          //                         data[index].isActive == true
-          //                             ? const DataCell(Text('Not Yet'))
-          //                             : const DataCell(Text('Done')),
-          //                         data[index].updatedAt != null
-          //                             ? DataCell(Text(dateFormatter.format(
-          //                                 data[index].updatedAt as DateTime)))
-          //                             : const DataCell(Text('')),
-          //                       ],
-          //                     ))),
-          //               ),
-          //             ),
-          //           ),
-          //         ),
-          //       ),
-          //     ),
-          //   ),
           body: SafeArea(
-            // child: Row(
-            //   children: [
-            // MediaQuery.of(context).size.width > 768
-            //     ? const CustomDrawer()
-            //     : Container(),
-            // Expanded(
-            // child: orderDataTable(data: data),
-            // ),
-            //   ],
-            // ),
             child: Center(
               child: orderDataTable(data: data),
             ),

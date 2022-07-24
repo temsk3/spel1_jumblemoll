@@ -42,7 +42,7 @@ class PurchasePage extends HookConsumerWidget {
     //
     final userStream = ref.watch(userStreamProvider);
     String uid = '';
-    String name = '';
+    String name = 'non';
     User? user;
     userStream.whenData((value) => user = value);
     if (user != null) {
@@ -61,9 +61,13 @@ class PurchasePage extends HookConsumerWidget {
           int result2 = b.quantity.toString().compareTo(a.quantity.toString());
           return result2;
         });
+        int sum = 0;
+        for (var e in data) {
+          sum = (sum + (e.sum! * e.quantity!));
+        }
         return Scaffold(
           appBar: AppBar(
-            title: Text(name),
+            title: Text('$name:${formatter.format(sum)}'),
             automaticallyImplyLeading: false,
           ),
           body: SafeArea(

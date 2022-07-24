@@ -16,7 +16,7 @@ class productDataTable extends HookConsumerWidget {
     final theme = ref.watch(appThemeProvider);
     return HorizontalDataTable(
       leftHandSideColumnWidth: 100,
-      rightHandSideColumnWidth: 400,
+      rightHandSideColumnWidth: 402,
       isFixedHeader: true,
       headerWidgets: _getTitleWidget(context),
       leftSideItemBuilder: _generateFirstColumnRow,
@@ -39,7 +39,17 @@ class productDataTable extends HookConsumerWidget {
   List<Widget> _getTitleWidget(BuildContext context) {
     return [
       _getTitleItemWidget('code', 100, context),
+      Container(
+        width: 1,
+        height: 52,
+        color: Theme.of(context).colorScheme.onSurface,
+      ),
       _getTitleItemWidget('name', 200, context),
+      Container(
+        width: 1,
+        height: 52,
+        color: Theme.of(context).colorScheme.onSurface,
+      ),
       _getTitleItemWidget('stock', 100, context),
     ];
   }
@@ -74,6 +84,11 @@ class productDataTable extends HookConsumerWidget {
     return Row(
       children: <Widget>[
         Container(
+          width: 1,
+          height: 52,
+          color: Theme.of(context).colorScheme.onSurface,
+        ),
+        Container(
           decoration:
               BoxDecoration(color: Theme.of(context).colorScheme.surface), //
           width: 200,
@@ -81,6 +96,11 @@ class productDataTable extends HookConsumerWidget {
           padding: const EdgeInsets.fromLTRB(5, 0, 0, 0),
           alignment: Alignment.centerLeft,
           child: Text(data[index].name.toString()),
+        ),
+        Container(
+          width: 1,
+          height: 52,
+          color: Theme.of(context).colorScheme.onSurface,
         ),
         Container(
           decoration:

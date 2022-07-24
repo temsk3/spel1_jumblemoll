@@ -3,7 +3,6 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
 
 import '../../data/repository/transaction/purchase/order_repository_impal.dart';
-// import '../../ui/order/widget/sales_datatable.dart';
 import '../hooks/use_l10n.dart';
 import '../hooks/use_router.dart';
 import '../theme/app_theme.dart';
@@ -26,7 +25,7 @@ class SalesStatusPage extends HookConsumerWidget {
         locale: Localizations.localeOf(context).toString());
     final DateFormat dateFormatter =
         DateFormat.yMMMEd(Localizations.localeOf(context).toString()).add_Hm();
-    final scrollController = ScrollController();
+
     return asyncValue.when(
       data: (order) {
         final data = order.where((data) => data.bazaarId == bazaar).toList();
@@ -36,27 +35,18 @@ class SalesStatusPage extends HookConsumerWidget {
           sum = (sum + e.sum!);
         }
 
-        return
-            // Scaffold(
-            // appBar: AppBar(
-            //   backgroundColor: theme.appColors.primary,
-            //   foregroundColor: theme.appColors.onPrimary,
-            //   leading: const AutoLeadingButton(),
-            //   title: Text('sum:${numFormatter.format(sum)}'),
-            //   centerTitle: true,
-            // ),
-            // body:
-            SafeArea(
-          child: Column(
-            children: [
-              Text('sum:${numFormatter.format(sum)}', style: theme.textTheme.h50
-                  // .copyWith(color: theme.appColors.onPrimary),
-                  ),
-              Flexible(child: salesDataTable(data: data))
-            ],
+        return Scaffold(
+          body: SafeArea(
+            child: Column(
+              children: [
+                Text('sum:${numFormatter.format(sum)}',
+                    style: theme.textTheme.h50
+                    // .copyWith(color: theme.appColors.onPrimary),
+                    ),
+                Flexible(child: salesDataTable(data: data))
+              ],
+            ),
           ),
-          // ),
-          // ),
         );
       },
       error: (e, msg) {

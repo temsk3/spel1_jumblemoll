@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:horizontal_data_table/horizontal_data_table.dart';
+import 'package:intl/intl.dart';
 
 import '../../theme/app_theme.dart';
 
@@ -15,7 +16,7 @@ class salesDataTable extends HookConsumerWidget {
     final theme = ref.watch(appThemeProvider);
     return HorizontalDataTable(
       leftHandSideColumnWidth: 100,
-      rightHandSideColumnWidth: 400,
+      rightHandSideColumnWidth: 403,
       isFixedHeader: true,
       headerWidgets: _getTitleWidget(context),
       leftSideItemBuilder: _generateFirstColumnRow,
@@ -40,8 +41,23 @@ class salesDataTable extends HookConsumerWidget {
   List<Widget> _getTitleWidget(BuildContext context) {
     return [
       _getTitleItemWidget('code', 100, context),
+      Container(
+        width: 1,
+        height: 52,
+        color: Theme.of(context).colorScheme.onSurface,
+      ),
       _getTitleItemWidget('product', 200, context),
+      Container(
+        width: 1,
+        height: 52,
+        color: Theme.of(context).colorScheme.onSurface,
+      ),
       _getTitleItemWidget('Sales volume', 100, context),
+      Container(
+        width: 1,
+        height: 52,
+        color: Theme.of(context).colorScheme.onSurface,
+      ),
       _getTitleItemWidget('sum', 100, context),
     ];
   }
@@ -73,8 +89,15 @@ class salesDataTable extends HookConsumerWidget {
   }
 
   Widget _generateRightHandSideColumnRow(BuildContext context, int index) {
+    final NumberFormat formatter = NumberFormat.simpleCurrency(
+        locale: Localizations.localeOf(context).toString());
     return Row(
       children: <Widget>[
+        Container(
+          width: 1,
+          height: 52,
+          color: Theme.of(context).colorScheme.onSurface,
+        ),
         Container(
           decoration:
               BoxDecoration(color: Theme.of(context).colorScheme.surface), //
@@ -85,13 +108,23 @@ class salesDataTable extends HookConsumerWidget {
           child: Text(data[index].name.toString()),
         ),
         Container(
+          width: 1,
+          height: 52,
+          color: Theme.of(context).colorScheme.onSurface,
+        ),
+        Container(
           decoration:
               BoxDecoration(color: Theme.of(context).colorScheme.surface), //
           width: 100,
           height: 52,
           padding: const EdgeInsets.fromLTRB(5, 0, 0, 0),
-          alignment: Alignment.centerRight,
+          alignment: Alignment.center,
           child: Text(data[index].quantity.toString()),
+        ),
+        Container(
+          width: 1,
+          height: 52,
+          color: Theme.of(context).colorScheme.onSurface,
         ),
         Container(
           decoration:
@@ -100,7 +133,7 @@ class salesDataTable extends HookConsumerWidget {
           height: 52,
           padding: const EdgeInsets.fromLTRB(5, 0, 0, 0),
           alignment: Alignment.centerRight,
-          child: Text(data[index].sum.toString()),
+          child: Text(formatter.format(data[index].sum)),
         ),
       ],
     );
