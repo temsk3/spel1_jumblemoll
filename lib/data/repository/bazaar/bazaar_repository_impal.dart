@@ -120,6 +120,27 @@ class BazaarRepositoryImpl implements BazaarRepository {
 
   //
   @override
+  Future<Result<List<Supporter>>> readSupporters(
+      {required String bazaarId}) async {
+    return Result.guardFuture(
+      () async {
+        // アイテムを取得
+        final QuerySnapshot querySnapshot =
+            await _reader(firebaseFirestoreProvider)
+                .collection(_collectionPath)
+                .doc(bazaarId)
+                .collection(_subCollectionPath)
+                .get();
+        final List<QueryDocumentSnapshot> queryDocSnapshot = querySnapshot.docs;
+        return queryDocSnapshot.map((doc) {
+          final Map<String, dynamic> map = doc.data()! as Map<String, dynamic>;
+          return Supporter.fromJson(map).copyWith(uid: doc.id);
+        }).toList();
+      },
+    );
+  }
+
+  @override
   Future<Result<void>> createSupporter(
       {required String bazaarId, required Supporter supporter}) async {
     return Result.guardFuture(

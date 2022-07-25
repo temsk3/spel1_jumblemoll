@@ -327,7 +327,16 @@ class PurchasePage extends HookConsumerWidget {
         },
       );
     } else {
-      return const Scaffold();
+      return Scaffold(
+        body: SafeArea(
+          child: Row(
+            children: [
+              appMQ.size.width > 768 ? const CustomDrawer() : Container(),
+              const Expanded(child: Center())
+            ],
+          ),
+        ),
+      );
     }
   }
 }

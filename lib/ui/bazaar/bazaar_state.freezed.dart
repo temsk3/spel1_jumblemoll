@@ -17,6 +17,7 @@ final _privateConstructorUsedError = UnsupportedError(
 /// @nodoc
 mixin _$BazaarState {
   List<Bazaar> get bazaarList => throw _privateConstructorUsedError;
+  List<Supporter> get supporterList => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $BazaarStateCopyWith<BazaarState> get copyWith =>
@@ -28,7 +29,7 @@ abstract class $BazaarStateCopyWith<$Res> {
   factory $BazaarStateCopyWith(
           BazaarState value, $Res Function(BazaarState) then) =
       _$BazaarStateCopyWithImpl<$Res>;
-  $Res call({List<Bazaar> bazaarList});
+  $Res call({List<Bazaar> bazaarList, List<Supporter> supporterList});
 }
 
 /// @nodoc
@@ -42,12 +43,17 @@ class _$BazaarStateCopyWithImpl<$Res> implements $BazaarStateCopyWith<$Res> {
   @override
   $Res call({
     Object? bazaarList = freezed,
+    Object? supporterList = freezed,
   }) {
     return _then(_value.copyWith(
       bazaarList: bazaarList == freezed
           ? _value.bazaarList
           : bazaarList // ignore: cast_nullable_to_non_nullable
               as List<Bazaar>,
+      supporterList: supporterList == freezed
+          ? _value.supporterList
+          : supporterList // ignore: cast_nullable_to_non_nullable
+              as List<Supporter>,
     ));
   }
 }
@@ -59,7 +65,7 @@ abstract class _$$_BazaarStateCopyWith<$Res>
           _$_BazaarState value, $Res Function(_$_BazaarState) then) =
       __$$_BazaarStateCopyWithImpl<$Res>;
   @override
-  $Res call({List<Bazaar> bazaarList});
+  $Res call({List<Bazaar> bazaarList, List<Supporter> supporterList});
 }
 
 /// @nodoc
@@ -75,12 +81,17 @@ class __$$_BazaarStateCopyWithImpl<$Res> extends _$BazaarStateCopyWithImpl<$Res>
   @override
   $Res call({
     Object? bazaarList = freezed,
+    Object? supporterList = freezed,
   }) {
     return _then(_$_BazaarState(
       bazaarList: bazaarList == freezed
           ? _value._bazaarList
           : bazaarList // ignore: cast_nullable_to_non_nullable
               as List<Bazaar>,
+      supporterList: supporterList == freezed
+          ? _value._supporterList
+          : supporterList // ignore: cast_nullable_to_non_nullable
+              as List<Supporter>,
     ));
   }
 }
@@ -88,8 +99,11 @@ class __$$_BazaarStateCopyWithImpl<$Res> extends _$BazaarStateCopyWithImpl<$Res>
 /// @nodoc
 
 class _$_BazaarState implements _BazaarState {
-  const _$_BazaarState({final List<Bazaar> bazaarList = const <Bazaar>[]})
-      : _bazaarList = bazaarList;
+  const _$_BazaarState(
+      {final List<Bazaar> bazaarList = const <Bazaar>[],
+      final List<Supporter> supporterList = const <Supporter>[]})
+      : _bazaarList = bazaarList,
+        _supporterList = supporterList;
 
   final List<Bazaar> _bazaarList;
   @override
@@ -99,9 +113,17 @@ class _$_BazaarState implements _BazaarState {
     return EqualUnmodifiableListView(_bazaarList);
   }
 
+  final List<Supporter> _supporterList;
+  @override
+  @JsonKey()
+  List<Supporter> get supporterList {
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_supporterList);
+  }
+
   @override
   String toString() {
-    return 'BazaarState(bazaarList: $bazaarList)';
+    return 'BazaarState(bazaarList: $bazaarList, supporterList: $supporterList)';
   }
 
   @override
@@ -110,12 +132,16 @@ class _$_BazaarState implements _BazaarState {
         (other.runtimeType == runtimeType &&
             other is _$_BazaarState &&
             const DeepCollectionEquality()
-                .equals(other._bazaarList, _bazaarList));
+                .equals(other._bazaarList, _bazaarList) &&
+            const DeepCollectionEquality()
+                .equals(other._supporterList, _supporterList));
   }
 
   @override
   int get hashCode => Object.hash(
-      runtimeType, const DeepCollectionEquality().hash(_bazaarList));
+      runtimeType,
+      const DeepCollectionEquality().hash(_bazaarList),
+      const DeepCollectionEquality().hash(_supporterList));
 
   @JsonKey(ignore: true)
   @override
@@ -124,10 +150,14 @@ class _$_BazaarState implements _BazaarState {
 }
 
 abstract class _BazaarState implements BazaarState {
-  const factory _BazaarState({final List<Bazaar> bazaarList}) = _$_BazaarState;
+  const factory _BazaarState(
+      {final List<Bazaar> bazaarList,
+      final List<Supporter> supporterList}) = _$_BazaarState;
 
   @override
   List<Bazaar> get bazaarList;
+  @override
+  List<Supporter> get supporterList;
   @override
   @JsonKey(ignore: true)
   _$$_BazaarStateCopyWith<_$_BazaarState> get copyWith =>

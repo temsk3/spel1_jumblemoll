@@ -188,6 +188,21 @@ class BazaarViewModel extends StateNotifier<AsyncValue<BazaarState>> {
   }
 
   //Supporter
+  // 取得
+  Future<void> readSupporters({required String bazaarId}) async {
+    final result = await bazaarRepository.readSupporters(bazaarId: bazaarId);
+    result.when(
+      success: (data) {
+        state = AsyncValue.data(
+          BazaarState(supporterList: data),
+        );
+      },
+      failure: (error) {
+        state = AsyncValue.error(error);
+      },
+    );
+  }
+
   Future<void> createSupporter({
     required String bazaarId,
     required String uid,
@@ -216,17 +231,30 @@ class BazaarViewModel extends StateNotifier<AsyncValue<BazaarState>> {
     required String name,
     required bool isActive,
   }) async {
-    var supporter = Supporter(
+    var updateSupporter = Supporter(
       uid: uid,
       name: name,
       isActive: isActive,
     );
     final result = await bazaarRepository.updateSupporter(
       bazaarId: bazaarId,
-      supporter: supporter,
+      supporter: updateSupporter,
     );
     result.when(
-      success: (data) {},
+      success: (data) {
+        final supporters = state.value!.supporterList;
+        state = AsyncValue.data(
+          BazaarState(
+            supporterList: [
+              for (final supporter in supporters)
+                if (supporter.uid == updateSupporter.uid)
+                  updateSupporter
+                else
+                  supporter
+            ],
+          ),
+        );
+      },
       failure: (error) {
         state = AsyncValue.error(error);
       },

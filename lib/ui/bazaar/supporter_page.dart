@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:jumblemoll/data/repository/bazaar/bazaar_repository_impal.dart';
 import 'package:logger/logger.dart';
 
 import '../hooks/use_l10n.dart';
@@ -10,7 +9,9 @@ import 'bazaar_view_model.dart';
 
 final logger = Logger();
 
-final switchState = Provider.autoDispose((ref) {});
+final switchStateProvider = StateProvider.autoDispose<bool>((ref) {
+  return false;
+});
 
 class SupporterPage extends HookConsumerWidget {
   const SupporterPage({Key? key, required this.bazaarId}) : super(key: key);
@@ -21,10 +22,15 @@ class SupporterPage extends HookConsumerWidget {
     final theme = ref.watch(appThemeProvider);
     final l10n = useL10n();
     // final appRoute = useRouter();
+    final state = ref.watch(bazaarViewModelProvider);
     final viewModel = ref.watch(bazaarViewModelProvider.notifier);
-    final asyncValue = ref.watch(supporterListStreamProvider(bazaarId));
+    // final asyncValue = ref.watch(supporterListStreamProvider(bazaarId));
     final active = useState<bool>(false);
-    return asyncValue.when(
+    useEffect(() {
+      viewModel.readSupporters(bazaarId: bazaarId);
+      return null;
+    }, []);
+    return state.when(
       data: (data) {
         return data != null
             ? Scaffold(
@@ -35,22 +41,25 @@ class SupporterPage extends HookConsumerWidget {
                 body: SafeArea(
                   child: Center(
                     child: ListView.builder(
-                      itemCount: data.length,
+                      itemCount: data.supporterList.length,
                       itemBuilder: (_, index) {
-                        active.value = data[index].isActive as bool;
+                        active.value =
+                            data.supporterList[index].isActive as bool;
 
                         logger.d(active.value);
 
                         return SwitchListTile(
                           value: active.value,
-                          title: Text(data[index].name.toString()),
+                          // value: data.supporterList[index].isActive as bool,
+                          title:
+                              Text(data.supporterList[index].name.toString()),
                           onChanged: (value) async {
                             // active.value = value;
                             await viewModel.updateSupporter(
                                 bazaarId: bazaarId,
-                                uid: data[index].uid.toString(),
-                                name: data[index].name.toString(),
-                                isActive: active.value);
+                                uid: data.supporterList[index].uid.toString(),
+                                name: data.supporterList[index].name.toString(),
+                                isActive: value);
                           },
                         );
                       },

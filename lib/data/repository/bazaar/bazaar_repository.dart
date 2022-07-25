@@ -13,6 +13,7 @@ abstract class BazaarRepository {
   Future<Result<void>> deleteBazaar({required String bazaarId});
 
   //
+  Future<Result<List<Supporter>>> readSupporters({required String bazaarId});
   Future<Result<void>> createSupporter(
       {required String bazaarId, required Supporter supporter});
   Future<Result<void>> updateSupporter(
