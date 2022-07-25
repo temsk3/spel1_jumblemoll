@@ -10,6 +10,8 @@ import 'bazaar_view_model.dart';
 
 final logger = Logger();
 
+final switchState = Provider.autoDispose((ref) {});
+
 class SupporterPage extends HookConsumerWidget {
   const SupporterPage({Key? key, required this.bazaarId}) : super(key: key);
   final bazaarId;
@@ -31,29 +33,30 @@ class SupporterPage extends HookConsumerWidget {
                 //   actions: const [],
                 // ),
                 body: SafeArea(
-                    child: Center(
-                  child: ListView.builder(
-                    itemCount: data.length,
-                    itemBuilder: (_, index) {
-                      active.value = data[index].isActive as bool;
+                  child: Center(
+                    child: ListView.builder(
+                      itemCount: data.length,
+                      itemBuilder: (_, index) {
+                        active.value = data[index].isActive as bool;
 
-                      logger.d(active.value);
+                        logger.d(active.value);
 
-                      return SwitchListTile(
-                        value: active.value,
-                        title: Text(data[index].name.toString()),
-                        onChanged: (value) async {
-                          active.value = value;
-                          await viewModel.updateSupporter(
-                              bazaarId: bazaarId,
-                              uid: data[index].uid.toString(),
-                              name: data[index].name.toString(),
-                              isActive: active.value);
-                        },
-                      );
-                    },
+                        return SwitchListTile(
+                          value: active.value,
+                          title: Text(data[index].name.toString()),
+                          onChanged: (value) async {
+                            // active.value = value;
+                            await viewModel.updateSupporter(
+                                bazaarId: bazaarId,
+                                uid: data[index].uid.toString(),
+                                name: data[index].name.toString(),
+                                isActive: active.value);
+                          },
+                        );
+                      },
+                    ),
                   ),
-                )),
+                ),
               )
             : Container();
       },
