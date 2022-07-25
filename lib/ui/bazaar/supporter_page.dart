@@ -54,12 +54,16 @@ class SupporterPage extends HookConsumerWidget {
                           title:
                               Text(data.supporterList[index].name.toString()),
                           onChanged: (value) async {
-                            // active.value = value;
-                            await viewModel.updateSupporter(
-                                bazaarId: bazaarId,
-                                uid: data.supporterList[index].uid.toString(),
-                                name: data.supporterList[index].name.toString(),
-                                isActive: value);
+                            active.value = value;
+                            WidgetsBinding.instance
+                                .addPostFrameCallback((_) async {
+                              await viewModel.updateSupporter(
+                                  bazaarId: bazaarId,
+                                  uid: data.supporterList[index].uid.toString(),
+                                  name:
+                                      data.supporterList[index].name.toString(),
+                                  isActive: value);
+                            });
                           },
                         );
                       },
