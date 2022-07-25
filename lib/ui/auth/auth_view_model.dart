@@ -274,12 +274,13 @@ class Authentication {
 
   //  SignOut the current user
   Future<void> signOut() async {
-    await _auth.signOut();
+    // await FirebaseAuth.instance.signOut();
     try {
-      if (!kIsWeb) {
-        await GoogleSignIn().signOut();
-      }
+      // if (!kIsWeb) {
+      //   await GoogleSignIn().signOut();
+      // } else {
       await _auth.signOut();
+      // }
     } catch (e) {
       logger.e(e);
       // ScaffoldMessenger.of(context).showSnackBar(

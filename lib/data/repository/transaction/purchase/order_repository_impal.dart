@@ -20,6 +20,18 @@ final orderListStreamProvider = StreamProvider.autoDispose((ref) {
   });
   return list;
 });
+final orderStreamProvider =
+    StreamProvider.autoDispose.family<List<Order>, String>((ref, id) {
+  return FirebaseFirestore.instance
+      .collection('orders')
+      .where('userId', isEqualTo: id)
+      .snapshots()
+      .map((snapshot) {
+    return snapshot.docs.map((doc) {
+      return Order.fromJson(doc.data()).copyWith(id: doc.id);
+    }).toList();
+  });
+});
 
 class OrderRepositoryImpl implements OrderRepository {
   OrderRepositoryImpl(this._reader);
