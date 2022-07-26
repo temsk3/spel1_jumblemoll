@@ -25,7 +25,7 @@ class SupporterPage extends HookConsumerWidget {
     final state = ref.watch(bazaarViewModelProvider);
     final viewModel = ref.watch(bazaarViewModelProvider.notifier);
     // final asyncValue = ref.watch(supporterListStreamProvider(bazaarId));
-    final active = useState<bool>(false);
+    // final active = useState<bool>(false);
     useEffect(() {
       viewModel.readSupporters(bazaarId: bazaarId);
       return null;
@@ -43,27 +43,26 @@ class SupporterPage extends HookConsumerWidget {
                     child: ListView.builder(
                       itemCount: data.supporterList.length,
                       itemBuilder: (_, index) {
-                        active.value =
-                            data.supporterList[index].isActive as bool;
+                        // active.value =
+                        //     data.supporterList[index].isActive as bool;
 
-                        logger.d(active.value);
+                        // logger.d(active.value);
 
                         return SwitchListTile(
-                          value: active.value,
-                          // value: data.supporterList[index].isActive as bool,
+                          // value: active.value,
+                          value: data.supporterList[index].isActive as bool,
                           title:
                               Text(data.supporterList[index].name.toString()),
                           onChanged: (value) async {
-                            active.value = value;
-                            WidgetsBinding.instance
-                                .addPostFrameCallback((_) async {
-                              await viewModel.updateSupporter(
-                                  bazaarId: bazaarId,
-                                  uid: data.supporterList[index].uid.toString(),
-                                  name:
-                                      data.supporterList[index].name.toString(),
-                                  isActive: value);
-                            });
+                            // active.value = value;
+                            // WidgetsBinding.instance
+                            // .addPostFrameCallback((_) async {
+                            await viewModel.updateSupporter(
+                                bazaarId: bazaarId,
+                                uid: data.supporterList[index].uid.toString(),
+                                name: data.supporterList[index].name.toString(),
+                                isActive: value);
+                            // });
                           },
                         );
                       },
