@@ -81,7 +81,8 @@ class PurchasePage extends HookConsumerWidget {
           });
           int sum = 0;
           for (var e in data) {
-            sum = (sum + (e.sum! * e.quantity!));
+            sum = (sum + e.sum!);
+            logger.d(sum);
           }
           return Scaffold(
             appBar: AppBar(
