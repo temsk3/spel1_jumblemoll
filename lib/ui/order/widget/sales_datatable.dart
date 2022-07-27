@@ -92,7 +92,7 @@ class salesDataTable extends HookConsumerWidget {
   }
 
   Widget _generateRightHandSideColumnRow(BuildContext context, int index) {
-    final NumberFormat formatter = NumberFormat("#,###");
+    final NumberFormat formatter = NumberFormat();
     final NumberFormat numFormatter = NumberFormat.simpleCurrency(
         locale: Localizations.localeOf(context).toString());
     return Row(
