@@ -30,7 +30,8 @@ class CustomDrawer extends HookConsumerWidget {
     final auth = ref.watch(authenticationProvider);
     final authState = ref.watch(authStateProvider);
     final userStream = ref.watch(userStreamProvider);
-    final editName = useTextEditingController();
+    final editName = useTextEditingController.fromValue(TextEditingValue.empty);
+
     String uid = 'non';
     String name = 'non';
     String email = 'non';
@@ -81,7 +82,52 @@ class CustomDrawer extends HookConsumerWidget {
                                   icon: const Icon(
                                     Icons.edit,
                                   ),
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    showDialog(
+                                      context: context,
+                                      builder: (context) {
+                                        final localizations =
+                                            MaterialLocalizations.of(context);
+                                        return AlertDialog(
+                                          // title: Text('タイトル'),
+                                          content: TextField(
+                                            controller: editName,
+                                            decoration: const InputDecoration(
+                                                hintText: "Full Name"),
+                                            onChanged: (value) {
+                                              editName.text = value;
+                                            },
+                                          ),
+                                          actions: <Widget>[
+                                            TextButton(
+                                              child: Text(localizations
+                                                  .cancelButtonLabel),
+                                              onPressed: () {
+                                                appRoute.pop();
+                                              },
+                                            ),
+                                            TextButton(
+                                              child: Text(
+                                                  localizations.okButtonLabel),
+                                              onPressed: () {
+                                                logger.d(editName.text);
+
+                                                final editUser = User(
+                                                  id: uid,
+                                                  displayName: editName.text,
+                                                );
+                                                ref
+                                                    .watch(
+                                                        userRepositoryProvider)
+                                                    .updateUser(editUser);
+                                                appRoute.pop();
+                                              },
+                                            ),
+                                          ],
+                                        );
+                                      },
+                                    );
+                                  },
                                 ),
                               ],
                             )

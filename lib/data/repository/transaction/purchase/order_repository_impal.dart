@@ -32,7 +32,65 @@ final orderStreamProvider =
     }).toList();
   });
 });
+// final orderGroupByStreamProvider =
+//     StreamProvider.autoDispose.family<List<Order>, String>((ref, bazaarId) async* {
+//   // final list = FirebaseFirestore.instance
+//   //     .collection('orders')
+//   //     .where('bazaarId', isEqualTo: bazaarId)
+//   //     .snapshots()
+//   //     .map((snapshot) {
+//   //   return snapshot.docs.map((doc) {
+//   //     return Order.fromJson(doc.data()).copyWith(id: doc.id);
+//   //   }).toList();
+//   // });
+//   //
+//   final QuerySnapshot querySnapshot = await
+//              FirebaseFirestore.instance
+//                 .collection('orders')
+//       .where('bazaarId', isEqualTo: bazaarId)
+//                 .get();
+//         final List<QueryDocumentSnapshot> queryDocSnapshot = querySnapshot.docs;
+//         final orderModelList = queryDocSnapshot.map((doc) {
+//           final Map<String, dynamic> map = doc.data()! as Map<String, dynamic>;
+//           return Order.fromJson(map).copyWith(id: doc.id);
+//         }).toList();
 
+//   // List<MapEntry<String, List<Order>>> getMapEntrysGroupByName(
+//   //     List<Order> orderModelList) {
+//   //   //ListをGroupByしたMapにする。
+//     Map<String, List<Order>> _groupByNameMap =
+//         _makeGroupByNameMap(orderModelList);
+
+//   //   //MapEntry化してListに格納する。
+//   //   List<MapEntry<String, List<Order>>> _listPerName =
+//   //       _makeMapEntryListPerName(_groupByNameMap);
+
+//   //   return _listPerName;
+//   // }
+//   yield _groupByNameMap;
+// });
+// //
+//   Map<String, List<Order>> _makeGroupByNameMap(
+//       List<Order> orderModelList) {
+//     Map<String, List<Order>> _groupByNameMap = {};
+
+//     for (Order orderModel in orderModelList) {
+//       //ループしてきたuserModelのageでまだグループ化してない場合は先に空配列を代入する。
+//       _groupByNameMap[orderModel.name!] ??= [];
+//       _groupByNameMap[orderModel.name]!.add(orderModel);
+//     }
+//     return _groupByNameMap;
+//   }
+//   List<MapEntry<String, List<Order>>> _makeMapEntryListPerName(
+//       Map<String, List<Order>> _groupByNameMap) {
+//     List<MapEntry<String, List<Order>>> _listPerAge = [];
+
+//     _groupByNameMap.forEach((key, value) {
+//       _listPerAge.add(MapEntry(key, value));
+//     });
+
+//     return _listPerAge;
+//   }
 class OrderRepositoryImpl implements OrderRepository {
   OrderRepositoryImpl(this._reader);
   final Reader _reader;

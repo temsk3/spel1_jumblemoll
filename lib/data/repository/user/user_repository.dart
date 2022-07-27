@@ -116,4 +116,24 @@ class UserRepository {
       'sourceId': sourceId,
     });
   }
+
+  /// user を更新する
+  Future<void> updateUser(
+    User user,
+  ) async {
+    // await _firestore.collection('users').doc(user?.uid).set({
+    await _reader(firebaseFirestoreProvider)
+        .collection('users')
+        .doc(user.id)
+        .set({
+      // 'id': user.id,
+      // 'displayName': user?.displayName,
+      'displayName': user.displayName,
+      // 'email': user.email,
+      // 'status': Status.unverified.toEnumString,
+      // 'bankStatus': Status.unverified.toEnumString,
+      // 'chargesEnabled': false,
+      'updatedAt': FieldValue.serverTimestamp(),
+    }, SetOptions(merge: true));
+  }
 }

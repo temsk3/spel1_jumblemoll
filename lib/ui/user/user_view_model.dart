@@ -160,4 +160,8 @@ class UserViewModel extends StateNotifier<AsyncValue<User?>> {
   Future updatePaymentMethod({required String sourceId}) async {
     await _read(userRepositoryProvider).updatePaymentMethod(sourceId: sourceId);
   }
+
+  Future<void> updateUser(User user) async {
+    await _read(userRepositoryProvider).updateUser(user);
+  }
 }

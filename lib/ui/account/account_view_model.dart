@@ -45,7 +45,11 @@ class AccountViewModel extends StateNotifier<AsyncValue<User>> {
   }
 
   Future<void> fetchStatus(String id) async {
-    userRepository.fetchStatus(id);
+    await userRepository.fetchStatus(id);
+  }
+
+  Future<void> fetchBankStatus(String id) async {
+    await userRepository.fetchBankStatus(id);
   }
 
   void deleteLocalCache() {
@@ -54,5 +58,9 @@ class AccountViewModel extends StateNotifier<AsyncValue<User>> {
 
   Future<void> updatePaymentMethod(String sourceId) async {
     await userRepository.updatePaymentMethod(sourceId: sourceId);
+  }
+
+  Future<void> updateUser(User user) async {
+    await userRepository.updateUser(user);
   }
 }
