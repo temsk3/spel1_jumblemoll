@@ -19,7 +19,7 @@ jobs:
       - run: flutter --version
       # - run: flutter pub get
       - name: Cache pubspec dependencies
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: |
             ${{ env.FLUTTER_HOME }}/.pub-cache
