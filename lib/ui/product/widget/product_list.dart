@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
+import 'package:logger/logger.dart';
 
 import '../../../data/model/product/product_model.dart';
 import '../../../ui/product/widget/picture.dart';
@@ -9,6 +10,8 @@ import '../../hooks/use_router.dart';
 import '../../routes/app_route.gr.dart';
 import '../../theme/app_text_theme.dart';
 import '../../theme/app_theme.dart';
+
+final logger = Logger();
 
 class ProductCard extends HookConsumerWidget {
   const ProductCard(
@@ -22,12 +25,20 @@ class ProductCard extends HookConsumerWidget {
     final theme = ref.watch(appThemeProvider);
     final l10n = useL10n();
     final appRoute = useRouter();
-    final now = DateTime.now();
+    final today = DateTime.now();
+    final now = DateTime(today.year, today.month, today.day, 0, 0, 0);
+    logger.d(now);
     final NumberFormat formatter = NumberFormat.simpleCurrency(
         locale: Localizations.localeOf(context).toString());
     final isOpened = (now.compareTo(product.salesStart as DateTime) >= 0 &&
-        now.compareTo(product.salesEnd as DateTime) < 0);
-    // print(isOpened);
+        now.compareTo(product.salesEnd as DateTime) <= 0);
+
+    logger.d(product.salesStart as DateTime);
+    logger.d(now.compareTo(product.salesStart as DateTime));
+    logger.d(product.salesEnd as DateTime);
+    logger.d(now.compareTo(product.salesEnd as DateTime));
+    logger.d(isOpened);
+
     return Stack(
       children: [
         Card(

@@ -5,6 +5,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../ui/routes/app_route.gr.dart';
 import 'common/drawer.dart';
+import 'hooks/use_l10n.dart';
 import 'hooks/use_media_query.dart';
 import 'hooks/use_router.dart';
 import 'theme/app_theme.dart';
@@ -19,6 +20,7 @@ class HomePage extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = ref.watch(appThemeProvider);
+    final l10n = useL10n();
     final appRoute = useRouter();
     final appMQ = useMediaQuery();
     //
@@ -95,16 +97,18 @@ class HomePage extends HookConsumerWidget {
             //     // backgroundColor: theme.appColors.primary,
             //   ),
             // ],
-            destinations: const [
+            destinations: [
               NavigationDestination(
-                selectedIcon: Icon(Icons.shopping_basket),
-                icon: Icon(Icons.shopping_basket_outlined),
-                label: 'Product Item List',
+                selectedIcon: const Icon(Icons.shopping_basket),
+                icon: const Icon(Icons.shopping_basket_outlined),
+                // label: 'Product Item List',
+                label: l10n.product,
               ),
               NavigationDestination(
-                selectedIcon: Icon(Icons.event),
-                icon: Icon(Icons.event_outlined),
-                label: 'Event List',
+                selectedIcon: const Icon(Icons.event),
+                icon: const Icon(Icons.event_outlined),
+                // label: 'Event List',
+                label: l10n.event,
               ),
               // NavigationDestination(
               //   selectedIcon: Icon(Icons.bookmark),
@@ -112,9 +116,10 @@ class HomePage extends HookConsumerWidget {
               //   label: 'Favorite',
               // ),
               NavigationDestination(
-                selectedIcon: FaIcon(FontAwesomeIcons.ticketSimple),
-                icon: FaIcon(FontAwesomeIcons.ticket),
-                label: 'Purchased Items',
+                selectedIcon: const FaIcon(FontAwesomeIcons.ticketSimple),
+                icon: const FaIcon(FontAwesomeIcons.ticket),
+                // label: 'Purchased Items',
+                label: l10n.ticket,
               ),
             ],
           );
