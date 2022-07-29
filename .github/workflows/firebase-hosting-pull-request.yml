@@ -18,18 +18,6 @@ jobs:
           # architecture: x64 # optional, x64 or arm64
       - run: flutter --version
       - run: flutter pub get
-      # - name: Cache pubspec dependencies
-      #   uses: actions/cache@v3
-      #   with:
-      #     path: |
-      #       ${{ env.FLUTTER_HOME }}/.pub-cache
-      #       **/.packages
-      #       **/.flutter-plugins
-      #       **/.flutter-plugin-dependencies
-      #       **/.dart_tool/package_config.json
-      #     key: build-pubspec-${{ hashFiles('**/pubspec.lock') }}
-      #     restore-keys: |
-      #       build-pubspec-
       # - uses: actions/checkout@v2
       # # -- ここから追記部分！ -- #
       # # Flutter のインストール clone がはやい
