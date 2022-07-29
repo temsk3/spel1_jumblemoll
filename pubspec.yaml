@@ -47,7 +47,7 @@ dependencies:
   stripe_sdk: ^5.0.0-nullsafety.1
   flutter_dotenv: ^5.0.2
   flutter_multi_formatter: ^2.5.7
-  file_picker: ^4.6.1
+  file_picker: ^5.0.0
   http: ^0.13.4
   horizontal_data_table: ^4.1.1+1
   enum_to_string: ^2.0.1
