@@ -3,13 +3,11 @@ import 'dart:async';
 // import 'package:fimber/fimber.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cloud_functions/cloud_functions.dart';
-import 'package:device_preview/device_preview.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:logger/logger.dart';
 
@@ -20,7 +18,7 @@ final logger = Logger();
 
 // Future<void> main() async {
 void main() async {
-  await dotenv.load(fileName: ".env");
+  // await dotenv.load(fileName: ".env");
   const isEmulator = bool.fromEnvironment('IS_EMULATOR');
   logger.d('start(isEmulator: $isEmulator)');
   //Fimber
@@ -52,11 +50,11 @@ void main() async {
   runZonedGuarded(
     () => runApp(
       ProviderScope(
-        child: DevicePreview(
-          //   enabled: !kReleaseMode && Constants.enablePreview,
-          builder: (context) => MyApp(),
-        ),
-        // child: MyApp(),
+        // child: DevicePreview(
+        //   enabled: !kReleaseMode && Constants.enablePreview,
+        // builder: (context) => MyApp(),
+        // ),
+        child: MyApp(),
       ),
     ),
     (error, stackTrace) {
