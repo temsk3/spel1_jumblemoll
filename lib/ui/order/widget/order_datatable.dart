@@ -6,11 +6,11 @@ import 'package:intl/intl.dart';
 import '../../theme/app_theme.dart';
 
 class orderDataTable extends HookConsumerWidget {
-  orderDataTable({Key? key, required this.data}) : super(key: key);
+  const orderDataTable({Key? key, required this.data}) : super(key: key);
   final data;
 
-  var verticalScrollController = ScrollController();
-  var horizontalScrollController = ScrollController();
+  // var verticalScrollController = ScrollController();
+  // var horizontalScrollController = ScrollController();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -30,10 +30,10 @@ class orderDataTable extends HookConsumerWidget {
       ),
       leftHandSideColBackgroundColor: Theme.of(context).colorScheme.surface, //
       rightHandSideColBackgroundColor: Theme.of(context).colorScheme.surface, //
-      onScrollControllerReady: (vertical, horizontal) {
-        verticalScrollController = vertical;
-        horizontalScrollController = horizontal;
-      },
+      // onScrollControllerReady: (vertical, horizontal) {
+      //   verticalScrollController = vertical;
+      //   horizontalScrollController = horizontal;
+      // },
       enablePullToRefresh: false,
     );
   }
