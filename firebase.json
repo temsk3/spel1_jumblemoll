@@ -19,12 +19,6 @@
       "firebase.json",
       "**/.*",
       "**/node_modules/**"
-    ],
-    "rewrites": [
-      {
-        "source": "**",
-        "destination": "/index.html"
-      }
     ]
   },
   "emulators": {
@@ -49,5 +43,8 @@
     "ui": {
       "enabled": true
     }
+  },
+  "remoteconfig": {
+    "template": "remoteconfig.template.json"
   }
 }
