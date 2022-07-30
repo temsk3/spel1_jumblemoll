@@ -123,7 +123,7 @@ class ProductDetailsPage extends HookConsumerWidget {
       product = productItem;
 
       isOpened = (now.compareTo(product.salesStart as DateTime) >= 0 &&
-          now.compareTo(product.salesEnd as DateTime) < 0);
+          now.compareTo(product.salesEnd as DateTime) <= 0);
     }
 
     //

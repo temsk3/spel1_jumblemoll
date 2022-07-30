@@ -157,7 +157,8 @@ class _LoginPageState extends State<LoginPage> {
                         Expanded(
                           flex: 3,
                           child: Container(
-                            margin: const EdgeInsets.only(top: 48),
+                            // margin: const EdgeInsets.only(top: 48),
+                            margin: const EdgeInsets.only(top: 24),
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.start,
                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -398,7 +399,7 @@ class _LoginPageState extends State<LoginPage> {
                                 // ),
                                 const Spacer(),
                                 Padding(
-                                  padding: const EdgeInsets.only(bottom: 24.0),
+                                  padding: const EdgeInsets.only(bottom: 20.0),
                                   child: RichText(
                                     text: TextSpan(
                                       text: type == Status.login
