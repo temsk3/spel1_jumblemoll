@@ -40,12 +40,12 @@ class IdentificationViewModel extends ChangeNotifier {
 
   void startLoading() {
     isLoading = true;
-    // notifyListeners();
+    notifyListeners();
   }
 
   void endLoading() {
     isLoading = false;
-    // notifyListeners();
+    notifyListeners();
   }
 
   final String termText =
@@ -128,7 +128,7 @@ class IdentificationViewModel extends ChangeNotifier {
   /// 利用規約
   Future<void> setTosAcceptance(bool value) async {
     isAcceptTerm = value;
-    // notifyListeners();
+    notifyListeners();
 
     if (isAcceptTerm) {
       // 利用規約
@@ -193,7 +193,7 @@ class IdentificationViewModel extends ChangeNotifier {
   void showIdentificationImageFrontPicker() {
     _selectImage(onSelected: (file) {
       identificationImageFront = file;
-      // notifyListeners();
+      notifyListeners();
     });
   }
 
@@ -201,7 +201,7 @@ class IdentificationViewModel extends ChangeNotifier {
   void showIdentificationImageBackPicker() {
     _selectImage(onSelected: (file) {
       identificationImageBack = file;
-      // notifyListeners();
+      notifyListeners();
     });
   }
 

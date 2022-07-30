@@ -165,8 +165,8 @@ class ProductDetailsPage extends HookConsumerWidget {
           verified.value = true;
         } else {
           // 7/21 22 用
-          // verified.value = true;
-          verified.value = false;
+          verified.value = true;
+          // verified.value = false;
         }
       },
     );
