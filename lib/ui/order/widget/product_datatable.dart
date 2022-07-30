@@ -33,6 +33,7 @@ class productDataTable extends HookConsumerWidget {
         verticalScrollController = vertical;
         horizontalScrollController = horizontal;
       },
+      enablePullToRefresh: false,
     );
   }
 

@@ -34,6 +34,7 @@ class orderDataTable extends HookConsumerWidget {
         verticalScrollController = vertical;
         horizontalScrollController = horizontal;
       },
+      enablePullToRefresh: false,
     );
   }
 
